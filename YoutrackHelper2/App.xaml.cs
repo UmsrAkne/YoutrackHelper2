@@ -1,6 +1,6 @@
-﻿using Prism.Ioc;
+﻿using System.Windows;
+using Prism.Ioc;
 using YoutrackHelper2.Views;
-using System.Windows;
 
 namespace YoutrackHelper2
 {
@@ -16,6 +16,7 @@ namespace YoutrackHelper2
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<ProjectList>();
         }
     }
 }

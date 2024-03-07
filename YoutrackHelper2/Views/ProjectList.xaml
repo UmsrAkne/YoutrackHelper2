@@ -6,8 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:ProjectListViewModel}"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
     mc:Ignorable="d">
 
     <Grid />

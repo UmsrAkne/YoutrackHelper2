@@ -14,6 +14,8 @@
     mc:Ignorable="d">
 
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <StackPanel>
+            <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        </StackPanel>
     </Grid>
 </Window>
