@@ -8,5 +8,7 @@
     d:DataContext="{d:DesignInstance viewModels:ProjectListViewModel}"
     mc:Ignorable="d">
 
-    <Grid />
+    <Grid>
+        <ListView ItemsSource="{Binding Projects}" />
+    </Grid>
 </UserControl>
