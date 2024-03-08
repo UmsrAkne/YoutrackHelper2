@@ -5,10 +5,27 @@ namespace YoutrackHelper2.Models
 {
     public class ProjectWrapper : BindableBase
     {
-        public Project Project { get; set; }
+        private string fullName = string.Empty;
+        private string shortName = string.Empty;
+        private Project project;
 
-        public string ShortName { get; private set; } = string.Empty;
+        public Project Project
+        {
+            get => project;
+            set
+            {
+                if (value != null)
+                {
+                    ShortName = value.ShortName;
+                    FullName = value.Name;
+                }
 
-        public string FullName { get; private set; } = string.Empty;
+                SetProperty(ref project, value);
+            }
+        }
+
+        public string ShortName { get => shortName; private set => SetProperty(ref shortName, value); }
+
+        public string FullName { get => fullName; private set => SetProperty(ref fullName, value); }
     }
 }

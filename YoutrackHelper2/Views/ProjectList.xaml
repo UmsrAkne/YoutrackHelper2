@@ -4,11 +4,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:YoutrackHelper2.Models"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
+    Height="Auto"
     d:DataContext="{d:DesignInstance viewModels:ProjectListViewModel}"
     mc:Ignorable="d">
 
-    <Grid>
-        <ListView ItemsSource="{Binding Projects}" />
-    </Grid>
+    <ListView
+        HorizontalContentAlignment="Stretch"
+        AlternationCount="2"
+        ItemsSource="{Binding Projects}">
+
+        <ListView.ItemTemplate>
+            <DataTemplate DataType="{x:Type models:ProjectWrapper}">
+                <Border>
+                    <TextBlock Text="{Binding FullName}" />
+                </Border>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </UserControl>
