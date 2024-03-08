@@ -22,5 +22,20 @@
                 </Border>
             </DataTemplate>
         </ListView.ItemTemplate>
+
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Style.Triggers>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Trigger>
+
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="AntiqueWhite" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ListView.ItemContainerStyle>
+
     </ListView>
 </UserControl>
