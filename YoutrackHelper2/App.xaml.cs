@@ -17,6 +17,7 @@ namespace YoutrackHelper2
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<ProjectList>();
+            containerRegistry.RegisterForNavigation<IssueList>();
         }
     }
 }
