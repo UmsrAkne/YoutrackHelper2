@@ -13,7 +13,51 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
 
+    <Window.Resources>
+        <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
+            <Border
+                Padding="4,2"
+                Background="{TemplateBinding Background}"
+                BorderBrush="DimGray"
+                BorderThickness="1"
+                CornerRadius="3">
+                <ContentPresenter />
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <!--  マウスオーバー時のトリガー  -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value=" Moccasin" />
+                </Trigger>
+
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value=" PapayaWhip" />
+                </Trigger>
+
+                <!--  ボタンが押された時のトリガー  -->
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="SandyBrown" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Margin="2"
+            Orientation="Horizontal">
+
+            <Button
+                Command="{Binding NavigateToIssueListPageCommand}"
+                Content="Issue List"
+                Template="{StaticResource ButtonTemplate}" />
+        </StackPanel>
+        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
     </Grid>
 </Window>
