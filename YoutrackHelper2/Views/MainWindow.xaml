@@ -54,10 +54,18 @@
             Orientation="Horizontal">
 
             <Button
+                Command="{Binding NavigateToProjectListPageCommand}"
+                Content="Project Page"
+                Template="{StaticResource ButtonTemplate}" />
+
+            <Border Margin="3" />
+
+            <Button
                 Command="{Binding NavigateToIssueListPageCommand}"
-                Content="Issue List"
+                Content="Issue Page"
                 Template="{StaticResource ButtonTemplate}" />
         </StackPanel>
+
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
     </Grid>
 </Window>

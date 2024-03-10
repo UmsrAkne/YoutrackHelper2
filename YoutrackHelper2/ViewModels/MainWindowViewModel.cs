@@ -21,5 +21,10 @@ namespace YoutrackHelper2.ViewModels
         {
             regionManager.RequestNavigate("ContentRegion", nameof(IssueList));
         });
+
+        public DelegateCommand NavigateToProjectListPageCommand => new (() =>
+        {
+            regionManager.RequestNavigate("ContentRegion", nameof(ProjectList));
+        });
     }
 }
