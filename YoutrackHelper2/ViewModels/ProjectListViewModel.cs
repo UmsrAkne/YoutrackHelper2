@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using Prism.Commands;
 using Prism.Mvvm;
 using YoutrackHelper2.Models;
 
@@ -25,11 +26,18 @@ namespace YoutrackHelper2.ViewModels
             _ = GetProjectsAsync(uri, perm);
         }
 
+        public event EventHandler NavigationRequest;
+
         public ObservableCollection<ProjectWrapper> Projects
         {
             get => projects;
             private set => SetProperty(ref projects, value);
         }
+
+        public DelegateCommand NavigationRequestCommand => new DelegateCommand(() =>
+        {
+            NavigationRequest?.Invoke(this, EventArgs.Empty);
+        });
 
         private Connector Connector { get; set; }
 
