@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using System.Linq;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Views;
@@ -8,6 +9,7 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MainWindowViewModel : BindableBase
     {
+        private static bool initialized;
         private readonly IRegionManager regionManager;
 
         public MainWindowViewModel(IRegionManager regionManager)
@@ -25,6 +27,27 @@ namespace YoutrackHelper2.ViewModels
         public DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
             regionManager.RequestNavigate("ContentRegion", nameof(ProjectList));
+        });
+
+        public DelegateCommand AppInitializeCommand => new (() =>
+        {
+            if (initialized)
+            {
+                return;
+            }
+
+            regionManager.RequestNavigate("ContentRegion", nameof(ProjectList));
+
+            initialized = true;
+            var projectsView = regionManager.Regions["ContentRegion"].ActiveViews.FirstOrDefault() as ProjectList;
+
+            if (projectsView?.DataContext is ProjectListViewModel vm)
+            {
+                vm.NavigationRequest += (_, _) =>
+                {
+                    NavigateToIssueListPageCommand.Execute();
+                };
+            }
         });
     }
 }
