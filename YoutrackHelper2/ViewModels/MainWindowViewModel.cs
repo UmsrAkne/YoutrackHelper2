@@ -9,6 +9,7 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MainWindowViewModel : BindableBase
     {
+        private const string RegionName = "ContentRegion";
         private static bool initialized;
         private readonly IRegionManager regionManager;
 
@@ -21,12 +22,12 @@ namespace YoutrackHelper2.ViewModels
 
         public DelegateCommand NavigateToIssueListPageCommand => new (() =>
         {
-            regionManager.RequestNavigate("ContentRegion", nameof(IssueList));
+            regionManager.RequestNavigate(RegionName, nameof(IssueList));
         });
 
         public DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
-            regionManager.RequestNavigate("ContentRegion", nameof(ProjectList));
+            regionManager.RequestNavigate(RegionName, nameof(ProjectList));
         });
 
         public DelegateCommand AppInitializeCommand => new (() =>
@@ -36,10 +37,10 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
-            regionManager.RequestNavigate("ContentRegion", nameof(ProjectList));
+            regionManager.RequestNavigate(RegionName, nameof(ProjectList));
 
             initialized = true;
-            var projectsView = regionManager.Regions["ContentRegion"].ActiveViews.FirstOrDefault() as ProjectList;
+            var projectsView = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault() as ProjectList;
 
             if (projectsView?.DataContext is ProjectListViewModel vm)
             {
