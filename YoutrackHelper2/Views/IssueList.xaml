@@ -7,7 +7,35 @@
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
+    d:DesignWidth="500"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="ToggleButton">
+            <Border
+                Padding="4,2"
+                Background="{TemplateBinding Background}"
+                BorderBrush="DimGray"
+                BorderThickness="1"
+                CornerRadius="3">
+                <ContentPresenter />
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value=" Moccasin" />
+                </Trigger>
+
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value=" PapayaWhip" />
+                </Trigger>
+
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="SandyBrown" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
     <Grid>
         <ListView
             HorizontalContentAlignment="Stretch"
@@ -20,8 +48,56 @@
                         <system:Double x:Key="BasicFontsize">15.0</system:Double>
                     </DataTemplate.Resources>
 
-                    <Border>
-                        <TextBlock FontSize="{StaticResource BasicFontsize}" Text="Issue" />
+                    <Border Padding="3,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Orientation="Horizontal">
+
+                                <CheckBox
+                                    Margin="3,0"
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding Completed}" />
+                                <TextBlock FontSize="{StaticResource BasicFontsize}" Text="{Binding Title}" />
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+
+                                <TextBlock
+                                    Margin="3,0"
+                                    HorizontalAlignment="Right"
+                                    FontSize="{StaticResource BasicFontsize}"
+                                    Text="{Binding ShortName}" />
+
+                                <ToggleButton
+                                    Width="50"
+                                    Margin="5,0"
+                                    HorizontalContentAlignment="Center"
+                                    Template="{StaticResource ToggleButtonTemplate}">
+                                    <TextBlock
+                                        FontSize="12"
+                                        Text="完了"
+                                        TextAlignment="Center" />
+                                </ToggleButton>
+
+                            </StackPanel>
+                        </Grid>
+
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
