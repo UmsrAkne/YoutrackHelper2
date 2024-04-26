@@ -9,7 +9,10 @@
     d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
     mc:Ignorable="d">
     <Grid>
-        <ListView HorizontalContentAlignment="Stretch" AlternationCount="2">
+        <ListView
+            HorizontalContentAlignment="Stretch"
+            AlternationCount="2"
+            ItemsSource="{Binding IssueWrappers}">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
