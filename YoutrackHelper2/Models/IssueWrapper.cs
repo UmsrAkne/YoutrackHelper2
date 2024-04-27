@@ -9,6 +9,7 @@ namespace YoutrackHelper2.Models
         private string shortName = string.Empty;
         private Issue issue;
         private bool completed;
+        private string description = string.Empty;
 
         public Issue Issue
         {
@@ -19,6 +20,7 @@ namespace YoutrackHelper2.Models
                 {
                     Title = value.Summary;
                     ShortName = value.Id;
+                    Description = value.Description;
                 }
 
                 SetProperty(ref issue, value);
@@ -28,6 +30,8 @@ namespace YoutrackHelper2.Models
         public string Title { get => title; set => SetProperty(ref title, value); }
 
         public string ShortName { get => shortName; set => SetProperty(ref shortName, value); }
+
+        public string Description { get => description; set => SetProperty(ref description, value); }
 
         public bool Completed { get => completed; set => SetProperty(ref completed, value); }
     }
