@@ -46,10 +46,14 @@
                 <DataTemplate>
                     <DataTemplate.Resources>
                         <system:Double x:Key="BasicFontsize">15.0</system:Double>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
+                        </Style>
                     </DataTemplate.Resources>
 
                     <Border Padding="3,0">
                         <Grid>
+
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
@@ -69,7 +73,7 @@
                                     Margin="3,0"
                                     VerticalAlignment="Center"
                                     IsChecked="{Binding Completed}" />
-                                <TextBlock FontSize="{StaticResource BasicFontsize}" Text="{Binding Title}" />
+                                <TextBlock Text="{Binding Title}" />
                             </StackPanel>
 
                             <StackPanel
@@ -81,7 +85,6 @@
                                 <TextBlock
                                     Margin="3,0"
                                     HorizontalAlignment="Right"
-                                    FontSize="{StaticResource BasicFontsize}"
                                     Text="{Binding ShortName}" />
 
                                 <ToggleButton
@@ -95,6 +98,18 @@
                                         TextAlignment="Center" />
                                 </ToggleButton>
 
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="15,0,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Description}" />
+                                </StackPanel>
+
+                                <TextBox Margin="0,2" />
                             </StackPanel>
                         </Grid>
 

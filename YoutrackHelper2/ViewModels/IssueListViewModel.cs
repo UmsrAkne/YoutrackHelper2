@@ -24,6 +24,7 @@ namespace YoutrackHelper2.ViewModels
                 {
                     Title = "テスト課題のタイトル",
                     ShortName = "SHORTNAME-01",
+                    Description = "課題の詳細説明が入力されます",
                 },
                 new IssueWrapper()
                 {
