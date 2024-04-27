@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Prism.Commands;
 using Prism.Mvvm;
 using YouTrackSharp.Issues;
@@ -12,6 +13,7 @@ namespace YoutrackHelper2.Models
         private bool completed;
         private string description = string.Empty;
         private bool expanded;
+        private List<Comment> comments;
 
         public Issue Issue
         {
@@ -43,5 +45,7 @@ namespace YoutrackHelper2.Models
         {
             Expanded = !Expanded;
         });
+
+        public List<Comment> Comments { get => comments; set => SetProperty(ref comments, value); }
     }
 }

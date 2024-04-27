@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Prism.Mvvm;
@@ -18,6 +20,13 @@ namespace YoutrackHelper2.ViewModels
         [Conditional("DEBUG")]
         private void InjectDummies()
         {
+            var dummyComments = new List<Comment>()
+            {
+                new () { Text = "テストコメントテストコメント", DateTime = new DateTime(2024, 4, 28, 12, 0, 0), },
+                new () { Text = "テストコメントテストコメント\n改行コメント", DateTime = new DateTime(2024, 4, 28, 13, 0, 0), },
+                new () { Text = "テストコメントテストコメント", DateTime = new DateTime(2024, 4, 28, 14, 0, 0), },
+            };
+
             IssueWrappers.AddRange(new[]
             {
                 new IssueWrapper()
@@ -31,6 +40,7 @@ namespace YoutrackHelper2.ViewModels
                     Title = "２つ目のテスト課題のタイトル",
                     ShortName = "SHORTNAME-01",
                     Description = "課題の詳細説明が入力されます",
+                    Comments = dummyComments,
                     Expanded = true,
                 },
                 new IssueWrapper()
@@ -38,6 +48,7 @@ namespace YoutrackHelper2.ViewModels
                     Title = "３つ目のテスト課題のタイトル",
                     ShortName = "SHORTNAME-03",
                     Expanded = true,
+                    Comments = dummyComments,
                 },
             });
         }
