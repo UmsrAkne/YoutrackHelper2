@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
@@ -51,69 +52,90 @@
                         </Style>
                     </DataTemplate.Resources>
 
-                    <Border Padding="3,0">
-                        <Grid>
+                    <ContentControl>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding ToggleExpandedCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
+                        <Border Padding="3,0">
+                            <Grid>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
 
-                            <StackPanel
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Orientation="Horizontal">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
 
-                                <CheckBox
-                                    Margin="3,0"
-                                    VerticalAlignment="Center"
-                                    IsChecked="{Binding Completed}" />
-                                <TextBlock Text="{Binding Title}" />
-                            </StackPanel>
+                                <StackPanel
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Orientation="Horizontal">
 
-                            <StackPanel
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal">
-
-                                <TextBlock
-                                    Margin="3,0"
-                                    HorizontalAlignment="Right"
-                                    Text="{Binding ShortName}" />
-
-                                <ToggleButton
-                                    Width="50"
-                                    Margin="5,0"
-                                    HorizontalContentAlignment="Center"
-                                    Template="{StaticResource ToggleButtonTemplate}">
-                                    <TextBlock
-                                        FontSize="12"
-                                        Text="完了"
-                                        TextAlignment="Center" />
-                                </ToggleButton>
-
-                            </StackPanel>
-
-                            <StackPanel
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Margin="15,0,0,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Description}" />
+                                    <CheckBox
+                                        Margin="3,0"
+                                        VerticalAlignment="Center"
+                                        IsChecked="{Binding Completed}" />
+                                    <TextBlock Text="{Binding Title}" />
                                 </StackPanel>
 
-                                <TextBox Margin="0,2" />
-                            </StackPanel>
-                        </Grid>
+                                <StackPanel
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                    Orientation="Horizontal">
 
-                    </Border>
+                                    <TextBlock
+                                        Margin="3,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding ShortName}" />
+
+                                    <ToggleButton
+                                        Width="50"
+                                        Margin="5,0"
+                                        HorizontalContentAlignment="Center"
+                                        Template="{StaticResource ToggleButtonTemplate}">
+                                        <TextBlock
+                                            FontSize="12"
+                                            Text="完了"
+                                            TextAlignment="Center" />
+                                    </ToggleButton>
+
+                                </StackPanel>
+
+                                <StackPanel
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="21,0,0,0">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Expanded}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Expanded}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Description}" />
+                                    </StackPanel>
+
+                                    <TextBox Margin="0,2" />
+                                </StackPanel>
+                            </Grid>
+
+                        </Border>
+                    </ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
 

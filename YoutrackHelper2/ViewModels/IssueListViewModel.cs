@@ -29,7 +29,15 @@ namespace YoutrackHelper2.ViewModels
                 new IssueWrapper()
                 {
                     Title = "２つ目のテスト課題のタイトル",
-                    ShortName = "SHORTNAME-02",
+                    ShortName = "SHORTNAME-01",
+                    Description = "課題の詳細説明が入力されます",
+                    Expanded = true,
+                },
+                new IssueWrapper()
+                {
+                    Title = "３つ目のテスト課題のタイトル",
+                    ShortName = "SHORTNAME-03",
+                    Expanded = true,
                 },
             });
         }

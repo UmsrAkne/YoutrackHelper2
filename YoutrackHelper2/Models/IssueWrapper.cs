@@ -1,3 +1,4 @@
+using Prism.Commands;
 using Prism.Mvvm;
 using YouTrackSharp.Issues;
 
@@ -10,6 +11,7 @@ namespace YoutrackHelper2.Models
         private Issue issue;
         private bool completed;
         private string description = string.Empty;
+        private bool expanded;
 
         public Issue Issue
         {
@@ -27,6 +29,8 @@ namespace YoutrackHelper2.Models
             }
         }
 
+        public bool Expanded { get => expanded; set => SetProperty(ref expanded, value); }
+
         public string Title { get => title; set => SetProperty(ref title, value); }
 
         public string ShortName { get => shortName; set => SetProperty(ref shortName, value); }
@@ -34,5 +38,10 @@ namespace YoutrackHelper2.Models
         public string Description { get => description; set => SetProperty(ref description, value); }
 
         public bool Completed { get => completed; set => SetProperty(ref completed, value); }
+
+        public DelegateCommand ToggleExpandedCommand => new DelegateCommand(() =>
+        {
+            Expanded = !Expanded;
+        });
     }
 }
