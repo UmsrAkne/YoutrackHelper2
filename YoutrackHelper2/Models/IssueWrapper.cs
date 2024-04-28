@@ -30,6 +30,8 @@ namespace YoutrackHelper2.Models
                     ShortName = value.Id;
                     Description = value.Description;
                     WorkType = ValueGetter.GetString(value, "Type");
+                    Completed = ValueGetter.GetString(value, "State") == "完了";
+                    CreationDateTime = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")).DateTime;
                 }
 
                 SetProperty(ref issue, value);

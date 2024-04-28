@@ -25,5 +25,16 @@ namespace YoutrackHelper2.Models
 
             return field.Value is List<string> values ? values.FirstOrDefault() : string.Empty;
         }
+
+        public static long GetLong(Issue issue, string valueKey)
+        {
+            var field = issue.Fields.FirstOrDefault(f => f.Name == valueKey);
+            if (field == null)
+            {
+                return 0;
+            }
+
+            return field.Value is long values ? values : 0;
+        }
     }
 }
