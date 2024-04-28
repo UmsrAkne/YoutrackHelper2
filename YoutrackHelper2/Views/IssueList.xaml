@@ -94,6 +94,8 @@
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
 
+                                    <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ]}" />
+
                                     <TextBlock
                                         Margin="3,0"
                                         HorizontalAlignment="Right"
@@ -140,6 +142,7 @@
 
                                 </StackPanel>
 
+                                <!--  ここからデフォルトでは隠れている詳細情報欄  クリックで開閉する  -->
                                 <StackPanel
                                     Grid.Row="1"
                                     Grid.Column="0"
@@ -172,6 +175,7 @@
                                         </TextBlock>
                                     </StackPanel>
 
+                                    <!--  コメントを入力するためのテキストボックス  -->
                                     <TextBox Margin="0,2" />
 
                                     <ListBox
