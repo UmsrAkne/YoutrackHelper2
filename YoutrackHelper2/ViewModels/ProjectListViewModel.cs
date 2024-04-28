@@ -12,6 +12,7 @@ namespace YoutrackHelper2.ViewModels
     public class ProjectListViewModel : BindableBase
     {
         private ObservableCollection<ProjectWrapper> projects = new ();
+        private ProjectWrapper selectedProject;
 
         public ProjectListViewModel()
         {
@@ -27,6 +28,12 @@ namespace YoutrackHelper2.ViewModels
         }
 
         public event EventHandler NavigationRequest;
+
+        public ProjectWrapper SelectedProject
+        {
+            get => selectedProject;
+            set => SetProperty(ref selectedProject, value);
+        }
 
         public ObservableCollection<ProjectWrapper> Projects
         {
