@@ -19,7 +19,7 @@
                 Padding="4,2"
                 Background="{TemplateBinding Background}"
                 BorderBrush="DimGray"
-                BorderThickness="1"
+                BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="3">
                 <ContentPresenter />
             </Border>
@@ -108,6 +108,34 @@
                                             FontSize="12"
                                             Text="完了"
                                             TextAlignment="Center" />
+                                    </ToggleButton>
+
+                                    <ToggleButton
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        IsChecked="{Binding Expanded}"
+                                        Template="{StaticResource ToggleButtonTemplate}">
+
+                                        <Border
+                                            Padding="4,0"
+                                            Background="LightSalmon"
+                                            CornerRadius="8">
+                                            <TextBlock FontSize="12">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Expanded}" Value="True">
+                                                                <Setter Property="Text" Value="▲" />
+                                                            </DataTrigger>
+
+                                                            <DataTrigger Binding="{Binding Expanded}" Value="False">
+                                                                <Setter Property="Text" Value="▼" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
                                     </ToggleButton>
 
                                 </StackPanel>
