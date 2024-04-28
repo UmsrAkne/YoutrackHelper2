@@ -45,7 +45,8 @@
         <ListView
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
-            ItemsSource="{Binding IssueWrappers}">
+            ItemsSource="{Binding IssueWrappers}"
+            ScrollViewer.VerticalScrollBarVisibility="Visible">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
