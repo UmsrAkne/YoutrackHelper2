@@ -34,6 +34,7 @@ namespace YoutrackHelper2.ViewModels
                     Title = "テスト課題のタイトル",
                     ShortName = "SHORTNAME-01",
                     Description = "課題の詳細説明が入力されます",
+                    WorkType = "機能",
                 },
                 new IssueWrapper()
                 {
@@ -42,6 +43,7 @@ namespace YoutrackHelper2.ViewModels
                     Description = "課題の詳細説明が入力されます",
                     Comments = dummyComments,
                     Expanded = true,
+                    WorkType = "バグ修正",
                 },
                 new IssueWrapper()
                 {
@@ -49,6 +51,7 @@ namespace YoutrackHelper2.ViewModels
                     ShortName = "SHORTNAME-03",
                     Expanded = true,
                     Comments = dummyComments,
+                    WorkType = "バグ修正",
                 },
             });
         }
