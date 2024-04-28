@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using YouTrackSharp.Issues;
@@ -28,6 +29,7 @@ namespace YoutrackHelper2.Models
                     Title = value.Summary;
                     ShortName = value.Id;
                     Description = value.Description;
+                    WorkType = ValueGetter.GetString(value, "Type");
                 }
 
                 SetProperty(ref issue, value);
