@@ -48,6 +48,7 @@ namespace YoutrackHelper2.ViewModels
                 new IssueWrapper()
                 {
                     Title = "３つ目のテスト課題のタイトル",
+                    Description = "課題の説明\n 課題の説明２行目",
                     ShortName = "SHORTNAME-03",
                     Expanded = true,
                     Comments = dummyComments,
