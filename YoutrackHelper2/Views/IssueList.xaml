@@ -19,7 +19,7 @@
                 Padding="4,2"
                 Background="{TemplateBinding Background}"
                 BorderBrush="DimGray"
-                BorderThickness="1"
+                BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="3">
                 <ContentPresenter />
             </Border>
@@ -45,7 +45,8 @@
         <ListView
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
-            ItemsSource="{Binding IssueWrappers}">
+            ItemsSource="{Binding IssueWrappers}"
+            ScrollViewer.VerticalScrollBarVisibility="Visible">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -94,6 +95,8 @@
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
 
+                                    <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ]}" />
+
                                     <TextBlock
                                         Margin="3,0"
                                         HorizontalAlignment="Right"
@@ -110,8 +113,37 @@
                                             TextAlignment="Center" />
                                     </ToggleButton>
 
+                                    <ToggleButton
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        IsChecked="{Binding Expanded}"
+                                        Template="{StaticResource ToggleButtonTemplate}">
+
+                                        <Border
+                                            Padding="4,0"
+                                            Background="LightSalmon"
+                                            CornerRadius="8">
+                                            <TextBlock FontSize="12">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Expanded}" Value="True">
+                                                                <Setter Property="Text" Value="▲" />
+                                                            </DataTrigger>
+
+                                                            <DataTrigger Binding="{Binding Expanded}" Value="False">
+                                                                <Setter Property="Text" Value="▼" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+                                    </ToggleButton>
+
                                 </StackPanel>
 
+                                <!--  ここからデフォルトでは隠れている詳細情報欄  クリックで開閉する  -->
                                 <StackPanel
                                     Grid.Row="1"
                                     Grid.Column="0"
@@ -130,7 +162,8 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <StackPanel Orientation="Horizontal">
+
+                                    <DockPanel>
                                         <TextBlock Text="{Binding Description}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
@@ -142,8 +175,14 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                    </StackPanel>
 
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Text="{Binding CreationDateTime, Converter={StaticResource DateTimeConverter}, StringFormat=作成日時 : {0}}" />
+                                    </DockPanel>
+
+                                    <!--  コメントを入力するためのテキストボックス  -->
                                     <TextBox Margin="0,2" />
 
                                     <ListBox

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -14,6 +15,8 @@ namespace YoutrackHelper2.Models
         private string description = string.Empty;
         private bool expanded;
         private List<Comment> comments;
+        private string workType = string.Empty;
+        private DateTime creationDateTime;
 
         public Issue Issue
         {
@@ -40,6 +43,14 @@ namespace YoutrackHelper2.Models
         public string Description { get => description; set => SetProperty(ref description, value); }
 
         public bool Completed { get => completed; set => SetProperty(ref completed, value); }
+
+        public string WorkType { get => workType; set => SetProperty(ref workType, value); }
+
+        public DateTime CreationDateTime
+        {
+            get => creationDateTime;
+            set => SetProperty(ref creationDateTime, value);
+        }
 
         public DelegateCommand ToggleExpandedCommand => new DelegateCommand(() =>
         {

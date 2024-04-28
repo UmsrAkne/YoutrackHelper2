@@ -18,6 +18,8 @@ namespace YoutrackHelper2.Models
 
         public List<ProjectWrapper> ProjectWrappers { get; set; }
 
+        public List<IssueWrapper> IssueWrappers { get; set; }
+
         public string ErrorMessage { get; set; }
 
         public async Task LoadProjects()
@@ -32,6 +34,21 @@ namespace YoutrackHelper2.Models
             {
                 Debug.WriteLine($"{e}(Connector : 46)");
                 ErrorMessage = "接続に失敗しました";
+            }
+        }
+
+        public async Task LoadIssues(string projectId)
+        {
+            try
+            {
+                var issueService = Connection.CreateIssuesService();
+                var issues = await issueService.GetIssuesInProject(projectId);
+                IssueWrappers = issues.Select(s => new IssueWrapper() { Issue = s, }).ToList();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"{e}(Connector : 46)");
+                throw;
             }
         }
     }
