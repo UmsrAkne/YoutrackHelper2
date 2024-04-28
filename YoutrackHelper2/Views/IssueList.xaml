@@ -45,7 +45,8 @@
         <ListView
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
-            ItemsSource="{Binding IssueWrappers}">
+            ItemsSource="{Binding IssueWrappers}"
+            ScrollViewer.VerticalScrollBarVisibility="Visible">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -161,7 +162,8 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <StackPanel Orientation="Horizontal">
+
+                                    <DockPanel>
                                         <TextBlock Text="{Binding Description}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
@@ -173,7 +175,12 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                    </StackPanel>
+
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Text="{Binding CreationDateTime, Converter={StaticResource DateTimeConverter}, StringFormat=作成日時 : {0}}" />
+                                    </DockPanel>
 
                                     <!--  コメントを入力するためのテキストボックス  -->
                                     <TextBox Margin="0,2" />
