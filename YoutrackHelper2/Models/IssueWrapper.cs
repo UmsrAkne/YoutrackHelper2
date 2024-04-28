@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using YouTrackSharp.Issues;
@@ -17,6 +18,7 @@ namespace YoutrackHelper2.Models
         private List<Comment> comments;
         private string workType = string.Empty;
         private DateTime creationDateTime;
+        private TimeSpan workingDuration = TimeSpan.Zero;
 
         public Issue Issue
         {
@@ -28,6 +30,9 @@ namespace YoutrackHelper2.Models
                     Title = value.Summary;
                     ShortName = value.Id;
                     Description = value.Description;
+                    WorkType = ValueGetter.GetString(value, "Type");
+                    Completed = ValueGetter.GetString(value, "State") == "完了";
+                    CreationDateTime = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")).DateTime;
                 }
 
                 SetProperty(ref issue, value);
@@ -45,6 +50,12 @@ namespace YoutrackHelper2.Models
         public bool Completed { get => completed; set => SetProperty(ref completed, value); }
 
         public string WorkType { get => workType; set => SetProperty(ref workType, value); }
+
+        public TimeSpan WorkingDuration
+        {
+            get => workingDuration;
+            set => SetProperty(ref workingDuration, value);
+        }
 
         public DateTime CreationDateTime
         {

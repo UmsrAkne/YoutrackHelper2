@@ -37,6 +37,8 @@ namespace YoutrackHelper2.ViewModels
         {
             await connector.LoadIssues(ProjectName);
             IssueWrappers = new ObservableCollection<IssueWrapper>(connector.IssueWrappers);
+            await connector.LoadTimeTracking(IssueWrappers);
+
             RaisePropertyChanged(nameof(IssueWrappers));
         });
 
