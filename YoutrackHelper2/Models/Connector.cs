@@ -51,5 +51,24 @@ namespace YoutrackHelper2.Models
                 throw;
             }
         }
+
+        public async Task LoadTimeTracking(IEnumerable<IssueWrapper> issues)
+        {
+            try
+            {
+                var ttService = Connection.CreateTimeTrackingService();
+
+                foreach (var issue in issues)
+                {
+                    var list = await ttService.GetWorkItemsForIssue(issue.ShortName);
+                    issue.WorkingDuration = TimeSpan.FromTicks(list.Sum(t => t.Duration.Ticks));
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"{e}(Connector : 46)");
+                throw;
+            }
+        }
     }
 }

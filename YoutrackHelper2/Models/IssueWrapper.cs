@@ -18,6 +18,7 @@ namespace YoutrackHelper2.Models
         private List<Comment> comments;
         private string workType = string.Empty;
         private DateTime creationDateTime;
+        private TimeSpan workingDuration = TimeSpan.Zero;
 
         public Issue Issue
         {
@@ -49,6 +50,12 @@ namespace YoutrackHelper2.Models
         public bool Completed { get => completed; set => SetProperty(ref completed, value); }
 
         public string WorkType { get => workType; set => SetProperty(ref workType, value); }
+
+        public TimeSpan WorkingDuration
+        {
+            get => workingDuration;
+            set => SetProperty(ref workingDuration, value);
+        }
 
         public DateTime CreationDateTime
         {
