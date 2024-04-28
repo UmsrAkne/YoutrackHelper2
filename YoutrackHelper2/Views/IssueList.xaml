@@ -40,6 +40,7 @@
         </ControlTemplate>
 
         <views:DateTimeConverter x:Key="DateTimeConverter" />
+        <views:BoolNegativeConverter x:Key="BoolNegativeConverter" />
     </UserControl.Resources>
     <Grid>
         <ListView
@@ -85,7 +86,8 @@
                                     <CheckBox
                                         Margin="3,0"
                                         VerticalAlignment="Center"
-                                        IsChecked="{Binding Completed}" />
+                                        IsChecked="{Binding Completed}"
+                                        IsEnabled="{Binding Completed, Converter={StaticResource BoolNegativeConverter}}" />
                                     <TextBlock Text="{Binding Title}" />
                                 </StackPanel>
 
