@@ -2,20 +2,63 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using Prism.Mvvm;
+using Prism.Regions;
 using YoutrackHelper2.Models;
 
 namespace YoutrackHelper2.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class IssueListViewModel : BindableBase
+    public class IssueListViewModel : BindableBase, INavigationAware
     {
+        private Connector connector;
+
+        public string ProjectName { get; private set; }
+
         public IssueListViewModel()
         {
             InjectDummies(); // Debugビルドの場合のみ実行される。ダミーの値をリストに入力する。
+
+            var uri = File.ReadAllText(
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\uri.txt")
+            .Replace("\n", string.Empty);
+
+            var perm = File.ReadAllText(
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\perm.txt")
+            .Replace("\n", string.Empty);
+
+            connector = new Connector(uri, perm);
         }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
+
+        public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            await connector.LoadIssues(ProjectName);
+            IssueWrappers = new ObservableCollection<IssueWrapper>(connector.IssueWrappers);
+            RaisePropertyChanged(nameof(IssueWrappers));
+        });
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            if (!navigationContext.Parameters.TryGetValue(nameof(ProjectName), out string parameterValue))
+            {
+                return;
+            }
+
+            if (parameterValue != null)
+            {
+                ProjectName = parameterValue;
+                LoadIssueWrappersAsyncCommand.Execute(null);
+            }
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext) => true;
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+        }
 
         [Conditional("DEBUG")]
         private void InjectDummies()

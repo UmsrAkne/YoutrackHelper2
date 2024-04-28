@@ -20,9 +20,10 @@ namespace YoutrackHelper2.ViewModels
 
         public string Title => "Prism Application";
 
-        public DelegateCommand NavigateToIssueListPageCommand => new (() =>
+        public DelegateCommand<string> NavigateToIssueListPageCommand => new ((param) =>
         {
-            regionManager.RequestNavigate(RegionName, nameof(IssueList));
+            var parameters = new NavigationParameters { { nameof(IssueListViewModel.ProjectName), param }, };
+            regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
         });
 
         public DelegateCommand NavigateToProjectListPageCommand => new (() =>
@@ -46,7 +47,7 @@ namespace YoutrackHelper2.ViewModels
             {
                 vm.NavigationRequest += (_, _) =>
                 {
-                    NavigateToIssueListPageCommand.Execute();
+                    NavigateToIssueListPageCommand.Execute(vm.SelectedProject.FullName);
                 };
             }
         });

@@ -15,7 +15,8 @@
     <ListView
         HorizontalContentAlignment="Stretch"
         AlternationCount="2"
-        ItemsSource="{Binding Projects}">
+        ItemsSource="{Binding Projects}"
+        SelectedItem="{Binding SelectedProject}">
 
         <ListView.ItemTemplate>
             <DataTemplate DataType="{x:Type models:ProjectWrapper}">
