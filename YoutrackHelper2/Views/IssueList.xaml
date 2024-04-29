@@ -11,7 +11,18 @@
     xmlns:views="clr-namespace:YoutrackHelper2.Views"
     d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
     d:DesignWidth="500"
+    IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
+
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding UiEnabled}" Value="False">
+                    <Setter Property="Opacity" Value="0.4" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
 
     <UserControl.Resources>
         <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="ToggleButton">
