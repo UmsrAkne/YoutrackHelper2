@@ -12,9 +12,7 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class IssueListViewModel : BindableBase, INavigationAware
     {
-        private Connector connector;
-
-        public string ProjectName { get; private set; }
+        private readonly Connector connector;
 
         public IssueListViewModel()
         {
@@ -30,6 +28,8 @@ namespace YoutrackHelper2.ViewModels
 
             connector = new Connector(uri, perm);
         }
+
+        public string ProjectName { get; private set; }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using YouTrackSharp.Issues;
@@ -60,7 +59,7 @@ namespace YoutrackHelper2.Models
         public DateTime CreationDateTime
         {
             get => creationDateTime;
-            set => SetProperty(ref creationDateTime, value);
+            private set => SetProperty(ref creationDateTime, value);
         }
 
         public DelegateCommand ToggleExpandedCommand => new DelegateCommand(() =>
@@ -68,6 +67,6 @@ namespace YoutrackHelper2.Models
             Expanded = !Expanded;
         });
 
-        public List<Comment> Comments { get => comments; set => SetProperty(ref comments, value); }
+        public List<Comment> Comments { get => comments; init => SetProperty(ref comments, value); }
     }
 }

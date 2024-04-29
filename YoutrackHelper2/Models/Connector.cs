@@ -14,13 +14,13 @@ namespace YoutrackHelper2.Models
             Connection = new BearerTokenConnection(url, token);
         }
 
-        private BearerTokenConnection Connection { get; set; }
+        public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
-        public List<ProjectWrapper> ProjectWrappers { get; set; }
-
-        public List<IssueWrapper> IssueWrappers { get; set; }
+        public List<IssueWrapper> IssueWrappers { get; private set; }
 
         public string ErrorMessage { get; set; }
+
+        private BearerTokenConnection Connection { get; set; }
 
         public async Task LoadProjects()
         {
