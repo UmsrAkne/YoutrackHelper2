@@ -41,6 +41,7 @@
 
         <views:DateTimeConverter x:Key="DateTimeConverter" />
         <views:BoolNegativeConverter x:Key="BoolNegativeConverter" />
+        <views:ShortNameConverter x:Key="ShortNameConverter" />
     </UserControl.Resources>
     <Grid>
         <ListView
@@ -102,7 +103,7 @@
                                     <TextBlock
                                         Margin="3,0"
                                         HorizontalAlignment="Right"
-                                        Text="{Binding ShortName}" />
+                                        Text="{Binding ShortName, Converter={StaticResource ShortNameConverter}}" />
 
                                     <ToggleButton
                                         Width="50"
