@@ -42,7 +42,11 @@ namespace YoutrackHelper2.Models
             try
             {
                 var issueService = Connection.CreateIssuesService();
-                var issues = await issueService.GetIssuesInProject(projectId);
+                var dtFrom = DateTime.Now.AddMonths(-1).ToString("yyyy-MM");
+                var dtTo = DateTime.Now.ToString("yyyy-MM");
+                var searchQuery = $"Project:{projectId} and (State:UnResolved or Created:{dtFrom} .. {dtTo})";
+
+                var issues = await issueService.GetIssuesInProject(projectId, searchQuery);
                 IssueWrappers = issues.Select(s => new IssueWrapper() { Issue = s, }).ToList();
             }
             catch (Exception e)
