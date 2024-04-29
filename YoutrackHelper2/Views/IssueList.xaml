@@ -11,7 +11,18 @@
     xmlns:views="clr-namespace:YoutrackHelper2.Views"
     d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
     d:DesignWidth="500"
+    IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
+
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding UiEnabled}" Value="False">
+                    <Setter Property="Opacity" Value="0.4" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
 
     <UserControl.Resources>
         <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="ToggleButton">
@@ -41,6 +52,7 @@
 
         <views:DateTimeConverter x:Key="DateTimeConverter" />
         <views:BoolNegativeConverter x:Key="BoolNegativeConverter" />
+        <views:ShortNameConverter x:Key="ShortNameConverter" />
     </UserControl.Resources>
     <Grid>
         <ListView
@@ -102,7 +114,7 @@
                                     <TextBlock
                                         Margin="3,0"
                                         HorizontalAlignment="Right"
-                                        Text="{Binding ShortName}" />
+                                        Text="{Binding ShortName, Converter={StaticResource ShortNameConverter}}" />
 
                                     <ToggleButton
                                         Width="50"

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Models;
@@ -12,9 +13,8 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class IssueListViewModel : BindableBase, INavigationAware
     {
-        private Connector connector;
-
-        public string ProjectName { get; private set; }
+        private readonly Connector connector;
+        private bool uiEnabled = true;
 
         public IssueListViewModel()
         {
@@ -31,13 +31,23 @@ namespace YoutrackHelper2.ViewModels
             connector = new Connector(uri, perm);
         }
 
+        public string ProjectName { get; private set; }
+
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
+
+        public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
 
         public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
+            UiEnabled = false;
             await connector.LoadIssues(ProjectName);
-            IssueWrappers = new ObservableCollection<IssueWrapper>(connector.IssueWrappers);
+            IssueWrappers = new ObservableCollection<IssueWrapper>(
+                connector.IssueWrappers
+                    .OrderBy(t => t.Completed)
+                    .ThenByDescending(t => t.CreationDateTime));
             await connector.LoadTimeTracking(IssueWrappers);
+
+            UiEnabled = true;
 
             RaisePropertyChanged(nameof(IssueWrappers));
         });

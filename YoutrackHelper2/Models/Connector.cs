@@ -14,13 +14,13 @@ namespace YoutrackHelper2.Models
             Connection = new BearerTokenConnection(url, token);
         }
 
-        private BearerTokenConnection Connection { get; set; }
+        public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
-        public List<ProjectWrapper> ProjectWrappers { get; set; }
-
-        public List<IssueWrapper> IssueWrappers { get; set; }
+        public List<IssueWrapper> IssueWrappers { get; private set; }
 
         public string ErrorMessage { get; set; }
+
+        private BearerTokenConnection Connection { get; set; }
 
         public async Task LoadProjects()
         {
@@ -42,7 +42,11 @@ namespace YoutrackHelper2.Models
             try
             {
                 var issueService = Connection.CreateIssuesService();
-                var issues = await issueService.GetIssuesInProject(projectId);
+                var dtFrom = DateTime.Now.AddMonths(-1).ToString("yyyy-MM");
+                var dtTo = DateTime.Now.ToString("yyyy-MM");
+                var searchQuery = $"Project:{projectId} and (State:UnResolved or Created:{dtFrom} .. {dtTo})";
+
+                var issues = await issueService.GetIssuesInProject(projectId, searchQuery);
                 IssueWrappers = issues.Select(s => new IssueWrapper() { Issue = s, }).ToList();
             }
             catch (Exception e)
