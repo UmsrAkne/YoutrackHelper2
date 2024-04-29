@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Models;
@@ -40,7 +41,10 @@ namespace YoutrackHelper2.ViewModels
         {
             UiEnabled = false;
             await connector.LoadIssues(ProjectName);
-            IssueWrappers = new ObservableCollection<IssueWrapper>(connector.IssueWrappers);
+            IssueWrappers = new ObservableCollection<IssueWrapper>(
+                connector.IssueWrappers
+                    .OrderBy(t => t.Completed)
+                    .ThenByDescending(t => t.CreationDateTime));
             await connector.LoadTimeTracking(IssueWrappers);
 
             UiEnabled = true;
