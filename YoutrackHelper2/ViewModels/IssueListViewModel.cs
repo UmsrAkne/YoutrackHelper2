@@ -13,6 +13,7 @@ namespace YoutrackHelper2.ViewModels
     public class IssueListViewModel : BindableBase, INavigationAware
     {
         private readonly Connector connector;
+        private bool uiEnabled = true;
 
         public IssueListViewModel()
         {
@@ -33,11 +34,16 @@ namespace YoutrackHelper2.ViewModels
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
 
+        public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
+
         public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
+            UiEnabled = false;
             await connector.LoadIssues(ProjectName);
             IssueWrappers = new ObservableCollection<IssueWrapper>(connector.IssueWrappers);
             await connector.LoadTimeTracking(IssueWrappers);
+
+            UiEnabled = true;
 
             RaisePropertyChanged(nameof(IssueWrappers));
         });
