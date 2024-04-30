@@ -111,6 +111,8 @@
                                     <CheckBox
                                         Margin="3,0"
                                         VerticalAlignment="Center"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.CompleteIssueCommand}"
+                                        CommandParameter="{Binding}"
                                         IsChecked="{Binding Completed}"
                                         IsEnabled="{Binding Completed, Converter={StaticResource BoolNegativeConverter}}" />
                                     <TextBlock Text="{Binding Title}">
@@ -144,10 +146,12 @@
                                         Width="50"
                                         Margin="5,0"
                                         HorizontalContentAlignment="Center"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleIssueStateCommand}"
+                                        CommandParameter="{Binding}"
                                         Template="{StaticResource ToggleButtonTemplate}">
                                         <TextBlock
                                             FontSize="12"
-                                            Text="完了"
+                                            Text="{Binding State}"
                                             TextAlignment="Center" />
                                     </ToggleButton>
 
