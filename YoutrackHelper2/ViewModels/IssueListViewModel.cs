@@ -15,6 +15,7 @@ namespace YoutrackHelper2.ViewModels
     {
         private readonly Connector connector;
         private bool uiEnabled = true;
+        private IssueWrapper currentIssueWrapper = new ();
 
         public IssueListViewModel()
         {
@@ -31,16 +32,25 @@ namespace YoutrackHelper2.ViewModels
             connector = new Connector(uri, perm);
         }
 
-        public string ProjectName { get; private set; }
+        public ProjectWrapper ProjectWrapper { get; set; }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
+
+        /// <summary>
+        /// 課題情報入力欄のテキストを Binding して保持するためのプロパティです。
+        /// </summary>
+        public IssueWrapper CurrentIssueWrapper
+        {
+            get => currentIssueWrapper;
+            set => SetProperty(ref currentIssueWrapper, value);
+        }
 
         public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
 
         public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
             UiEnabled = false;
-            await connector.LoadIssues(ProjectName);
+            await connector.LoadIssues(ProjectWrapper.FullName);
             IssueWrappers = new ObservableCollection<IssueWrapper>(
                 connector.IssueWrappers
                     .OrderBy(t => t.Completed)
@@ -52,16 +62,54 @@ namespace YoutrackHelper2.ViewModels
             RaisePropertyChanged(nameof(IssueWrappers));
         });
 
+        public AsyncDelegateCommand CreateIssueAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            var issue = CurrentIssueWrapper;
+            if (issue == null || string.IsNullOrWhiteSpace(issue.Title))
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            await connector.CreateIssue(ProjectWrapper.ShortName, issue.Title, issue.Description);
+            LoadIssueWrappersAsyncCommand.Execute(null);
+            UiEnabled = true;
+        });
+
+        public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
+        {
+            if (param is { Completed: false, })
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            await param.Complete(connector);
+            UiEnabled = true;
+        });
+
+        public AsyncDelegateCommand<IssueWrapper> ToggleIssueStateCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
+        {
+            if (param is { Completed: true, })
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            await param.ToggleStatus(connector);
+            UiEnabled = true;
+        });
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (!navigationContext.Parameters.TryGetValue(nameof(ProjectName), out string parameterValue))
+            if (!navigationContext.Parameters.TryGetValue(nameof(ProjectWrapper), out ProjectWrapper parameterValue))
             {
                 return;
             }
 
             if (parameterValue != null)
             {
-                ProjectName = parameterValue;
+                ProjectWrapper = parameterValue;
                 LoadIssueWrappersAsyncCommand.Execute(null);
             }
         }

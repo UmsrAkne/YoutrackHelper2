@@ -2,6 +2,7 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using YoutrackHelper2.Models;
 using YoutrackHelper2.Views;
 
 namespace YoutrackHelper2.ViewModels
@@ -20,9 +21,12 @@ namespace YoutrackHelper2.ViewModels
 
         public string Title => "Prism Application";
 
-        public DelegateCommand<string> NavigateToIssueListPageCommand => new ((param) =>
+        public DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
         {
-            var parameters = new NavigationParameters { { nameof(IssueListViewModel.ProjectName), param }, };
+            var parameters = new NavigationParameters
+            {
+                { nameof(IssueListViewModel.ProjectWrapper), param },
+            };
             regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
         });
 
@@ -47,7 +51,7 @@ namespace YoutrackHelper2.ViewModels
             {
                 vm.NavigationRequest += (_, _) =>
                 {
-                    NavigateToIssueListPageCommand.Execute(vm.SelectedProject.FullName);
+                    NavigateToIssueListPageCommand.Execute(vm.SelectedProject);
                 };
             }
         });

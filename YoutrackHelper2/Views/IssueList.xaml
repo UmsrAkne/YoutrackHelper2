@@ -14,6 +14,13 @@
     IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
 
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding CreateIssueAsyncCommand}"
+            Modifiers="Control+Shift" />
+    </UserControl.InputBindings>
+
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Style.Triggers>
@@ -55,7 +62,13 @@
         <views:ShortNameConverter x:Key="ShortNameConverter" />
     </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
         <ListView
+            Grid.Row="0"
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
             ItemsSource="{Binding IssueWrappers}"
@@ -98,9 +111,22 @@
                                     <CheckBox
                                         Margin="3,0"
                                         VerticalAlignment="Center"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.CompleteIssueCommand}"
+                                        CommandParameter="{Binding}"
                                         IsChecked="{Binding Completed}"
                                         IsEnabled="{Binding Completed, Converter={StaticResource BoolNegativeConverter}}" />
-                                    <TextBlock Text="{Binding Title}" />
+                                    <TextBlock Text="{Binding Title}">
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Completed}" Value="True">
+                                                        <Setter Property="Opacity" Value="0.4" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
                                 </StackPanel>
 
                                 <StackPanel
@@ -120,10 +146,12 @@
                                         Width="50"
                                         Margin="5,0"
                                         HorizontalContentAlignment="Center"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleIssueStateCommand}"
+                                        CommandParameter="{Binding}"
                                         Template="{StaticResource ToggleButtonTemplate}">
                                         <TextBlock
                                             FontSize="12"
-                                            Text="完了"
+                                            Text="{Binding State}"
                                             TextAlignment="Center" />
                                     </ToggleButton>
 
@@ -180,7 +208,7 @@
                                     <DockPanel>
                                         <TextBlock Text="{Binding Description}">
                                             <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                                                     <Style.Triggers>
                                                         <Trigger Property="Text" Value="">
                                                             <Setter Property="Visibility" Value="Collapsed" />
@@ -275,5 +303,24 @@
             </ListView.ItemContainerStyle>
 
         </ListView>
+
+        <StackPanel Grid.Row="1">
+            <DockPanel>
+                <TextBlock Margin="4,0" Text="Title :" />
+                <TextBox Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <Border Width="0" Margin="2,2" />
+
+            <TextBlock Margin="4,0" Text="Description :" />
+            <TextBox Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button
+                Width="250"
+                Margin="2"
+                HorizontalAlignment="Right"
+                Command="{Binding CreateIssueAsyncCommand}"
+                Content="Create new Issue (Ctrl + Shift + Enter)" />
+        </StackPanel>
     </Grid>
 </UserControl>

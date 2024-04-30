@@ -8,8 +8,8 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     Title="{Binding Title}"
-    Width="525"
-    Height="350"
+    Width="800"
+    Height="600"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
