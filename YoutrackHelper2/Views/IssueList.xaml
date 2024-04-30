@@ -100,7 +100,18 @@
                                         VerticalAlignment="Center"
                                         IsChecked="{Binding Completed}"
                                         IsEnabled="{Binding Completed, Converter={StaticResource BoolNegativeConverter}}" />
-                                    <TextBlock Text="{Binding Title}" />
+                                    <TextBlock Text="{Binding Title}">
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Completed}" Value="True">
+                                                        <Setter Property="Opacity" Value="0.4" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
                                 </StackPanel>
 
                                 <StackPanel
