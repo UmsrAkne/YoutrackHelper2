@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using YouTrackSharp;
+using YouTrackSharp.Issues;
 
 namespace YoutrackHelper2.Models
 {
@@ -72,6 +73,26 @@ namespace YoutrackHelper2.Models
             {
                 Debug.WriteLine($"{e}(Connector : 46)");
                 throw;
+            }
+        }
+
+        public async Task CreateIssue(string projectId, string title, string description)
+        {
+            try
+            {
+                var issuesService = Connection.CreateIssuesService();
+                var issue = new Issue
+                {
+                    Summary = title,
+                    Description = description,
+                };
+
+                await issuesService.CreateIssue(projectId, issue);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"{e}(Connector : 94)");
+                ErrorMessage = "接続に失敗しました";
             }
         }
     }
