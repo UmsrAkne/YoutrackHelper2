@@ -23,6 +23,21 @@ namespace YoutrackHelper2.Models
 
         private BearerTokenConnection Connection { get; set; }
 
+        public async Task<Issue> ApplyCommand(string shortName, string command, string comment)
+        {
+            var issueService = Connection.CreateIssuesService();
+            if (string.IsNullOrWhiteSpace(comment))
+            {
+                await issueService.ApplyCommand(shortName, command);
+            }
+            else
+            {
+                await issueService.ApplyCommand(shortName, command, comment);
+            }
+
+            return await issueService.GetIssue(shortName);
+        }
+
         public async Task LoadProjects()
         {
             try

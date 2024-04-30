@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Mvvm;
 using YouTrackSharp.Issues;
@@ -68,5 +69,28 @@ namespace YoutrackHelper2.Models
         });
 
         public List<Comment> Comments { get => comments; init => SetProperty(ref comments, value); }
+
+        public async Task Complete(Connector connector)
+        {
+            // Logger.WriteMessageToFile($"課題を完了 {FullName}");
+            var comment = string.Empty;
+
+            // if (counter.IsTrackingNameRegistered(ShortName))
+            // {
+            //     var now = DateTime.Now;
+            //     var duration = counter.FinishTimeTracking(shortName, now);
+            //     var startedAt = now - duration;
+            //     const string f = "yyyy/MM/dd HH:mm";
+            //     comment = $"完了 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
+            //     if (duration.TotalSeconds > 60)
+            //     {
+            //         await connector.ApplyCommand(ShortName, $"作業 {(int)duration.TotalMinutes}m", string.Empty);
+            //     }
+            // }
+            Issue = await connector.ApplyCommand(ShortName, "state 完了", comment);
+
+            // StartedAt = DateTime.MinValue;
+            // UpdateWorkingDuration(DateTime.Now);
+        }
     }
 }
