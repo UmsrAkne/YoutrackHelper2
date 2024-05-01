@@ -205,24 +205,42 @@
                                         </Style>
                                     </StackPanel.Style>
 
-                                    <DockPanel>
-                                        <TextBlock Text="{Binding Description}">
-                                            <TextBlock.Style>
-                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="Text" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                    <TextBlock Text="{Binding Description}">
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <Trigger Property="Text" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
 
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
                                             Text="{Binding CreationDateTime, Converter={StaticResource DateTimeConverter}, StringFormat=作成日時 : {0}}" />
-                                    </DockPanel>
+
+                                        <TextBlock
+                                            Margin="4,0,0,0"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Text="{Binding Resolved, Converter={StaticResource DateTimeConverter}, StringFormat=/ 完了日時 : {0}}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Completed}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                    </StackPanel>
 
                                     <!--  コメントを入力するためのテキストボックス  -->
                                     <TextBox Margin="0,2" />

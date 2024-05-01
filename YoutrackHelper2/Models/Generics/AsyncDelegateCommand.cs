@@ -2,14 +2,14 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace YoutrackHelper2.Models
+namespace YoutrackHelper2.Models.Generics
 {
-    public class AsyncDelegateCommand : ICommand
+    public class AsyncDelegateCommand<T> : ICommand
     {
-        private readonly Func<Task> execute;
-        private readonly Func<bool> canExecute;
+        private readonly Func<T, Task> execute;
+        private readonly Func<T, bool> canExecute;
 
-        public AsyncDelegateCommand(Func<Task> execute, Func<bool> canExecute = null)
+        public AsyncDelegateCommand(Func<T, Task> execute, Func<T, bool> canExecute = null)
         {
             this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
             this.canExecute = canExecute;
@@ -19,12 +19,12 @@ namespace YoutrackHelper2.Models
 
         public bool CanExecute(object parameter)
         {
-            return canExecute == null || canExecute();
+            return canExecute == null || canExecute((T)parameter);
         }
 
         public async void Execute(object parameter)
         {
-            await ExecuteAsync();
+            await ExecuteAsync((T)parameter);
         }
 
         public void RaiseCanExecuteChanged()
@@ -32,9 +32,9 @@ namespace YoutrackHelper2.Models
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private async Task ExecuteAsync()
+        private async Task ExecuteAsync(T parameter)
         {
-            await execute();
+            await execute(parameter);
         }
     }
 }
