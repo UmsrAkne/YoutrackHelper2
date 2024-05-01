@@ -7,6 +7,7 @@ using System.Linq;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Models;
+using YoutrackHelper2.Models.Generics;
 
 namespace YoutrackHelper2.ViewModels
 {
