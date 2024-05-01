@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Models;
@@ -98,6 +99,19 @@ namespace YoutrackHelper2.ViewModels
 
             UiEnabled = false;
             await param.ToggleStatus(connector);
+            UiEnabled = true;
+        });
+
+        public AsyncDelegateCommand<IssueWrapper> PostCommentCommand => new (async (param) =>
+        {
+            if (param == null || string.IsNullOrWhiteSpace(param.TemporaryComment))
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            await connector.ApplyCommand(param.ShortName, "comment", param.TemporaryComment);
+            param.TemporaryComment = string.Empty;
             UiEnabled = true;
         });
 
