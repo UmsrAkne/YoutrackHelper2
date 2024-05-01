@@ -55,7 +55,7 @@ namespace YoutrackHelper2.ViewModels
             IssueWrappers = new ObservableCollection<IssueWrapper>(
                 connector.IssueWrappers
                     .OrderBy(t => t.Completed)
-                    .ThenByDescending(t => t.CreationDateTime));
+                    .ThenByDescending(t => t.NumberInProject));
             await connector.LoadTimeTracking(IssueWrappers);
 
             UiEnabled = true;

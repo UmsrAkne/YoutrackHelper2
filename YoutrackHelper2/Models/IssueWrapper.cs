@@ -36,6 +36,7 @@ namespace YoutrackHelper2.Models
                     State = ValueGetter.GetString(value, "State");
                     CreationDateTime = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")).DateTime;
                     Resolved = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")).DateTime;
+                    NumberInProject = ValueGetter.GetLong(value, "numberInProject");
                 }
 
                 SetProperty(ref issue, value);
@@ -57,6 +58,8 @@ namespace YoutrackHelper2.Models
         public string State { get => state; set => SetProperty(ref state, value); }
 
         public DateTime Resolved { get; set; }
+
+        public long NumberInProject { get; set; }
 
         public TimeSpan WorkingDuration
         {
