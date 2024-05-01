@@ -17,9 +17,10 @@ namespace YoutrackHelper2.ViewModels
         public MainWindowViewModel(IRegionManager regionManager)
         {
             this.regionManager = regionManager;
+            TitleBarText.Text = "Projects";
         }
 
-        public string Title => "Prism Application";
+        public TitleBarText TitleBarText { get; private set; } = new ();
 
         public DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
         {
@@ -27,12 +28,21 @@ namespace YoutrackHelper2.ViewModels
             {
                 { nameof(IssueListViewModel.ProjectWrapper), param },
             };
+
             regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
+
+            var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
+            if (v?.DataContext as IssueListViewModel is { TitleBarText: null, } vm)
+            {
+                vm.TitleBarText = TitleBarText;
+                TitleBarText.Text = param.FullName;
+            }
         });
 
         public DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
             regionManager.RequestNavigate(RegionName, nameof(ProjectList));
+            TitleBarText.Text = "Projects";
         });
 
         public DelegateCommand AppInitializeCommand => new (() =>
@@ -49,6 +59,7 @@ namespace YoutrackHelper2.ViewModels
 
             if (projectsView?.DataContext is ProjectListViewModel vm)
             {
+                vm.TitleBarText = TitleBarText;
                 vm.NavigationRequest += (_, _) =>
                 {
                     NavigateToIssueListPageCommand.Execute(vm.SelectedProject);

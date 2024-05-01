@@ -20,6 +20,7 @@ namespace YoutrackHelper2.Models
         private DateTime creationDateTime;
         private TimeSpan workingDuration = TimeSpan.Zero;
         private string state = string.Empty;
+        private string temporaryComment;
 
         public Issue Issue
         {
@@ -36,6 +37,7 @@ namespace YoutrackHelper2.Models
                     State = ValueGetter.GetString(value, "State");
                     CreationDateTime = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")).DateTime;
                     Resolved = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")).DateTime;
+                    NumberInProject = ValueGetter.GetLong(value, "numberInProject");
                 }
 
                 SetProperty(ref issue, value);
@@ -58,6 +60,8 @@ namespace YoutrackHelper2.Models
 
         public DateTime Resolved { get; set; }
 
+        public long NumberInProject { get; set; }
+
         public TimeSpan WorkingDuration
         {
             get => workingDuration;
@@ -76,6 +80,12 @@ namespace YoutrackHelper2.Models
         });
 
         public List<Comment> Comments { get => comments; init => SetProperty(ref comments, value); }
+
+        public string TemporaryComment
+        {
+            get => temporaryComment;
+            set => SetProperty(ref temporaryComment, value);
+        }
 
         public async Task ToggleStatus(Connector connector)
         {
