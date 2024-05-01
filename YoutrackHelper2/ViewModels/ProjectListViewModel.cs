@@ -48,6 +48,8 @@ namespace YoutrackHelper2.ViewModels
 
         private Connector Connector { get; set; }
 
+        public TitleBarText TitleBarText { get; set; }
+
         private async Task GetProjectsAsync(string uri, string perm)
         {
             Connector = new Connector(uri, perm);

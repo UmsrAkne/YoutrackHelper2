@@ -101,6 +101,8 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
         });
 
+        public TitleBarText TitleBarText { get; set; }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             if (!navigationContext.Parameters.TryGetValue(nameof(ProjectWrapper), out ProjectWrapper parameterValue))
