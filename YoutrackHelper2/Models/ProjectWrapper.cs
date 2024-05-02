@@ -29,5 +29,7 @@ namespace YoutrackHelper2.Models
         public string ShortName { get => shortName; private set => SetProperty(ref shortName, value); }
 
         public string FullName { get => fullName; private set => SetProperty(ref fullName, value); }
+
+        public bool IsFavorite { get; set; }
     }
 }
