@@ -69,8 +69,12 @@ namespace YoutrackHelper2.ViewModels
         {
             Connector = new Connector(uri, perm);
             await Connector.LoadProjects();
-            Projects = new ObservableCollection<ProjectWrapper>(Connector.ProjectWrappers);
-            ReadJsonFile();
+            var pws = Connector.ProjectWrappers;
+            ReadJsonFile(pws);
+
+            Projects = new ObservableCollection<ProjectWrapper>(
+                    pws.OrderByDescending(p => p.IsFavorite)
+                        .ThenBy(p => p.FullName));
 
             // foreach (var p in ps)
             // {
@@ -87,9 +91,10 @@ namespace YoutrackHelper2.ViewModels
         }
 
         /// <summary>
-        /// Projects.json ファイルを読み込み、現在の Projects の各要素に、読み込んだデータを反映します。
+        /// Projects.json ファイルを読み込み、引数のリストの各要素に、読み込んだデータを反映します。
         /// </summary>
-        private void ReadJsonFile()
+        /// <param name="pws">中の要素を書き換える ProjectWrapper のリスト</param>
+        private void ReadJsonFile(IEnumerable<ProjectWrapper> pws)
         {
             if (!File.Exists($"{nameof(Projects)}.json"))
             {
@@ -100,7 +105,7 @@ namespace YoutrackHelper2.ViewModels
             var list =
                 JsonConvert.DeserializeObject<List<ProjectWrapper>>(json).ToDictionary(p => p.ShortName);
 
-            foreach (var p in Projects)
+            foreach (var p in pws)
             {
                 if (list.TryGetValue(p.ShortName, out var pw))
                 {
