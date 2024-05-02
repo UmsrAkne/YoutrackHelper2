@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -38,6 +39,14 @@ namespace YoutrackHelper2.Models
                     CreationDateTime = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")).DateTime;
                     Resolved = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")).DateTime;
                     NumberInProject = ValueGetter.GetLong(value, "numberInProject");
+                    Comments = value.Comments.
+                        Select(c => new Comment()
+                        {
+                            Text = c.Text,
+                            DateTime = c.Created ?? default,
+                        })
+                        .OrderByDescending(c => c.DateTime)
+                        .ToList();
                 }
 
                 SetProperty(ref issue, value);
@@ -79,7 +88,7 @@ namespace YoutrackHelper2.Models
             Expanded = !Expanded;
         });
 
-        public List<Comment> Comments { get => comments; init => SetProperty(ref comments, value); }
+        public List<Comment> Comments { get => comments; set => SetProperty(ref comments, value); }
 
         public string TemporaryComment
         {
