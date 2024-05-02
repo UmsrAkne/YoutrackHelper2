@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -45,6 +47,18 @@ namespace YoutrackHelper2.ViewModels
         public DelegateCommand NavigationRequestCommand => new DelegateCommand(() =>
         {
             NavigationRequest?.Invoke(this, EventArgs.Empty);
+            WriteJsonFile();
+        });
+
+        public DelegateCommand<ProjectWrapper> ToggleFavoriteCommand => new DelegateCommand<ProjectWrapper>((param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            param.IsFavorite = !param.IsFavorite;
+            WriteJsonFile();
         });
 
         private Connector Connector { get; set; }
@@ -56,7 +70,7 @@ namespace YoutrackHelper2.ViewModels
             Connector = new Connector(uri, perm);
             await Connector.LoadProjects();
             Projects = new ObservableCollection<ProjectWrapper>(Connector.ProjectWrappers);
-            WriteJsonFile();
+            ReadJsonFile();
 
             // foreach (var p in ps)
             // {
@@ -70,6 +84,29 @@ namespace YoutrackHelper2.ViewModels
         {
             var json = JsonConvert.SerializeObject(Projects, Formatting.Indented);
             File.WriteAllText($"{nameof(Projects)}.json", json);
+        }
+
+        /// <summary>
+        /// Projects.json ファイルを読み込み、現在の Projects の各要素に、読み込んだデータを反映します。
+        /// </summary>
+        private void ReadJsonFile()
+        {
+            if (!File.Exists($"{nameof(Projects)}.json"))
+            {
+                return;
+            }
+
+            var json = File.ReadAllText($"{nameof(Projects)}.json");
+            var list =
+                JsonConvert.DeserializeObject<List<ProjectWrapper>>(json).ToDictionary(p => p.ShortName);
+
+            foreach (var p in Projects)
+            {
+                if (list.TryGetValue(p.ShortName, out var pw))
+                {
+                    p.IsFavorite = pw.IsFavorite;
+                }
+            }
         }
     }
 }
