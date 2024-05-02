@@ -111,6 +111,7 @@ namespace YoutrackHelper2.ViewModels
 
             UiEnabled = false;
             await connector.ApplyCommand(param.ShortName, "comment", param.TemporaryComment);
+            param.Issue = await connector.GetIssueAsync(param.ShortName);
             param.TemporaryComment = string.Empty;
             UiEnabled = true;
         });
