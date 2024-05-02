@@ -331,15 +331,15 @@
         </ListView>
 
         <StackPanel Grid.Row="1">
-            <DockPanel>
-                <TextBlock Margin="4,0" Text="Title :" />
+            <DockPanel Margin="2">
+                <TextBlock Width="80" Text="Title :" />
                 <TextBox Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
-            <Border Width="0" Margin="2,2" />
-
-            <TextBlock Margin="4,0" Text="Description :" />
-            <TextBox Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
+            <DockPanel Margin="2">
+                <TextBlock Width="80" Text="Description :" />
+                <TextBox Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
 
             <Button
                 Width="250"

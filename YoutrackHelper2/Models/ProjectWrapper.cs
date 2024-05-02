@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Prism.Mvvm;
 using YouTrackSharp.Projects;
 
@@ -8,7 +9,9 @@ namespace YoutrackHelper2.Models
         private string fullName = string.Empty;
         private string shortName = string.Empty;
         private Project project;
+        private bool isFavorite;
 
+        [JsonIgnore]
         public Project Project
         {
             get => project;
@@ -24,8 +27,10 @@ namespace YoutrackHelper2.Models
             }
         }
 
-        public string ShortName { get => shortName; private set => SetProperty(ref shortName, value); }
+        public string ShortName { get => shortName; set => SetProperty(ref shortName, value); }
 
-        public string FullName { get => fullName; private set => SetProperty(ref fullName, value); }
+        public string FullName { get => fullName; set => SetProperty(ref fullName, value); }
+
+        public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
     }
 }

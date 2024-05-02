@@ -72,6 +72,28 @@ namespace YoutrackHelper2.Models
             }
         }
 
+        /// <summary>
+        /// id から Issue を検索して返します。
+        /// 複数の issue を取得する処理の場合は LoadIssues(string) を使用してください。
+        /// このメソッドは単一の Issue を取得するためのメソッドです。
+        /// </summary>
+        /// <param name="issueId">検索する issue の shortName を入力します</param>
+        /// <returns>検索された Issue </returns>
+        public async Task<Issue> GetIssueAsync(string issueId)
+        {
+            try
+            {
+                var issueService = Connection.CreateIssuesService();
+                var issue = await issueService.GetIssue(issueId);
+                return issue;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"{e}(Connector : 84)");
+                throw;
+            }
+        }
+
         public async Task LoadTimeTracking(IEnumerable<IssueWrapper> issues)
         {
             try

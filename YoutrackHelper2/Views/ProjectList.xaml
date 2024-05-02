@@ -25,7 +25,38 @@
                 </DataTemplate.Resources>
 
                 <Border>
-                    <TextBlock FontSize="{StaticResource BasicFontsize}" Text="{Binding FullName}" />
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleFavoriteCommand}" CommandParameter="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                            <TextBlock FontSize="{StaticResource BasicFontsize}" Text="★">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsFavorite}" Value="False">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                                <Setter Property="Foreground" Value="Black" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                <Setter Property="Opacity" Value="1" />
+                                                <Setter Property="Foreground" Value="Coral" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </ContentControl>
+
+                        <TextBlock
+                            Margin="6,0"
+                            FontSize="{StaticResource BasicFontsize}"
+                            Text="{Binding FullName}" />
+                    </StackPanel>
                 </Border>
             </DataTemplate>
         </ListView.ItemTemplate>
