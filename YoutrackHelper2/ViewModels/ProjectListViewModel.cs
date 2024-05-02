@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using YoutrackHelper2.Models;
@@ -55,6 +56,7 @@ namespace YoutrackHelper2.ViewModels
             Connector = new Connector(uri, perm);
             await Connector.LoadProjects();
             Projects = new ObservableCollection<ProjectWrapper>(Connector.ProjectWrappers);
+            WriteJsonFile();
 
             // foreach (var p in ps)
             // {
@@ -62,6 +64,12 @@ namespace YoutrackHelper2.ViewModels
             //     p.IssueCount = issueList.Count;
             //     p.IncompleteIssueCount = issueList.Count(i => !new IssueWrapper(i).Completed);
             // }
+        }
+
+        private void WriteJsonFile()
+        {
+            var json = JsonConvert.SerializeObject(Projects, Formatting.Indented);
+            File.WriteAllText($"{nameof(Projects)}.json", json);
         }
     }
 }

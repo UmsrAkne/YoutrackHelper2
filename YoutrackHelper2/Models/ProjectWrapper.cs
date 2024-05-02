@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Prism.Mvvm;
 using YouTrackSharp.Projects;
 
@@ -9,6 +10,7 @@ namespace YoutrackHelper2.Models
         private string shortName = string.Empty;
         private Project project;
 
+        [JsonIgnore]
         public Project Project
         {
             get => project;
