@@ -22,6 +22,7 @@ namespace YoutrackHelper2.Models
         private TimeSpan workingDuration = TimeSpan.Zero;
         private string state = string.Empty;
         private string temporaryComment;
+        private DateTime startedAt1;
 
         public Issue Issue
         {
@@ -71,6 +72,8 @@ namespace YoutrackHelper2.Models
 
         public long NumberInProject { get; set; }
 
+        public DateTime StartedAt { get => startedAt1; set => SetProperty(ref startedAt1, value); }
+
         public TimeSpan WorkingDuration
         {
             get => workingDuration;
@@ -96,62 +99,64 @@ namespace YoutrackHelper2.Models
             set => SetProperty(ref temporaryComment, value);
         }
 
-        public async Task ToggleStatus(Connector connector)
+        public async Task ToggleStatus(Connector connector, TimeCounter counter)
         {
             // Logger.WriteMessageToFile($"課題の状態を変更 {FullName} 現在の状態 : {Status}");
+            if (State == "未完了")
+            {
+                counter.StartTimeTracking(shortName, DateTime.Now);
+            }
 
-            // if (State == "未完了")
-            // {
-            //     counter.StartTimeTracking(shortName, DateTime.Now);
-            // }
             var comment = string.Empty;
 
-            // if (counter.IsTrackingNameRegistered(ShortName) && Status == "作業中")
-            // {
-            //     var now = DateTime.Now;
-            //     var duration = counter.FinishTimeTracking(shortName, now);
-            //     var startedAt = now - duration;
-            //     const string f = "yyyy/MM/dd HH:mm";
-            //     comment = $"中断 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
-            //     if (duration.TotalSeconds > 60)
-            //     {
-            //         await connector.ApplyCommand(ShortName, $"作業 {(int)duration.TotalMinutes}m", string.Empty);
-            //     }
-            // }
+            if (counter.IsTrackingNameRegistered(ShortName) && State == "作業中")
+            {
+                var now = DateTime.Now;
+                var duration = counter.FinishTimeTracking(shortName, now);
+                var startedAt = now - duration;
+                const string f = "yyyy/MM/dd HH:mm";
+                comment = $"中断 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
+                if (duration.TotalSeconds > 60)
+                {
+                    await connector.ApplyCommand(ShortName, $"作業 {(int)duration.TotalMinutes}m", string.Empty);
+                }
+            }
+
             switch (State)
             {
                 case "未完了":
                     Issue = await connector.ApplyCommand(ShortName, "state 作業中", comment);
-                    // StartedAt = DateTime.Now;
+                    StartedAt = DateTime.Now;
                     return;
                 case "作業中":
                     Issue = await connector.ApplyCommand(ShortName, "state 未完了", comment);
-                    // StartedAt = DateTime.MinValue;
+                    StartedAt = default;
                     // UpdateWorkingDuration(DateTime.Now);
                     break;
             }
         }
 
-        public async Task Complete(Connector connector)
+        public async Task Complete(Connector connector, TimeCounter counter)
         {
             // Logger.WriteMessageToFile($"課題を完了 {FullName}");
             var comment = string.Empty;
 
-            // if (counter.IsTrackingNameRegistered(ShortName))
-            // {
-            //     var now = DateTime.Now;
-            //     var duration = counter.FinishTimeTracking(shortName, now);
-            //     var startedAt = now - duration;
-            //     const string f = "yyyy/MM/dd HH:mm";
-            //     comment = $"完了 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
-            //     if (duration.TotalSeconds > 60)
-            //     {
-            //         await connector.ApplyCommand(ShortName, $"作業 {(int)duration.TotalMinutes}m", string.Empty);
-            //     }
-            // }
-            Issue = await connector.ApplyCommand(ShortName, "state 完了", comment);
+            if (counter.IsTrackingNameRegistered(ShortName))
+            {
+                var now = DateTime.Now;
+                var duration = counter.FinishTimeTracking(shortName, now);
+                var startedAt = now - duration;
+                const string f = "yyyy/MM/dd HH:mm";
+                comment = $"完了 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
+                if (duration.TotalSeconds > 60)
+                {
+                    await connector.ApplyCommand(ShortName, $"作業 {(int)duration.TotalMinutes}m", string.Empty);
+                }
+            }
 
-            // StartedAt = DateTime.MinValue;
+            Issue = await connector.ApplyCommand(ShortName, "state 完了", comment);
+            StartedAt = DateTime.MinValue;
+
             // UpdateWorkingDuration(DateTime.Now);
         }
     }

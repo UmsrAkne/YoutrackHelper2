@@ -60,15 +60,24 @@
         <views:DateTimeConverter x:Key="DateTimeConverter" />
         <views:BoolNegativeConverter x:Key="BoolNegativeConverter" />
         <views:ShortNameConverter x:Key="ShortNameConverter" />
+        <views:TimeSpanConverter x:Key="TimeSpanConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" HorizontalAlignment="Right">
+            <TextBlock
+                Margin="4,0"
+                FontSize="14"
+                Text="{Binding TotalWorkingDuration, Converter={StaticResource TimeSpanConverter}, StringFormat=　総作業時間 {0}}" />
+        </StackPanel>
+
         <ListView
-            Grid.Row="0"
+            Grid.Row="1"
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
             ItemsSource="{Binding IssueWrappers}"
@@ -330,7 +339,7 @@
 
         </ListView>
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="2">
             <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Title :" />
                 <TextBox Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Windows.Threading;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Models;
@@ -16,8 +16,11 @@ namespace YoutrackHelper2.ViewModels
     public class IssueListViewModel : BindableBase, INavigationAware
     {
         private readonly Connector connector;
+        private readonly TimeCounter timeCounter = new () { TotalTimeTracking = true, };
+        private readonly DispatcherTimer timer = new DispatcherTimer();
         private bool uiEnabled = true;
         private IssueWrapper currentIssueWrapper = new ();
+        private TimeSpan totalWorkingDuration = TimeSpan.Zero;
 
         public IssueListViewModel()
         {
@@ -32,6 +35,11 @@ namespace YoutrackHelper2.ViewModels
             .Replace("\n", string.Empty);
 
             connector = new Connector(uri, perm);
+            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Tick += (_, _) =>
+            {
+                TotalWorkingDuration = timeCounter.GetTotalWorkingDuration(DateTime.Now);
+            };
         }
 
         public ProjectWrapper ProjectWrapper { get; set; }
@@ -41,6 +49,9 @@ namespace YoutrackHelper2.ViewModels
         /// <summary>
         /// 課題情報入力欄のテキストを Binding して保持するためのプロパティです。
         /// </summary>
+        /// <value>
+        /// 課題情報入力欄の情報を保持する IssueWrapper
+        /// </value>
         public IssueWrapper CurrentIssueWrapper
         {
             get => currentIssueWrapper;
@@ -49,20 +60,11 @@ namespace YoutrackHelper2.ViewModels
 
         public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
 
-        public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
+        public TimeSpan TotalWorkingDuration
         {
-            UiEnabled = false;
-            await connector.LoadIssues(ProjectWrapper.FullName);
-            IssueWrappers = new ObservableCollection<IssueWrapper>(
-                connector.IssueWrappers
-                    .OrderBy(t => t.Completed)
-                    .ThenByDescending(t => t.NumberInProject));
-            await connector.LoadTimeTracking(IssueWrappers);
-
-            UiEnabled = true;
-
-            RaisePropertyChanged(nameof(IssueWrappers));
-        });
+            get => totalWorkingDuration;
+            private set => SetProperty(ref totalWorkingDuration, value);
+        }
 
         public AsyncDelegateCommand CreateIssueAsyncCommand => new AsyncDelegateCommand(async () =>
         {
@@ -86,7 +88,8 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await param.Complete(connector);
+            await param.Complete(connector, timeCounter);
+            ChangeTimerState();
             UiEnabled = true;
         });
 
@@ -98,7 +101,8 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await param.ToggleStatus(connector);
+            await param.ToggleStatus(connector, timeCounter);
+            ChangeTimerState();
             UiEnabled = true;
         });
 
@@ -118,6 +122,24 @@ namespace YoutrackHelper2.ViewModels
 
         public TitleBarText TitleBarText { get; set; }
 
+        private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
+
+        private AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            UiEnabled = false;
+            await connector.LoadIssues(ProjectWrapper.FullName);
+            IssueWrappers = new ObservableCollection<IssueWrapper>(
+                connector.IssueWrappers
+                    .OrderBy(t => t.Completed)
+                    .ThenByDescending(t => t.NumberInProject));
+            await connector.LoadTimeTracking(IssueWrappers);
+
+            ChangeTimerState();
+            UiEnabled = true;
+
+            RaisePropertyChanged(nameof(IssueWrappers));
+        });
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             if (!navigationContext.Parameters.TryGetValue(nameof(ProjectWrapper), out ProjectWrapper parameterValue))
@@ -136,6 +158,23 @@ namespace YoutrackHelper2.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
+        }
+
+        /// <summary>
+        /// 現在作業中の課題がプロジェクト内に存在すれば timer を On に。そうでなければ Off に設定します。
+        /// メソッドを実行した際、 ProgressingIssues が更新されます。
+        /// </summary>
+        private void ChangeTimerState()
+        {
+            ProgressingIssues = IssueWrappers.Where(i => i.State == "作業中").ToList();
+            if (ProgressingIssues.Count > 0)
+            {
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+            }
         }
 
         [Conditional("DEBUG")]
