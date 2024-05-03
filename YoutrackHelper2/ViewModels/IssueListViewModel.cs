@@ -77,6 +77,7 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = false;
             await connector.CreateIssue(ProjectWrapper.ShortName, issue.Title, issue.Description);
             LoadIssueWrappersAsyncCommand.Execute(null);
+            CurrentIssueWrapper = new IssueWrapper();
             UiEnabled = true;
         });
 
