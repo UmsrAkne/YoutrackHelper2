@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Threading;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Models;
@@ -122,6 +124,16 @@ namespace YoutrackHelper2.ViewModels
         });
 
         public TitleBarText TitleBarText { get; set; }
+
+        public DelegateCommand<IssueWrapper> CopyIssueTitleCommand => new ((param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            Clipboard.SetText(param.Title);
+        });
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
