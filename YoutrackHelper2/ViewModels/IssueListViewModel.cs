@@ -16,6 +16,7 @@ namespace YoutrackHelper2.ViewModels
     public class IssueListViewModel : BindableBase, INavigationAware
     {
         private readonly Connector connector;
+        private readonly TimeCounter timeCounter = new ();
         private bool uiEnabled = true;
         private IssueWrapper currentIssueWrapper = new ();
 
@@ -86,7 +87,7 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await param.Complete(connector);
+            await param.Complete(connector, timeCounter);
             UiEnabled = true;
         });
 
@@ -98,7 +99,7 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await param.ToggleStatus(connector);
+            await param.ToggleStatus(connector, timeCounter);
             UiEnabled = true;
         });
 
