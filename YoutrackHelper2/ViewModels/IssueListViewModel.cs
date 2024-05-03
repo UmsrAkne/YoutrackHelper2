@@ -128,7 +128,7 @@ namespace YoutrackHelper2.ViewModels
         private AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
             UiEnabled = false;
-            await connector.LoadIssues(ProjectWrapper.FullName);
+            await connector.LoadIssues(ProjectWrapper.ShortName);
             IssueWrappers = new ObservableCollection<IssueWrapper>(
                 connector.IssueWrappers
                     .OrderBy(t => t.Completed)
