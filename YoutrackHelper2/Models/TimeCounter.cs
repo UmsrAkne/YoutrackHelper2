@@ -82,11 +82,6 @@ namespace YoutrackHelper2.Models
             return trackingTimeDictionary.ContainsKey(trackingName);
         }
 
-        public DateTime GetStartedDateTime(string trackingName)
-        {
-            return trackingTimeDictionary.TryGetValue(trackingName, out var time) ? time : default;
-        }
-
         public TimeSpan GetTotalWorkingDuration(DateTime now)
         {
             if (!TotalTimeTracking)
@@ -97,6 +92,11 @@ namespace YoutrackHelper2.Models
             return totalTimeCounter.IsTrackingNameRegistered(TotalTimeTrackingKey)
                 ? totalTimeSpan + (now - totalTimeCounter.GetStartedDateTime(TotalTimeTrackingKey))
                 : totalTimeSpan;
+        }
+
+        private DateTime GetStartedDateTime(string trackingName)
+        {
+            return trackingTimeDictionary.TryGetValue(trackingName, out var time) ? time : default;
         }
     }
 }

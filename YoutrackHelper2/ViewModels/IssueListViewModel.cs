@@ -60,24 +60,8 @@ namespace YoutrackHelper2.ViewModels
         public TimeSpan TotalWorkingDuration
         {
             get => totalWorkingDuration;
-            set => SetProperty(ref totalWorkingDuration, value);
+            private set => SetProperty(ref totalWorkingDuration, value);
         }
-
-        public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
-        {
-            UiEnabled = false;
-            await connector.LoadIssues(ProjectWrapper.FullName);
-            IssueWrappers = new ObservableCollection<IssueWrapper>(
-                connector.IssueWrappers
-                    .OrderBy(t => t.Completed)
-                    .ThenByDescending(t => t.NumberInProject));
-            await connector.LoadTimeTracking(IssueWrappers);
-
-            ChangeTimerState();
-            UiEnabled = true;
-
-            RaisePropertyChanged(nameof(IssueWrappers));
-        });
 
         public AsyncDelegateCommand CreateIssueAsyncCommand => new AsyncDelegateCommand(async () =>
         {
@@ -136,6 +120,22 @@ namespace YoutrackHelper2.ViewModels
         public TitleBarText TitleBarText { get; set; }
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
+
+        private AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            UiEnabled = false;
+            await connector.LoadIssues(ProjectWrapper.FullName);
+            IssueWrappers = new ObservableCollection<IssueWrapper>(
+                connector.IssueWrappers
+                    .OrderBy(t => t.Completed)
+                    .ThenByDescending(t => t.NumberInProject));
+            await connector.LoadTimeTracking(IssueWrappers);
+
+            ChangeTimerState();
+            UiEnabled = true;
+
+            RaisePropertyChanged(nameof(IssueWrappers));
+        });
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
