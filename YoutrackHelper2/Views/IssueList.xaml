@@ -19,6 +19,7 @@
             Key="Enter"
             Command="{Binding CreateIssueAsyncCommand}"
             Modifiers="Control+Shift" />
+
     </UserControl.InputBindings>
 
     <UserControl.Style>
@@ -82,6 +83,14 @@
             AlternationCount="2"
             ItemsSource="{Binding IssueWrappers}"
             ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ListView.InputBindings>
+
+                <KeyBinding
+                    Key="C"
+                    Command="{Binding CopyIssueTitleCommand}"
+                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                    Modifiers="Control" />
+            </ListView.InputBindings>
 
             <ListView.ItemTemplate>
                 <DataTemplate>
