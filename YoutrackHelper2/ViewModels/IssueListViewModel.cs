@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -50,6 +49,9 @@ namespace YoutrackHelper2.ViewModels
         /// <summary>
         /// 課題情報入力欄のテキストを Binding して保持するためのプロパティです。
         /// </summary>
+        /// <value>
+        /// 課題情報入力欄の情報を保持する IssueWrapper
+        /// </value>
         public IssueWrapper CurrentIssueWrapper
         {
             get => currentIssueWrapper;
@@ -61,24 +63,8 @@ namespace YoutrackHelper2.ViewModels
         public TimeSpan TotalWorkingDuration
         {
             get => totalWorkingDuration;
-            set => SetProperty(ref totalWorkingDuration, value);
+            private set => SetProperty(ref totalWorkingDuration, value);
         }
-
-        public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
-        {
-            UiEnabled = false;
-            await connector.LoadIssues(ProjectWrapper.FullName);
-            IssueWrappers = new ObservableCollection<IssueWrapper>(
-                connector.IssueWrappers
-                    .OrderBy(t => t.Completed)
-                    .ThenByDescending(t => t.NumberInProject));
-            await connector.LoadTimeTracking(IssueWrappers);
-
-            ChangeTimerState();
-            UiEnabled = true;
-
-            RaisePropertyChanged(nameof(IssueWrappers));
-        });
 
         public AsyncDelegateCommand CreateIssueAsyncCommand => new AsyncDelegateCommand(async () =>
         {
@@ -137,6 +123,22 @@ namespace YoutrackHelper2.ViewModels
         public TitleBarText TitleBarText { get; set; }
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
+
+        private AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            UiEnabled = false;
+            await connector.LoadIssues(ProjectWrapper.FullName);
+            IssueWrappers = new ObservableCollection<IssueWrapper>(
+                connector.IssueWrappers
+                    .OrderBy(t => t.Completed)
+                    .ThenByDescending(t => t.NumberInProject));
+            await connector.LoadTimeTracking(IssueWrappers);
+
+            ChangeTimerState();
+            UiEnabled = true;
+
+            RaisePropertyChanged(nameof(IssueWrappers));
+        });
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
