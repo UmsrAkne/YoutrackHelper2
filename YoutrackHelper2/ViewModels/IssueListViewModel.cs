@@ -49,6 +49,9 @@ namespace YoutrackHelper2.ViewModels
         /// <summary>
         /// 課題情報入力欄のテキストを Binding して保持するためのプロパティです。
         /// </summary>
+        /// <value>
+        /// 課題情報入力欄の情報を保持する IssueWrapper
+        /// </value>
         public IssueWrapper CurrentIssueWrapper
         {
             get => currentIssueWrapper;

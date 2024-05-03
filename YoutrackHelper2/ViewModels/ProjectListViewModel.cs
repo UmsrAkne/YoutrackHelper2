@@ -61,9 +61,9 @@ namespace YoutrackHelper2.ViewModels
             WriteJsonFile();
         });
 
-        private Connector Connector { get; set; }
-
         public TitleBarText TitleBarText { get; set; }
+
+        private Connector Connector { get; set; }
 
         private async Task GetProjectsAsync(string uri, string perm)
         {
