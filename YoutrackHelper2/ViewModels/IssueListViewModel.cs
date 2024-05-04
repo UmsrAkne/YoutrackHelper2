@@ -41,6 +41,14 @@ namespace YoutrackHelper2.ViewModels
             timer.Tick += (_, _) =>
             {
                 TotalWorkingDuration = timeCounter.GetTotalWorkingDuration(DateTime.Now);
+                if (ProgressingIssues.Count != 0)
+                {
+                    foreach (var progressingIssue in ProgressingIssues)
+                    {
+                        progressingIssue.WorkingDuration =
+                        timeCounter.GetWorkingDuration(progressingIssue.ShortName, DateTime.Now);
+                    }
+                }
             };
         }
 
@@ -180,6 +188,7 @@ namespace YoutrackHelper2.ViewModels
         private void ChangeTimerState()
         {
             ProgressingIssues = IssueWrappers.Where(i => i.State == "作業中").ToList();
+            ProgressingIssues.ForEach(i => i.Progressing = true);
             if (ProgressingIssues.Count > 0)
             {
                 timer.Start();
