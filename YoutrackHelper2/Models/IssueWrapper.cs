@@ -23,6 +23,7 @@ namespace YoutrackHelper2.Models
         private string state = string.Empty;
         private string temporaryComment;
         private DateTime startedAt1;
+        private bool progressing;
 
         public Issue Issue
         {
@@ -40,6 +41,7 @@ namespace YoutrackHelper2.Models
                     CreationDateTime = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")).DateTime;
                     Resolved = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")).DateTime;
                     NumberInProject = ValueGetter.GetLong(value, "numberInProject");
+                    Progressing = State == "作業中";
                     Comments = value.Comments.
                         Select(c => new Comment()
                         {
@@ -85,6 +87,8 @@ namespace YoutrackHelper2.Models
             get => creationDateTime;
             private set => SetProperty(ref creationDateTime, value);
         }
+
+        public bool Progressing { get => progressing; set => SetProperty(ref progressing, value); }
 
         public DelegateCommand ToggleExpandedCommand => new DelegateCommand(() =>
         {

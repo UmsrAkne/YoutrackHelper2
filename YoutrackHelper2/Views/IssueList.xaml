@@ -161,16 +161,28 @@
                                         Text="{Binding ShortName, Converter={StaticResource ShortNameConverter}}" />
 
                                     <ToggleButton
-                                        Width="50"
+                                        Width="70"
                                         Margin="5,0"
                                         HorizontalContentAlignment="Center"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleIssueStateCommand}"
                                         CommandParameter="{Binding}"
                                         Template="{StaticResource ToggleButtonTemplate}">
-                                        <TextBlock
-                                            FontSize="12"
-                                            Text="{Binding State}"
-                                            TextAlignment="Center" />
+
+                                        <TextBlock FontSize="12" TextAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Progressing}" Value="True">
+                                                            <Setter Property="Text" Value="{Binding WorkingDuration, Converter={StaticResource TimeSpanConverter}}" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Progressing}" Value="False">
+                                                            <Setter Property="Text" Value="{Binding State}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </ToggleButton>
 
                                     <ToggleButton
