@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -76,7 +77,7 @@ namespace YoutrackHelper2.ViewModels
             private set => SetProperty(ref totalWorkingDuration, value);
         }
 
-        public AsyncDelegateCommand CreateIssueAsyncCommand => new AsyncDelegateCommand(async () =>
+        public AsyncDelegateCommand<TextBox> CreateIssueAsyncCommand => new AsyncDelegateCommand<TextBox>(async (textBox) =>
         {
             var issue = CurrentIssueWrapper;
             if (issue == null || string.IsNullOrWhiteSpace(issue.Title))
@@ -89,6 +90,8 @@ namespace YoutrackHelper2.ViewModels
             LoadIssueWrappersAsyncCommand.Execute(null);
             CurrentIssueWrapper = new IssueWrapper();
             UiEnabled = true;
+
+            textBox?.Focus();
         });
 
         public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>

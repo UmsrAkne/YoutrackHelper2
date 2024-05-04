@@ -14,14 +14,6 @@
     IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
 
-    <UserControl.InputBindings>
-        <KeyBinding
-            Key="Enter"
-            Command="{Binding CreateIssueAsyncCommand}"
-            Modifiers="Control+Shift" />
-
-    </UserControl.InputBindings>
-
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Style.Triggers>
@@ -361,9 +353,18 @@
         </ListView>
 
         <StackPanel Grid.Row="2">
+
+            <StackPanel.InputBindings>
+                <KeyBinding
+                    Key="Enter"
+                    Command="{Binding CreateIssueAsyncCommand}"
+                    CommandParameter="{Binding ElementName=NewIssueTitleTextBox}"
+                    Modifiers="Control+Shift" />
+            </StackPanel.InputBindings>
+
             <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Title :" />
-                <TextBox Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox x:Name="NewIssueTitleTextBox" Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
             <DockPanel Margin="2">
