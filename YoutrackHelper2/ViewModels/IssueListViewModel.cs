@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -41,6 +42,14 @@ namespace YoutrackHelper2.ViewModels
             timer.Tick += (_, _) =>
             {
                 TotalWorkingDuration = timeCounter.GetTotalWorkingDuration(DateTime.Now);
+                if (ProgressingIssues.Count != 0)
+                {
+                    foreach (var progressingIssue in ProgressingIssues)
+                    {
+                        progressingIssue.WorkingDuration =
+                        timeCounter.GetWorkingDuration(progressingIssue.ShortName, DateTime.Now);
+                    }
+                }
             };
         }
 
@@ -68,7 +77,7 @@ namespace YoutrackHelper2.ViewModels
             private set => SetProperty(ref totalWorkingDuration, value);
         }
 
-        public AsyncDelegateCommand CreateIssueAsyncCommand => new AsyncDelegateCommand(async () =>
+        public AsyncDelegateCommand<TextBox> CreateIssueAsyncCommand => new AsyncDelegateCommand<TextBox>(async (textBox) =>
         {
             var issue = CurrentIssueWrapper;
             if (issue == null || string.IsNullOrWhiteSpace(issue.Title))
@@ -81,6 +90,8 @@ namespace YoutrackHelper2.ViewModels
             LoadIssueWrappersAsyncCommand.Execute(null);
             CurrentIssueWrapper = new IssueWrapper();
             UiEnabled = true;
+
+            textBox?.Focus();
         });
 
         public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
@@ -180,6 +191,7 @@ namespace YoutrackHelper2.ViewModels
         private void ChangeTimerState()
         {
             ProgressingIssues = IssueWrappers.Where(i => i.State == "作業中").ToList();
+            ProgressingIssues.ForEach(i => i.Progressing = true);
             if (ProgressingIssues.Count > 0)
             {
                 timer.Start();

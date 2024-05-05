@@ -94,6 +94,22 @@ namespace YoutrackHelper2.Models
                 : totalTimeSpan;
         }
 
+        /// <summary>
+        /// 引数に入力したキーで計測中の作業の時間を取得します。
+        /// </summary>
+        /// <param name="trackingName">取得した作業のキー</param>
+        /// <param name="now">現在の時刻を入力します</param>
+        /// <returns>キーに紐づけられた作業時間を取得します。入力されたキーが不正な値だった場合は TimeSpan.Zero を返します。</returns>
+        public TimeSpan GetWorkingDuration(string trackingName, DateTime now)
+        {
+            if (trackingTimeDictionary.TryGetValue(trackingName, out var dt))
+            {
+                return now - dt;
+            }
+
+            return TimeSpan.Zero;
+        }
+
         private DateTime GetStartedDateTime(string trackingName)
         {
             return trackingTimeDictionary.TryGetValue(trackingName, out var time) ? time : default;

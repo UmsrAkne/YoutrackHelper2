@@ -14,14 +14,6 @@
     IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
 
-    <UserControl.InputBindings>
-        <KeyBinding
-            Key="Enter"
-            Command="{Binding CreateIssueAsyncCommand}"
-            Modifiers="Control+Shift" />
-
-    </UserControl.InputBindings>
-
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Style.Triggers>
@@ -161,16 +153,28 @@
                                         Text="{Binding ShortName, Converter={StaticResource ShortNameConverter}}" />
 
                                     <ToggleButton
-                                        Width="50"
+                                        Width="70"
                                         Margin="5,0"
                                         HorizontalContentAlignment="Center"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleIssueStateCommand}"
                                         CommandParameter="{Binding}"
                                         Template="{StaticResource ToggleButtonTemplate}">
-                                        <TextBlock
-                                            FontSize="12"
-                                            Text="{Binding State}"
-                                            TextAlignment="Center" />
+
+                                        <TextBlock FontSize="12" TextAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Progressing}" Value="True">
+                                                            <Setter Property="Text" Value="{Binding WorkingDuration, Converter={StaticResource TimeSpanConverter}}" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Progressing}" Value="False">
+                                                            <Setter Property="Text" Value="{Binding State}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </ToggleButton>
 
                                     <ToggleButton
@@ -349,9 +353,18 @@
         </ListView>
 
         <StackPanel Grid.Row="2">
+
+            <StackPanel.InputBindings>
+                <KeyBinding
+                    Key="Enter"
+                    Command="{Binding CreateIssueAsyncCommand}"
+                    CommandParameter="{Binding ElementName=NewIssueTitleTextBox}"
+                    Modifiers="Control+Shift" />
+            </StackPanel.InputBindings>
+
             <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Title :" />
-                <TextBox Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox x:Name="NewIssueTitleTextBox" Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
             <DockPanel Margin="2">

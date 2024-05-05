@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -18,6 +19,8 @@ namespace YoutrackHelper2.ViewModels
         {
             this.regionManager = regionManager;
             TitleBarText.Text = "Projects";
+
+            SetVersion();
         }
 
         public TitleBarText TitleBarText { get; private set; } = new ();
@@ -66,5 +69,12 @@ namespace YoutrackHelper2.ViewModels
                 };
             }
         });
+
+        [Conditional("RELEASE")]
+        private void SetVersion()
+        {
+            // リリースビルドの場合のみ実行するコード
+            TitleBarText.Version = "version : " + "20240505";
+        }
     }
 }
