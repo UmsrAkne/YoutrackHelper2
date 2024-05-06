@@ -10,9 +10,14 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class IssuesPostPageViewModel : BindableBase, IDialogAware
     {
+        private ProjectWrapper projectWrapper;
+        private Connector connector;
         private ObservableCollection<IssueWrapper> issueWrappers = new ObservableCollection<IssueWrapper>();
+        private bool uiEnabled = true;
 
         public event Action<IDialogResult> RequestClose;
+
+        public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
 
         public string Title => string.Empty;
 
@@ -27,6 +32,23 @@ namespace YoutrackHelper2.ViewModels
             RequestClose?.Invoke(new DialogResult());
         });
 
+        public AsyncDelegateCommand CreateIssuesAsyncCommand => new (async () =>
+        {
+            UiEnabled = false;
+            foreach (var issue in IssueWrappers)
+            {
+                await connector.CreateIssue(projectWrapper.ShortName, issue.Title, string.Empty);
+            }
+
+            IssueWrappers.Clear();
+            UiEnabled = true;
+        });
+
+        public DelegateCommand AddIssueCommand => new DelegateCommand(() =>
+        {
+            IssueWrappers.Add(new IssueWrapper());
+        });
+
         public bool CanCloseDialog() => true;
 
         public void OnDialogClosed()
@@ -35,6 +57,8 @@ namespace YoutrackHelper2.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
+            connector = parameters.GetValue<Connector>(nameof(Connector));
+            projectWrapper = parameters.GetValue<ProjectWrapper>(nameof(ProjectWrapper));
         }
     }
 }

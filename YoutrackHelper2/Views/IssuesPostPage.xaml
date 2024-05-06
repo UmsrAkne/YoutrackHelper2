@@ -11,7 +11,8 @@
     Height="300"
     d:DataContext="{d:DesignInstance viewModels:IssuesPostPageViewModel}"
     mc:Ignorable="d">
-    <Grid>
+
+    <Grid IsEnabled="{Binding UiEnabled}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -46,7 +47,7 @@
                             Grid.Column="0"
                             Margin="3,0"
                             Text="Title : " />
-                        <TextBox Grid.Column="1" Text="{Binding Title}" />
+                        <TextBox Grid.Column="1" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
 
                         <StackPanel
                             Grid.Column="2"
@@ -68,6 +69,7 @@
 
             <Button
                 Padding="10,0"
+                Command="{Binding AddIssueCommand}"
                 Content="+ Add Issue"
                 DockPanel.Dock="Left" />
 
@@ -76,6 +78,7 @@
                 Margin="5,0"
                 Padding="10,0"
                 HorizontalAlignment="Right"
+                Command="{Binding CreateIssuesAsyncCommand}"
                 Content="Post Issue" />
         </StackPanel>
     </Grid>

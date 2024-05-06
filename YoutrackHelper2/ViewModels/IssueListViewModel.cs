@@ -152,7 +152,11 @@ namespace YoutrackHelper2.ViewModels
 
         public DelegateCommand ShowIssuesPostPageCommand => new DelegateCommand(() =>
         {
-            var dialogParams = new DialogParameters { { nameof(ProjectWrapper), ProjectWrapper }, };
+            var dialogParams = new DialogParameters
+            {
+                { nameof(ProjectWrapper), ProjectWrapper },
+                { nameof(Connector), connector },
+            };
             dialogService.ShowDialog(nameof(IssuesPostPage), dialogParams, _ => { });
         });
 
