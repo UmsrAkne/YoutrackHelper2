@@ -61,6 +61,16 @@ namespace YoutrackHelper2.ViewModels
             WriteJsonFile();
         });
 
+        public DelegateCommand<ProjectWrapper> ToggleArchiveCommand => new DelegateCommand<ProjectWrapper>((param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            WriteJsonFile();
+        });
+
         public TitleBarText TitleBarText { get; set; }
 
         private Connector Connector { get; set; }
@@ -110,6 +120,7 @@ namespace YoutrackHelper2.ViewModels
                 if (list.TryGetValue(p.ShortName, out var pw))
                 {
                     p.IsFavorite = pw.IsFavorite;
+                    p.Archived = pw.Archived;
                 }
             }
         }
