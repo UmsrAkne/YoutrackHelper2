@@ -372,12 +372,22 @@
                 <TextBox Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
-            <Button
-                Width="250"
-                Margin="2"
+            <StackPanel
+                Margin="0,2"
                 HorizontalAlignment="Right"
-                Command="{Binding CreateIssueAsyncCommand}"
-                Content="Create new Issue (Ctrl + Shift + Enter)" />
+                Orientation="Horizontal">
+
+                <Button
+                    Width="150"
+                    Command="{Binding ShowIssuesPostPageCommand}"
+                    Content="Show Issues Post Page" />
+
+                <Button
+                    Width="250"
+                    Margin="5,0"
+                    Command="{Binding CreateIssueAsyncCommand}"
+                    Content="Create new Issue (Ctrl + Shift + Enter)" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>
