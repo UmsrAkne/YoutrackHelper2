@@ -200,7 +200,7 @@ namespace YoutrackHelper2.ViewModels
 
         /// <summary>
         /// 現在作業中の課題がプロジェクト内に存在すれば timer を On に。そうでなければ Off に設定します。
-        /// メソッドを実行した際、 ProgressingIssues が更新されます。
+        /// メソッドを実行した際、 ProgressingIssues と、 TitleBarText.Progressing が更新されます。
         /// </summary>
         private void ChangeTimerState()
         {
@@ -209,10 +209,12 @@ namespace YoutrackHelper2.ViewModels
             if (ProgressingIssues.Count > 0)
             {
                 timer.Start();
+                TitleBarText.Progressing = true;
             }
             else
             {
                 timer.Stop();
+                TitleBarText.Progressing = false;
             }
         }
 
