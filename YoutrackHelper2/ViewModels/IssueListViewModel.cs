@@ -10,8 +10,10 @@ using System.Windows.Threading;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using YoutrackHelper2.Models;
 using YoutrackHelper2.Models.Generics;
+using YoutrackHelper2.Views;
 
 namespace YoutrackHelper2.ViewModels
 {
@@ -21,12 +23,14 @@ namespace YoutrackHelper2.ViewModels
         private readonly Connector connector;
         private readonly TimeCounter timeCounter = new () { TotalTimeTracking = true, };
         private readonly DispatcherTimer timer = new DispatcherTimer();
+        private readonly IDialogService dialogService;
         private bool uiEnabled = true;
         private IssueWrapper currentIssueWrapper = new ();
         private TimeSpan totalWorkingDuration = TimeSpan.Zero;
 
-        public IssueListViewModel()
+        public IssueListViewModel(IDialogService dialogService)
         {
+            this.dialogService = dialogService;
             InjectDummies(); // Debugビルドの場合のみ実行される。ダミーの値をリストに入力する。
 
             var uri = File.ReadAllText(
@@ -144,6 +148,12 @@ namespace YoutrackHelper2.ViewModels
             }
 
             Clipboard.SetText(param.Title);
+        });
+
+        public DelegateCommand ShowIssuesPostPageCommand => new DelegateCommand(() =>
+        {
+            var dialogParams = new DialogParameters { { nameof(ProjectWrapper), ProjectWrapper }, };
+            dialogService.ShowDialog(nameof(IssuesPostPage), dialogParams, _ => { });
         });
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
