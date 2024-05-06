@@ -124,6 +124,10 @@
                     <Trigger Property="IsSelected" Value="true">
                         <Setter Property="Background" Value="LightSalmon" />
                     </Trigger>
+
+                    <DataTrigger Binding="{Binding Archived}" Value="true">
+                        <Setter Property="Opacity" Value="0.4" />
+                    </DataTrigger>
                 </Style.Triggers>
 
                 <Style.Setters>
