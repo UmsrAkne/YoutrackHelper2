@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -14,10 +15,13 @@ namespace YoutrackHelper2.ViewModels
         private Connector connector;
         private ObservableCollection<IssueWrapper> issueWrappers = new ObservableCollection<IssueWrapper>();
         private bool uiEnabled = true;
+        private string issuesText;
 
         public event Action<IDialogResult> RequestClose;
 
         public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
+
+        public string IssuesText { get => issuesText; set => SetProperty(ref issuesText, value); }
 
         public string Title => string.Empty;
 
@@ -47,6 +51,16 @@ namespace YoutrackHelper2.ViewModels
         public DelegateCommand AddIssueCommand => new DelegateCommand(() =>
         {
             IssueWrappers.Add(new IssueWrapper());
+        });
+
+        public DelegateCommand ConvertToIssuesCommand => new DelegateCommand(() =>
+        {
+            if (string.IsNullOrWhiteSpace(IssuesText))
+            {
+                return;
+            }
+
+            IssueWrappers.AddRange(IssuesText.Split("\r\n").Select(t => new IssueWrapper() { Title = t, }));
         });
 
         public bool CanCloseDialog() => true;

@@ -21,10 +21,14 @@
 
         <StackPanel Grid.Row="0" Margin="3,0">
             <TextBlock Text="Issues Text  :" />
-            <TextBox Margin="0,4" Text="" />
+            <TextBox
+                Margin="0,4"
+                AcceptsReturn="True"
+                Text="{Binding IssuesText, UpdateSourceTrigger=PropertyChanged}" />
             <Button
                 Padding="10,0"
                 HorizontalAlignment="Right"
+                Command="{Binding ConvertToIssuesCommand}"
                 Content="Parse" />
 
             <Border
