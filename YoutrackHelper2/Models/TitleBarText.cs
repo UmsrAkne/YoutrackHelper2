@@ -6,13 +6,26 @@ namespace YoutrackHelper2.Models
     {
         private string text;
         private string version;
+        private bool progressing;
 
         public string Text
         {
-            get => $"{text} {Version}";
+            get => Progressing ? $"[w] {text} {Version}" : $"{text} {Version}";
             set => SetProperty(ref text, value);
         }
 
         public string Version { get => version; set => SetProperty(ref version, value); }
+
+        public bool Progressing
+        {
+            get => progressing;
+            set
+            {
+                if (SetProperty(ref progressing, value))
+                {
+                    RaisePropertyChanged(nameof(Text));
+                }
+            }
+        }
     }
 }
