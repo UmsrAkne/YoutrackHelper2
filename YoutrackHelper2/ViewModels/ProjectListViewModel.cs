@@ -82,9 +82,15 @@ namespace YoutrackHelper2.ViewModels
             var pws = Connector.ProjectWrappers;
             ReadJsonFile(pws);
 
-            Projects = new ObservableCollection<ProjectWrapper>(
-                    pws.OrderByDescending(p => p.IsFavorite)
-                        .ThenBy(p => p.FullName));
+            var favorites = pws.Where(p => p.IsFavorite).
+                OrderBy(p => p.FullName).ToList();
+
+            var archives = pws.Where(p => p.Archived).
+                OrderBy(p => p.FullName).ToList();
+
+            var other = pws.Except(favorites).Except(archives).OrderBy(p => p.FullName);
+
+            Projects = new ObservableCollection<ProjectWrapper>(favorites.Concat(other).Concat(archives));
 
             // foreach (var p in ps)
             // {
