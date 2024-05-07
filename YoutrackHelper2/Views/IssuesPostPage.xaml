@@ -48,13 +48,31 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
                             <TextBlock
+                                Grid.Row="0"
                                 Grid.Column="0"
                                 Margin="3,0"
                                 Text="Title : " />
-                            <TextBox Grid.Column="1" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <DockPanel Grid.Row="1" Grid.Column="1">
+
+                                <TextBlock Opacity="0.6" Text="Description :" />
+                                <Border Margin="2,0" />
+                                <TextBox Margin="0,2" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+                            </DockPanel>
 
                             <StackPanel
+                                Grid.Row="1"
                                 Grid.Column="2"
                                 Margin="5,0"
                                 Orientation="Horizontal">

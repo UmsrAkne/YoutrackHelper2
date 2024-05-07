@@ -41,7 +41,7 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = false;
             foreach (var issue in IssueWrappers)
             {
-                await connector.CreateIssue(projectWrapper.ShortName, issue.Title, string.Empty);
+                await connector.CreateIssue(projectWrapper.ShortName, issue.Title, issue.Description);
             }
 
             IssueWrappers.Clear();
