@@ -37,33 +37,59 @@
                 Background="Black" />
         </StackPanel>
 
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding IssueWrappers}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:IssueWrapper}">
-                    <Grid Margin="0,2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
+            <ItemsControl ItemsSource="{Binding IssueWrappers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:IssueWrapper}">
+                        <Grid Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="3,0"
-                            Text="Title : " />
-                        <TextBox Grid.Column="1" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
 
-                        <StackPanel
-                            Grid.Column="2"
-                            Margin="5,0"
-                            Orientation="Horizontal">
-                            <TextBlock Text="Completed : " />
-                            <CheckBox IsChecked="{Binding Completed}" />
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="3,0"
+                                Text="Title : " />
+
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <DockPanel Grid.Row="1" Grid.Column="1">
+
+                                <TextBlock Opacity="0.6" Text="Description :" />
+                                <Border Margin="2,0" />
+                                <TextBox Margin="0,2" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+                            </DockPanel>
+
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="5,0"
+                                Orientation="Horizontal">
+                                <TextBlock Text="Completed : " />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Completed}" />
+                                <Border Width="0" Margin="3,0" />
+                                <Button
+                                    Padding="5,0"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.RemoveIssueCommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="del" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
         <StackPanel
             Grid.Row="2"
@@ -72,6 +98,14 @@
             Orientation="Horizontal">
 
             <Button
+                Margin="5,0"
+                Padding="10,0"
+                Command="{Binding ClearIssuesCommand}"
+                Content="Clear Issues"
+                DockPanel.Dock="Left" />
+
+            <Button
+                Margin="5,0"
                 Padding="10,0"
                 Command="{Binding AddIssueCommand}"
                 Content="+ Add Issue"
@@ -84,6 +118,14 @@
                 HorizontalAlignment="Right"
                 Command="{Binding CreateIssuesAsyncCommand}"
                 Content="Post Issue" />
+
+            <Button
+                Width="80"
+                Margin="15,0"
+                Padding="10,0"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseCommand}"
+                Content="Close" />
         </StackPanel>
     </Grid>
 </Page>

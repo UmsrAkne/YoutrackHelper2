@@ -25,6 +25,8 @@ namespace YoutrackHelper2.ViewModels
 
         public string Title => string.Empty;
 
+        public bool IssuePosted { get; set; }
+
         public ObservableCollection<IssueWrapper> IssueWrappers
         {
             get => issueWrappers;
@@ -33,18 +35,27 @@ namespace YoutrackHelper2.ViewModels
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
-            RequestClose?.Invoke(new DialogResult());
+            var result = new DialogResult(ButtonResult.Abort, new DialogParameters() { { nameof(IssuePosted), IssuePosted }, });
+            RequestClose?.Invoke(result);
+            IssuePosted = false;
         });
 
         public AsyncDelegateCommand CreateIssuesAsyncCommand => new (async () =>
         {
             UiEnabled = false;
+
+            if (IssueWrappers.Count > 0)
+            {
+                IssuePosted = true;
+            }
+
             foreach (var issue in IssueWrappers)
             {
-                await connector.CreateIssue(projectWrapper.ShortName, issue.Title, string.Empty);
+                await connector.CreateIssue(projectWrapper.ShortName, issue.Title, issue.Description);
             }
 
             IssueWrappers.Clear();
+            IssuesText = string.Empty;
             UiEnabled = true;
         });
 
@@ -60,7 +71,19 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
-            IssueWrappers.AddRange(IssuesText.Split("\r\n").Select(t => new IssueWrapper() { Title = t, }));
+            IssueWrappers.AddRange(IssuesText
+                .Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
+                .Select(t => new IssueWrapper() { Title = t, }));
+        });
+
+        public DelegateCommand<IssueWrapper> RemoveIssueCommand => new DelegateCommand<IssueWrapper>((param) =>
+        {
+            IssueWrappers.Remove(param);
+        });
+
+        public DelegateCommand ClearIssuesCommand => new DelegateCommand(() =>
+        {
+            IssueWrappers.Clear();
         });
 
         public bool CanCloseDialog() => true;
