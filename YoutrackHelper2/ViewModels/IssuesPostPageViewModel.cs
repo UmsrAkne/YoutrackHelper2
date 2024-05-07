@@ -25,6 +25,8 @@ namespace YoutrackHelper2.ViewModels
 
         public string Title => string.Empty;
 
+        public bool IssuePosted { get; set; }
+
         public ObservableCollection<IssueWrapper> IssueWrappers
         {
             get => issueWrappers;
@@ -33,12 +35,20 @@ namespace YoutrackHelper2.ViewModels
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
-            RequestClose?.Invoke(new DialogResult());
+            var result = new DialogResult(ButtonResult.Abort, new DialogParameters() { { nameof(IssuePosted), IssuePosted }, });
+            RequestClose?.Invoke(result);
+            IssuePosted = false;
         });
 
         public AsyncDelegateCommand CreateIssuesAsyncCommand => new (async () =>
         {
             UiEnabled = false;
+
+            if (IssueWrappers.Count > 0)
+            {
+                IssuePosted = true;
+            }
+
             foreach (var issue in IssueWrappers)
             {
                 await connector.CreateIssue(projectWrapper.ShortName, issue.Title, issue.Description);

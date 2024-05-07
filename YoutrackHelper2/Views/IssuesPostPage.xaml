@@ -118,6 +118,14 @@
                 HorizontalAlignment="Right"
                 Command="{Binding CreateIssuesAsyncCommand}"
                 Content="Post Issue" />
+
+            <Button
+                Width="80"
+                Margin="15,0"
+                Padding="10,0"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseCommand}"
+                Content="Close" />
         </StackPanel>
     </Grid>
 </Page>
