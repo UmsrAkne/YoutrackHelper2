@@ -59,7 +59,13 @@
                                 Margin="5,0"
                                 Orientation="Horizontal">
                                 <TextBlock Text="Completed : " />
-                                <CheckBox IsChecked="{Binding Completed}" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Completed}" />
+                                <Border Width="0" Margin="3,0" />
+                                <Button
+                                    Padding="5,0"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.RemoveIssueCommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="del" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

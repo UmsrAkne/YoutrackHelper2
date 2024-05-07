@@ -65,6 +65,11 @@ namespace YoutrackHelper2.ViewModels
                 .Select(t => new IssueWrapper() { Title = t, }));
         });
 
+        public DelegateCommand<IssueWrapper> RemoveIssueCommand => new DelegateCommand<IssueWrapper>((param) =>
+        {
+            IssueWrappers.Remove(param);
+        });
+
         public bool CanCloseDialog() => true;
 
         public void OnDialogClosed()
