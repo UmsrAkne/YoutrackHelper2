@@ -60,7 +60,9 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
-            IssueWrappers.AddRange(IssuesText.Split("\r\n").Select(t => new IssueWrapper() { Title = t, }));
+            IssueWrappers.AddRange(IssuesText
+                .Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
+                .Select(t => new IssueWrapper() { Title = t, }));
         });
 
         public bool CanCloseDialog() => true;
