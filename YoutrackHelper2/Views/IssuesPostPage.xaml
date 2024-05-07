@@ -80,6 +80,14 @@
             Orientation="Horizontal">
 
             <Button
+                Margin="5,0"
+                Padding="10,0"
+                Command="{Binding ClearIssuesCommand}"
+                Content="Clear Issues"
+                DockPanel.Dock="Left" />
+
+            <Button
+                Margin="5,0"
                 Padding="10,0"
                 Command="{Binding AddIssueCommand}"
                 Content="+ Add Issue"
