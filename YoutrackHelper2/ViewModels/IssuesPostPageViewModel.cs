@@ -45,6 +45,7 @@ namespace YoutrackHelper2.ViewModels
             }
 
             IssueWrappers.Clear();
+            IssuesText = string.Empty;
             UiEnabled = true;
         });
 
