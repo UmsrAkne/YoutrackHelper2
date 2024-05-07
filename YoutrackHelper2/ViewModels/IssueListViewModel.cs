@@ -157,7 +157,14 @@ namespace YoutrackHelper2.ViewModels
                 { nameof(ProjectWrapper), ProjectWrapper },
                 { nameof(Connector), connector },
             };
-            dialogService.ShowDialog(nameof(IssuesPostPage), dialogParams, _ => { });
+
+            dialogService.ShowDialog(nameof(IssuesPostPage), dialogParams, result =>
+            {
+                if (result.Parameters.GetValue<bool>(nameof(IssuesPostPageViewModel.IssuePosted)))
+                {
+                    LoadIssueWrappersAsyncCommand.Execute(null);
+                }
+            });
         });
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
