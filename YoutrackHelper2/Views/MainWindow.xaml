@@ -65,12 +65,6 @@
                 Content="Project Page"
                 Template="{StaticResource ButtonTemplate}" />
 
-            <Border Margin="3" />
-
-            <Button
-                Command="{Binding NavigateToIssueListPageCommand}"
-                Content="Issue Page"
-                Template="{StaticResource ButtonTemplate}" />
         </StackPanel>
 
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
