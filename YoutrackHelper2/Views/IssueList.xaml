@@ -29,7 +29,7 @@
             <Border
                 Padding="4,2"
                 Background="{TemplateBinding Background}"
-                BorderBrush="DimGray"
+                BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="3">
                 <ContentPresenter />
@@ -46,6 +46,11 @@
 
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="SandyBrown" />
+                </Trigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="GhostWhite" />
+                    <Setter Property="BorderBrush" Value="DarkGray" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -169,6 +174,16 @@
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleIssueStateCommand}"
                                         CommandParameter="{Binding}"
                                         Template="{StaticResource ToggleButtonTemplate}">
+
+                                        <ToggleButton.Style>
+                                            <Style TargetType="ToggleButton">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Completed}" Value="True">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ToggleButton.Style>
 
                                         <TextBlock FontSize="12" TextAlignment="Center">
                                             <TextBlock.Style>
