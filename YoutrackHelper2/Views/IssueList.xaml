@@ -75,8 +75,17 @@
                 </Style>
             </Menu.Resources>
 
-            <MenuItem Header="機能" />
-            <MenuItem Header="表示" />
+            <MenuItem Header="機能">
+                <MenuItem
+                    Command="{Binding CopyIssueTitleCommand}"
+                    CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
+                    Header="課題のタイトルをコピー"
+                    InputGestureText="Ctrl+C" />
+            </MenuItem>
+
+            <MenuItem Header="表示">
+                <MenuItem Command="{Binding ShowIssuesPostPageCommand}" Header="複数の課題を投稿" />
+            </MenuItem>
         </Menu>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Right">
@@ -97,6 +106,7 @@
         </StackPanel>
 
         <ListView
+            x:Name="ListView"
             Grid.Row="2"
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
@@ -413,11 +423,6 @@
                 Margin="0,2"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
-
-                <Button
-                    Width="150"
-                    Command="{Binding ShowIssuesPostPageCommand}"
-                    Content="Show Issues Post Page" />
 
                 <Button
                     Width="250"
