@@ -16,6 +16,7 @@ namespace YoutrackHelper2.ViewModels
         private ObservableCollection<IssueWrapper> issueWrappers = new ObservableCollection<IssueWrapper>();
         private bool uiEnabled = true;
         private string issuesText;
+        private string title;
 
         public event Action<IDialogResult> RequestClose;
 
@@ -23,7 +24,7 @@ namespace YoutrackHelper2.ViewModels
 
         public string IssuesText { get => issuesText; set => SetProperty(ref issuesText, value); }
 
-        public string Title => string.Empty;
+        public string Title { get => title; private set => SetProperty(ref title, value); }
 
         public bool IssuePosted { get; set; }
 
@@ -96,6 +97,7 @@ namespace YoutrackHelper2.ViewModels
         {
             connector = parameters.GetValue<Connector>(nameof(Connector));
             projectWrapper = parameters.GetValue<ProjectWrapper>(nameof(ProjectWrapper));
+            Title = projectWrapper.FullName;
         }
     }
 }
