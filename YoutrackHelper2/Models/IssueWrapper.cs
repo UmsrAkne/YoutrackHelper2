@@ -42,7 +42,11 @@ namespace YoutrackHelper2.Models
                     Resolved = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")).DateTime;
                     NumberInProject = ValueGetter.GetLong(value, "numberInProject");
                     Progressing = State == "作業中";
-                    Expanded = Progressing;
+                    if (!Expanded)
+                    {
+                        Expanded = Progressing;
+                    }
+
                     Comments = value.Comments.
                         Select(c => new Comment()
                         {
