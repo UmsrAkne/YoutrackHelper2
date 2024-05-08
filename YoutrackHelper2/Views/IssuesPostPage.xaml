@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:YoutrackHelper2.Models"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
-    Title="IssuesPostPage"
+    Title="{Binding Title}"
     Width="600"
     Height="300"
     d:DataContext="{d:DesignInstance viewModels:IssuesPostPageViewModel}"

@@ -25,23 +25,6 @@ namespace YoutrackHelper2.ViewModels
 
         public TitleBarText TitleBarText { get; private set; } = new ();
 
-        public DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
-        {
-            var parameters = new NavigationParameters
-            {
-                { nameof(IssueListViewModel.ProjectWrapper), param },
-            };
-
-            regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
-
-            var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
-            if (v?.DataContext as IssueListViewModel is { TitleBarText: null, } vm)
-            {
-                vm.TitleBarText = TitleBarText;
-                TitleBarText.Text = param.FullName;
-            }
-        });
-
         public DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
             regionManager.RequestNavigate(RegionName, nameof(ProjectList));
@@ -70,11 +53,28 @@ namespace YoutrackHelper2.ViewModels
             }
         });
 
+        private DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
+        {
+            var parameters = new NavigationParameters
+            {
+                { nameof(IssueListViewModel.ProjectWrapper), param },
+            };
+
+            regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
+
+            var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
+            if (v?.DataContext as IssueListViewModel is { TitleBarText: null, } vm)
+            {
+                vm.TitleBarText = TitleBarText;
+                TitleBarText.Text = param.FullName;
+            }
+        });
+
         [Conditional("RELEASE")]
         private void SetVersion()
         {
             // リリースビルドの場合のみ実行するコード
-            TitleBarText.Version = "version : " + "20240507" + "a";
+            TitleBarText.Version = "version : " + "20240508" + "a";
         }
     }
 }
