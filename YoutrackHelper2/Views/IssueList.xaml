@@ -63,11 +63,23 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" HorizontalAlignment="Right">
+        <Menu Grid.Row="0">
+            <Menu.Resources>
+                <Style TargetType="MenuItem">
+                    <Setter Property="FontSize" Value="14" />
+                </Style>
+            </Menu.Resources>
+
+            <MenuItem Header="機能" />
+            <MenuItem Header="表示" />
+        </Menu>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right">
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
                     <Style.Triggers>
@@ -85,7 +97,7 @@
         </StackPanel>
 
         <ListView
-            Grid.Row="1"
+            Grid.Row="2"
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
             ItemsSource="{Binding IssueWrappers}"
@@ -377,7 +389,7 @@
 
         </ListView>
 
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="3">
 
             <StackPanel.InputBindings>
                 <KeyBinding
