@@ -27,6 +27,7 @@ namespace YoutrackHelper2.ViewModels
         private bool uiEnabled = true;
         private IssueWrapper currentIssueWrapper = new ();
         private TimeSpan totalWorkingDuration = TimeSpan.Zero;
+        private IssueWrapper selectedIssue;
 
         public IssueListViewModel(IDialogService dialogService)
         {
@@ -74,6 +75,20 @@ namespace YoutrackHelper2.ViewModels
         }
 
         public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
+
+        public IssueWrapper SelectedIssue
+        {
+            get => selectedIssue;
+            set
+            {
+                if (SetProperty(ref selectedIssue, value))
+                {
+                    RaisePropertyChanged(nameof(SelectedItemIsNotNull));
+                }
+            }
+        }
+
+        public bool SelectedItemIsNotNull => SelectedIssue != null;
 
         public TimeSpan TotalWorkingDuration
         {
