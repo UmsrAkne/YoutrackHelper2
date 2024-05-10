@@ -46,9 +46,17 @@ namespace YoutrackHelper2.ViewModels
             if (projectsView?.DataContext is ProjectListViewModel vm)
             {
                 vm.TitleBarText = TitleBarText;
-                vm.NavigationRequest += (_, _) =>
+                vm.NavigationRequest += (_, e) =>
                 {
-                    NavigateToIssueListPageCommand.Execute(vm.SelectedProject);
+                    if (e is not NavigationEventArgs ne)
+                    {
+                        return;
+                    }
+
+                    if (ne.DestViewName == nameof(IssueList))
+                    {
+                        NavigateToIssueListPageCommand.Execute(vm.SelectedProject);
+                    }
                 };
             }
         });
@@ -67,6 +75,25 @@ namespace YoutrackHelper2.ViewModels
             {
                 vm.TitleBarText = TitleBarText;
                 TitleBarText.Text = param.FullName;
+
+                if (vm.Initialized)
+                {
+                    return;
+                }
+
+                vm.Initialized = true;
+                vm.NavigationRequest += (_, e) =>
+                {
+                    if (e is not NavigationEventArgs ne)
+                    {
+                        return;
+                    }
+
+                    if (ne.DestViewName == nameof(ProjectList))
+                    {
+                        NavigateToProjectListPageCommand.Execute();
+                    }
+                };
             }
         });
 
@@ -74,7 +101,7 @@ namespace YoutrackHelper2.ViewModels
         private void SetVersion()
         {
             // リリースビルドの場合のみ実行するコード
-            TitleBarText.Version = "version : " + "20240509" + "a";
+            TitleBarText.Version = "version : " + "20240510" + "a";
         }
     }
 }

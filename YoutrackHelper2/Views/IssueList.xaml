@@ -14,6 +14,10 @@
     IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
 
+    <UserControl.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding LoadIssueWrappersAsyncCommand}" />
+    </UserControl.InputBindings>
+
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Style.Triggers>
@@ -25,6 +29,18 @@
     </UserControl.Style>
 
     <UserControl.Resources>
+
+        <views:WorkTypeToStringConverter x:Key="WorkTypeToStringConverter" />
+
+        <ObjectDataProvider
+            x:Key="EnumValues"
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:WorkType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
         <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="ToggleButton">
             <Border
                 Padding="4,2"
@@ -75,16 +91,33 @@
                 </Style>
             </Menu.Resources>
 
+            <MenuItem
+                Background="GhostWhite"
+                Command="{Binding NavigateToProjectListCommand}"
+                Header="&lt;- Project List" />
+
             <MenuItem Header="機能">
                 <MenuItem
                     Command="{Binding CopyIssueTitleCommand}"
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="課題のタイトルをコピー"
                     InputGestureText="Ctrl+C" />
+
+                <MenuItem
+                    Command="{Binding LoadIssueWrappersAsyncCommand}"
+                    Header="リロード"
+                    InputGestureText="F5" />
             </MenuItem>
 
             <MenuItem Header="表示">
                 <MenuItem Command="{Binding ShowIssuesPostPageCommand}" Header="複数の課題を投稿" />
+            </MenuItem>
+
+            <MenuItem Header="課題">
+                <MenuItem
+                    Command="{Binding InputIssueInfoCommand}"
+                    Header="課題の情報を複製"
+                    IsEnabled="{Binding SelectedItemIsNotNull}" />
             </MenuItem>
         </Menu>
 
@@ -111,7 +144,8 @@
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
             ItemsSource="{Binding IssueWrappers}"
-            ScrollViewer.VerticalScrollBarVisibility="Visible">
+            ScrollViewer.VerticalScrollBarVisibility="Visible"
+            SelectedItem="{Binding SelectedIssue}">
             <ListView.InputBindings>
 
                 <KeyBinding
@@ -182,7 +216,7 @@
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
 
-                                    <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ]}" />
+                                    <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ], Converter={StaticResource WorkTypeToStringConverter}}" />
 
                                     <TextBlock
                                         Margin="3,0"
@@ -417,6 +451,16 @@
             <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Description :" />
                 <TextBox Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <DockPanel Margin="2">
+                <TextBlock Width="80" Text="Work Type :" />
+                <ComboBox
+                    Width="180"
+                    HorizontalAlignment="Left"
+                    ItemsSource="{Binding Source={StaticResource EnumValues}}"
+                    SelectedIndex="0"
+                    SelectedItem="{Binding CurrentIssueWrapper.WorkType}" />
             </DockPanel>
 
             <StackPanel

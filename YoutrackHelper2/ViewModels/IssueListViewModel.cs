@@ -27,6 +27,7 @@ namespace YoutrackHelper2.ViewModels
         private bool uiEnabled = true;
         private IssueWrapper currentIssueWrapper = new ();
         private TimeSpan totalWorkingDuration = TimeSpan.Zero;
+        private IssueWrapper selectedIssue;
 
         public IssueListViewModel(IDialogService dialogService)
         {
@@ -57,6 +58,8 @@ namespace YoutrackHelper2.ViewModels
             };
         }
 
+        public event EventHandler NavigationRequest;
+
         public ProjectWrapper ProjectWrapper { get; set; }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
@@ -75,6 +78,20 @@ namespace YoutrackHelper2.ViewModels
 
         public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
 
+        public IssueWrapper SelectedIssue
+        {
+            get => selectedIssue;
+            set
+            {
+                if (SetProperty(ref selectedIssue, value))
+                {
+                    RaisePropertyChanged(nameof(SelectedItemIsNotNull));
+                }
+            }
+        }
+
+        public bool SelectedItemIsNotNull => SelectedIssue != null;
+
         public TimeSpan TotalWorkingDuration
         {
             get => totalWorkingDuration;
@@ -90,7 +107,9 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await connector.CreateIssue(ProjectWrapper.ShortName, issue.Title, issue.Description);
+            await connector.CreateIssue(
+                ProjectWrapper.ShortName, issue.Title, issue.Description, CurrentIssueWrapper.WorkType);
+
             LoadIssueWrappersAsyncCommand.Execute(null);
             CurrentIssueWrapper = new IssueWrapper();
             UiEnabled = true;
@@ -167,9 +186,25 @@ namespace YoutrackHelper2.ViewModels
             });
         });
 
-        private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
+        public DelegateCommand InputIssueInfoCommand => new DelegateCommand(() =>
+        {
+            if (SelectedIssue == null)
+            {
+                return;
+            }
 
-        private AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
+            CurrentIssueWrapper.Title = SelectedIssue.Title;
+            CurrentIssueWrapper.Description = SelectedIssue.Description;
+        });
+
+        public DelegateCommand NavigateToProjectListCommand => new DelegateCommand(() =>
+        {
+            NavigationRequest?.Invoke(this, new NavigationEventArgs(nameof(ProjectList)));
+        });
+
+        public bool Initialized { get; set; }
+
+        public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
             UiEnabled = false;
             await connector.LoadIssues(ProjectWrapper.ShortName);
@@ -184,6 +219,8 @@ namespace YoutrackHelper2.ViewModels
 
             RaisePropertyChanged(nameof(IssueWrappers));
         });
+
+        private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
@@ -242,7 +279,7 @@ namespace YoutrackHelper2.ViewModels
                     Title = "テスト課題のタイトル",
                     ShortName = "SHORTNAME-01",
                     Description = "課題の詳細説明が入力されます",
-                    WorkType = "機能",
+                    WorkType = WorkType.Feature,
                 },
                 new IssueWrapper()
                 {
@@ -251,7 +288,7 @@ namespace YoutrackHelper2.ViewModels
                     Description = "課題の詳細説明が入力されます",
                     Comments = dummyComments,
                     Expanded = true,
-                    WorkType = "バグ修正",
+                    WorkType = WorkType.Bug,
                 },
                 new IssueWrapper()
                 {
@@ -260,7 +297,7 @@ namespace YoutrackHelper2.ViewModels
                     ShortName = "SHORTNAME-03",
                     Expanded = true,
                     Comments = dummyComments,
-                    WorkType = "バグ修正",
+                    WorkType = WorkType.Bug,
                 },
             });
         }
