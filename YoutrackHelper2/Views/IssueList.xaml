@@ -75,6 +75,11 @@
                 </Style>
             </Menu.Resources>
 
+            <MenuItem
+                Background="GhostWhite"
+                Command="{Binding NavigateToProjectListCommand}"
+                Header="&lt;- Project List" />
+
             <MenuItem Header="機能">
                 <MenuItem
                     Command="{Binding CopyIssueTitleCommand}"

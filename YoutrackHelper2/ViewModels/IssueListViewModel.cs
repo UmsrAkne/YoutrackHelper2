@@ -58,6 +58,8 @@ namespace YoutrackHelper2.ViewModels
             };
         }
 
+        public event EventHandler NavigationRequest;
+
         public ProjectWrapper ProjectWrapper { get; set; }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
@@ -192,6 +194,13 @@ namespace YoutrackHelper2.ViewModels
             CurrentIssueWrapper.Title = SelectedIssue.Title;
             CurrentIssueWrapper.Description = SelectedIssue.Description;
         });
+
+        public DelegateCommand NavigateToProjectListCommand => new DelegateCommand(() =>
+        {
+            NavigationRequest?.Invoke(this, new NavigationEventArgs(nameof(ProjectList)));
+        });
+
+        public bool Initialized { get; set; }
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
