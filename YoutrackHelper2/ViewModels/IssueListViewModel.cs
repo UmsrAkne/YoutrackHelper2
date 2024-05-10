@@ -182,6 +182,17 @@ namespace YoutrackHelper2.ViewModels
             });
         });
 
+        public DelegateCommand InputIssueInfoCommand => new DelegateCommand(() =>
+        {
+            if (SelectedIssue == null)
+            {
+                return;
+            }
+
+            CurrentIssueWrapper.Title = SelectedIssue.Title;
+            CurrentIssueWrapper.Description = SelectedIssue.Description;
+        });
+
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         private AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
