@@ -52,7 +52,8 @@ namespace YoutrackHelper2.ViewModels
 
             foreach (var issue in IssueWrappers)
             {
-                await connector.CreateIssue(projectWrapper.ShortName, issue.Title, issue.Description);
+                await connector.CreateIssue(
+                    projectWrapper.ShortName, issue.Title, issue.Description, issue.WorkType);
             }
 
             IssueWrappers.Clear();

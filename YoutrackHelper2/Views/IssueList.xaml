@@ -29,6 +29,18 @@
     </UserControl.Style>
 
     <UserControl.Resources>
+
+        <views:WorkTypeToStringConverter x:Key="WorkTypeToStringConverter" />
+
+        <ObjectDataProvider
+            x:Key="EnumValues"
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:WorkType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
         <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="ToggleButton">
             <Border
                 Padding="4,2"
@@ -204,7 +216,7 @@
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
 
-                                    <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ]}" />
+                                    <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ], Converter={StaticResource WorkTypeToStringConverter}}" />
 
                                     <TextBlock
                                         Margin="3,0"
@@ -439,6 +451,16 @@
             <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Description :" />
                 <TextBox Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <DockPanel Margin="2">
+                <TextBlock Width="80" Text="Work Type :" />
+                <ComboBox
+                    Width="180"
+                    HorizontalAlignment="Left"
+                    ItemsSource="{Binding Source={StaticResource EnumValues}}"
+                    SelectedIndex="0"
+                    SelectedItem="{Binding CurrentIssueWrapper.WorkType}" />
             </DockPanel>
 
             <StackPanel
