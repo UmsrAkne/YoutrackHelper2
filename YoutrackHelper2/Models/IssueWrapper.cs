@@ -38,7 +38,12 @@ namespace YoutrackHelper2.Models
                     WorkType = ValueGetter.GetString(value, "Type");
                     Completed = ValueGetter.GetString(value, "State") == "完了";
                     State = ValueGetter.GetString(value, "State");
-                    CreationDateTime = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")).DateTime;
+
+                    var tz = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+                    CreationDateTime = TimeZoneInfo
+                        .ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")), tz)
+                        .DateTime;
+
                     Resolved = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")).DateTime;
                     NumberInProject = ValueGetter.GetLong(value, "numberInProject");
                     Progressing = State == "作業中";
