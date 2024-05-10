@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using YoutrackHelper2.Models;
+using YoutrackHelper2.Views;
 
 namespace YoutrackHelper2.ViewModels
 {
@@ -46,7 +47,7 @@ namespace YoutrackHelper2.ViewModels
 
         public DelegateCommand NavigationRequestCommand => new DelegateCommand(() =>
         {
-            NavigationRequest?.Invoke(this, EventArgs.Empty);
+            NavigationRequest?.Invoke(this, new NavigationEventArgs(nameof(IssueList)));
             WriteJsonFile();
         });
 
