@@ -202,9 +202,7 @@ namespace YoutrackHelper2.ViewModels
 
         public bool Initialized { get; set; }
 
-        private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
-
-        private AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
+        public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
             UiEnabled = false;
             await connector.LoadIssues(ProjectWrapper.ShortName);
@@ -219,6 +217,8 @@ namespace YoutrackHelper2.ViewModels
 
             RaisePropertyChanged(nameof(IssueWrappers));
         });
+
+        private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {

@@ -14,6 +14,10 @@
     IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
 
+    <UserControl.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding LoadIssueWrappersAsyncCommand}" />
+    </UserControl.InputBindings>
+
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Style.Triggers>
@@ -86,6 +90,11 @@
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="課題のタイトルをコピー"
                     InputGestureText="Ctrl+C" />
+
+                <MenuItem
+                    Command="{Binding LoadIssueWrappersAsyncCommand}"
+                    Header="リロード"
+                    InputGestureText="F5" />
             </MenuItem>
 
             <MenuItem Header="表示">
