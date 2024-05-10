@@ -2,9 +2,10 @@ namespace YoutrackHelper2.Models
 {
     public enum WorkType
     {
-        Todo,
         Feature,
+        Todo,
         Appearance,
         Bug,
+        Test,
     }
 }
