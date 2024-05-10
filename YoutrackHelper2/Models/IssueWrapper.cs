@@ -17,7 +17,7 @@ namespace YoutrackHelper2.Models
         private string description = string.Empty;
         private bool expanded;
         private List<Comment> comments;
-        private string workType = string.Empty;
+        private WorkType workType = WorkType.Feature;
         private DateTime creationDateTime;
         private TimeSpan workingDuration = TimeSpan.Zero;
         private string state = string.Empty;
@@ -35,7 +35,9 @@ namespace YoutrackHelper2.Models
                     Title = value.Summary;
                     ShortName = value.Id;
                     Description = value.Description;
-                    WorkType = ValueGetter.GetString(value, "Type");
+
+                    WorkType = ConvertStringToWorkType(ValueGetter.GetString(value, "Type"));
+
                     Completed = ValueGetter.GetString(value, "State") == "完了";
                     State = ValueGetter.GetString(value, "State");
 
@@ -76,7 +78,7 @@ namespace YoutrackHelper2.Models
 
         public bool Completed { get => completed; set => SetProperty(ref completed, value); }
 
-        public string WorkType { get => workType; set => SetProperty(ref workType, value); }
+        public WorkType WorkType { get => workType; set => SetProperty(ref workType, value); }
 
         public string State { get => state; set => SetProperty(ref state, value); }
 
@@ -111,6 +113,19 @@ namespace YoutrackHelper2.Models
         {
             get => temporaryComment;
             set => SetProperty(ref temporaryComment, value);
+        }
+
+        public static string ConvertWorkType(WorkType wt)
+        {
+            return wt switch
+            {
+                WorkType.Feature => "機能",
+                WorkType.Appearance => "外観",
+                WorkType.Test => "テスト",
+                WorkType.Todo => "タスク",
+                WorkType.Bug => "バグ",
+                _ => string.Empty,
+            };
         }
 
         public async Task ToggleStatus(Connector connector, TimeCounter counter)
@@ -172,6 +187,19 @@ namespace YoutrackHelper2.Models
             StartedAt = DateTime.MinValue;
 
             // UpdateWorkingDuration(DateTime.Now);
+        }
+
+        private static WorkType ConvertStringToWorkType(string wt)
+        {
+            return wt switch
+            {
+                "機能" => WorkType.Feature,
+                "外観" => WorkType.Appearance,
+                "テスト" => WorkType.Test,
+                "タスク" => WorkType.Todo,
+                "バグ" => WorkType.Bug,
+                _ => WorkType.Feature,
+            };
         }
     }
 }

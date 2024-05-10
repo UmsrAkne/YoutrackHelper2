@@ -107,7 +107,9 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await connector.CreateIssue(ProjectWrapper.ShortName, issue.Title, issue.Description);
+            await connector.CreateIssue(
+                ProjectWrapper.ShortName, issue.Title, issue.Description, CurrentIssueWrapper.WorkType);
+
             LoadIssueWrappersAsyncCommand.Execute(null);
             CurrentIssueWrapper = new IssueWrapper();
             UiEnabled = true;
@@ -277,7 +279,7 @@ namespace YoutrackHelper2.ViewModels
                     Title = "テスト課題のタイトル",
                     ShortName = "SHORTNAME-01",
                     Description = "課題の詳細説明が入力されます",
-                    WorkType = "機能",
+                    WorkType = WorkType.Feature,
                 },
                 new IssueWrapper()
                 {
@@ -286,7 +288,7 @@ namespace YoutrackHelper2.ViewModels
                     Description = "課題の詳細説明が入力されます",
                     Comments = dummyComments,
                     Expanded = true,
-                    WorkType = "バグ修正",
+                    WorkType = WorkType.Bug,
                 },
                 new IssueWrapper()
                 {
@@ -295,7 +297,7 @@ namespace YoutrackHelper2.ViewModels
                     ShortName = "SHORTNAME-03",
                     Expanded = true,
                     Comments = dummyComments,
-                    WorkType = "バグ修正",
+                    WorkType = WorkType.Bug,
                 },
             });
         }

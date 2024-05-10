@@ -113,7 +113,7 @@ namespace YoutrackHelper2.Models
             }
         }
 
-        public async Task CreateIssue(string projectId, string title, string description)
+        public async Task CreateIssue(string projectId, string title, string description, WorkType workType)
         {
             try
             {
@@ -123,6 +123,13 @@ namespace YoutrackHelper2.Models
                     Summary = title,
                     Description = description,
                 };
+
+                var w = IssueWrapper.ConvertWorkType(workType);
+
+                if (!string.IsNullOrEmpty(w))
+                {
+                    issue.SetField("Type", w);
+                }
 
                 await issuesService.CreateIssue(projectId, issue);
             }
