@@ -59,7 +59,7 @@ namespace YoutrackHelper2.Models
                         Select(c => new Comment()
                         {
                             Text = c.Text,
-                            DateTime = c.Created ?? default,
+                            DateTime = (c.Created ?? default).ToLocalTime(),
                         })
                         .OrderByDescending(c => c.DateTime)
                         .ToList();
