@@ -75,7 +75,7 @@ namespace YoutrackHelper2.ViewModels
 
             IssueWrappers.AddRange(IssuesText
                 .Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
-                .Select(t => new IssueWrapper() { Title = t, }));
+                .Select(IssueWrapper.ToIssueWrapper));
         });
 
         public DelegateCommand<IssueWrapper> RemoveIssueCommand => new DelegateCommand<IssueWrapper>((param) =>
