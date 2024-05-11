@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutrackHelper2", "YoutrackHelper2\YoutrackHelper2.csproj", "{19735F0D-494C-49EA-B601-618BEC19D371}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutrackHelper2Test", "YoutrackHelper2Test\YoutrackHelper2Test.csproj", "{C6DEF77E-8E58-47DD-9B40-2AED9D73B99A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{19735F0D-494C-49EA-B601-618BEC19D371}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19735F0D-494C-49EA-B601-618BEC19D371}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19735F0D-494C-49EA-B601-618BEC19D371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6DEF77E-8E58-47DD-9B40-2AED9D73B99A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6DEF77E-8E58-47DD-9B40-2AED9D73B99A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6DEF77E-8E58-47DD-9B40-2AED9D73B99A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6DEF77E-8E58-47DD-9B40-2AED9D73B99A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

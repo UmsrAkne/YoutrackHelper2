@@ -122,6 +122,46 @@ namespace YoutrackHelper2.Models
             set => SetProperty(ref temporaryComment, value);
         }
 
+        /// <summary>
+        /// カンマで区切られたテキストから IssueWrapper を生成します。
+        /// </summary>
+        /// <remarks>
+        /// カンマで区切られたテキストの変換の仕様は以下です。
+        /// 区切られたテキストが WorkType に変換可能なテキストであれば、 WorkType をその値にセットします。
+        /// それ以外ならば、最初に出現したテキストを Title に、その次に出現したテキストを Description にセットします。
+        /// Description の入力は任意です。
+        /// </remarks>
+        /// <param name="text">変換するテキスト</param>
+        /// <returns>変換された IssueWrapper。引数がnullや空文字だった場合は、new IssueWrapper() を返します</returns>
+        public static IssueWrapper ToIssueWrapper(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return new IssueWrapper();
+            }
+
+            var w = new IssueWrapper();
+            var texts = text.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+            foreach (var t in texts.Select(s => s.TrimEnd().TrimStart()))
+            {
+                if (WorkTypeExtension.CanConvert(t))
+                {
+                    w.WorkType = WorkTypeExtension.FromString(t);
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(w.Title))
+                {
+                    w.Title = t;
+                    continue;
+                }
+
+                w.Description = t;
+            }
+
+            return w;
+        }
+
         public async Task ToggleStatus(Connector connector, TimeCounter counter)
         {
             // Logger.WriteMessageToFile($"課題の状態を変更 {FullName} 現在の状態 : {Status}");

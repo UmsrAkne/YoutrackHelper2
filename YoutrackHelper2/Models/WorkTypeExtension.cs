@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace YoutrackHelper2.Models
 {
     /// <summary>
@@ -29,6 +31,11 @@ namespace YoutrackHelper2.Models
                 "バグ" => WorkType.Bug,
                 _ => WorkType.Feature,
             };
+        }
+
+        public static bool CanConvert(string text)
+        {
+            return new HashSet<string> { "機能", "外観", "テスト", "タスク", "バグ", }.Contains(text);
         }
     }
 }
