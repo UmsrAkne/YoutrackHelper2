@@ -110,7 +110,7 @@ namespace YoutrackHelper2.ViewModels
             await connector.CreateIssue(
                 ProjectWrapper.ShortName, issue.Title, issue.Description, CurrentIssueWrapper.WorkType);
 
-            LoadIssueWrappersAsyncCommand.Execute(null);
+            await LoadIssueWrappersAsyncCommand.ExecuteAsync();
             CurrentIssueWrapper = new IssueWrapper();
             UiEnabled = true;
 
@@ -216,9 +216,9 @@ namespace YoutrackHelper2.ViewModels
             await connector.LoadChangeHistory(IssueWrappers);
 
             ChangeTimerState();
-            UiEnabled = true;
-
             RaisePropertyChanged(nameof(IssueWrappers));
+
+            UiEnabled = true;
         });
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
