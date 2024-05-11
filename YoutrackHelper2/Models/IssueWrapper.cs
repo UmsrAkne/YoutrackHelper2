@@ -37,7 +37,7 @@ namespace YoutrackHelper2.Models
                     ShortName = value.Id;
                     Description = value.Description;
 
-                    WorkType = ConvertStringToWorkType(ValueGetter.GetString(value, "Type"));
+                    WorkType = WorkTypeExtension.FromString(ValueGetter.GetString(value, "Type"));
 
                     Completed = ValueGetter.GetString(value, "State") == "完了";
                     State = ValueGetter.GetString(value, "State");
@@ -120,19 +120,6 @@ namespace YoutrackHelper2.Models
         {
             get => temporaryComment;
             set => SetProperty(ref temporaryComment, value);
-        }
-
-        public static string ConvertWorkType(WorkType wt)
-        {
-            return wt switch
-            {
-                WorkType.Feature => "機能",
-                WorkType.Appearance => "外観",
-                WorkType.Test => "テスト",
-                WorkType.Todo => "タスク",
-                WorkType.Bug => "バグ",
-                _ => string.Empty,
-            };
         }
 
         public async Task ToggleStatus(Connector connector, TimeCounter counter)
