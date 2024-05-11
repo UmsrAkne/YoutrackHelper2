@@ -147,7 +147,7 @@ namespace YoutrackHelper2.Models
                     Description = description,
                 };
 
-                var w = IssueWrapper.ConvertWorkType(workType);
+                var w = workType.ToWorkTypeName();
 
                 if (!string.IsNullOrEmpty(w))
                 {
