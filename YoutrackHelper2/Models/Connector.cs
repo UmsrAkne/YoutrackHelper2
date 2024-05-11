@@ -113,6 +113,29 @@ namespace YoutrackHelper2.Models
             }
         }
 
+        /// <summary>
+        /// リスト内の要素の Changes に値を入力します。
+        /// </summary>
+        /// <param name="issues">Changes を入力したい IssueWrapper のリスト</param>
+        /// <returns>非同期操作を表すタスク</returns>
+        public async Task LoadChangeHistory(IEnumerable<IssueWrapper> issues)
+        {
+            try
+            {
+                var issuesService = Connection.CreateIssuesService();
+                foreach (var issue in issues)
+                {
+                    var changes = await issuesService.GetChangeHistoryForIssue(issue.ShortName);
+                    issue.Changes = changes.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"{e}(Connector : 125)");
+                throw;
+            }
+        }
+
         public async Task CreateIssue(string projectId, string title, string description, WorkType workType)
         {
             try

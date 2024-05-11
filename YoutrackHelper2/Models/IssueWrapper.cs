@@ -24,6 +24,7 @@ namespace YoutrackHelper2.Models
         private string temporaryComment;
         private DateTime startedAt1;
         private bool progressing;
+        private List<Change> changes = new ();
 
         public Issue Issue
         {
@@ -87,6 +88,12 @@ namespace YoutrackHelper2.Models
         public long NumberInProject { get; set; }
 
         public DateTime StartedAt { get => startedAt1; set => SetProperty(ref startedAt1, value); }
+
+        public List<Change> Changes
+        {
+            get => changes;
+            set => SetProperty(ref changes, value);
+        }
 
         public TimeSpan WorkingDuration
         {
