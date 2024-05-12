@@ -213,7 +213,6 @@ namespace YoutrackHelper2.ViewModels
                     .OrderBy(t => t.Completed)
                     .ThenByDescending(t => t.NumberInProject));
             await connector.LoadTimeTracking(IssueWrappers);
-            await connector.LoadChangeHistory(IssueWrappers);
 
             ChangeTimerState();
             RaisePropertyChanged(nameof(IssueWrappers));
