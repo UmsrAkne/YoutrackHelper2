@@ -24,6 +24,7 @@ namespace YoutrackHelper2.Models
         private string temporaryComment;
         private DateTime startedAt1;
         private bool progressing;
+        private List<Change> changes = new ();
 
         public Issue Issue
         {
@@ -36,7 +37,7 @@ namespace YoutrackHelper2.Models
                     ShortName = value.Id;
                     Description = value.Description;
 
-                    WorkType = ConvertStringToWorkType(ValueGetter.GetString(value, "Type"));
+                    WorkType = WorkTypeExtension.FromString(ValueGetter.GetString(value, "Type"));
 
                     Completed = ValueGetter.GetString(value, "State") == "完了";
                     State = ValueGetter.GetString(value, "State");
@@ -58,7 +59,7 @@ namespace YoutrackHelper2.Models
                         Select(c => new Comment()
                         {
                             Text = c.Text,
-                            DateTime = c.Created ?? default,
+                            DateTime = (c.Created ?? default).ToLocalTime(),
                         })
                         .OrderByDescending(c => c.DateTime)
                         .ToList();
@@ -88,6 +89,12 @@ namespace YoutrackHelper2.Models
 
         public DateTime StartedAt { get => startedAt1; set => SetProperty(ref startedAt1, value); }
 
+        public List<Change> Changes
+        {
+            get => changes;
+            set => SetProperty(ref changes, value);
+        }
+
         public TimeSpan WorkingDuration
         {
             get => workingDuration;
@@ -115,17 +122,44 @@ namespace YoutrackHelper2.Models
             set => SetProperty(ref temporaryComment, value);
         }
 
-        public static string ConvertWorkType(WorkType wt)
+        /// <summary>
+        /// カンマで区切られたテキストから IssueWrapper を生成します。
+        /// </summary>
+        /// <remarks>
+        /// カンマで区切られたテキストの変換の仕様は以下です。
+        /// 区切られたテキストが WorkType に変換可能なテキストであれば、 WorkType をその値にセットします。
+        /// それ以外ならば、最初に出現したテキストを Title に、その次に出現したテキストを Description にセットします。
+        /// Description の入力は任意です。
+        /// </remarks>
+        /// <param name="text">変換するテキスト</param>
+        /// <returns>変換された IssueWrapper。引数がnullや空文字だった場合は、new IssueWrapper() を返します</returns>
+        public static IssueWrapper ToIssueWrapper(string text)
         {
-            return wt switch
+            if (string.IsNullOrWhiteSpace(text))
             {
-                WorkType.Feature => "機能",
-                WorkType.Appearance => "外観",
-                WorkType.Test => "テスト",
-                WorkType.Todo => "タスク",
-                WorkType.Bug => "バグ",
-                _ => string.Empty,
-            };
+                return new IssueWrapper();
+            }
+
+            var w = new IssueWrapper();
+            var texts = text.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+            foreach (var t in texts.Select(s => s.TrimEnd().TrimStart()))
+            {
+                if (WorkTypeExtension.CanConvert(t))
+                {
+                    w.WorkType = WorkTypeExtension.FromString(t);
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(w.Title))
+                {
+                    w.Title = t;
+                    continue;
+                }
+
+                w.Description = t;
+            }
+
+            return w;
         }
 
         public async Task ToggleStatus(Connector connector, TimeCounter counter)

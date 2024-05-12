@@ -91,7 +91,7 @@
                                     <ComboBox
                                         Width="180"
                                         ItemsSource="{Binding Source={StaticResource EnumValues}}"
-                                        SelectedIndex="0" />
+                                        SelectedItem="{Binding WorkType}" />
                                 </DockPanel>
 
                             </StackPanel>
