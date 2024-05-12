@@ -21,6 +21,8 @@ namespace YoutrackHelper2.Models
 
         public string ErrorMessage { get; set; }
 
+        private int MaxResultCount { get; set; } = 40;
+
         private BearerTokenConnection Connection { get; set; }
 
         public async Task<Issue> ApplyCommand(string shortName, string command, string comment)
@@ -60,9 +62,17 @@ namespace YoutrackHelper2.Models
                 var issueService = Connection.CreateIssuesService();
                 var dtFrom = DateTime.Now.AddMonths(-1).ToString("yyyy-MM");
                 var dtTo = DateTime.Now.ToString("yyyy-MM");
-                var searchQuery = $"Project:{projectId} and (State:UnResolved or Created:{dtFrom} .. {dtTo})";
+                var searchQuery = $"Sort by:Created asc Project:{projectId} and (State:UnResolved or Created:{dtFrom} .. {dtTo})";
 
-                var issues = await issueService.GetIssuesInProject(projectId, searchQuery);
+                // 取得される数を先に確認し、規定数よりも多ければ、取得数が規定数になるように skip の値を設定する
+                int? skipCount = 0;
+                var c = await issueService.GetIssueCount(searchQuery);
+                if (c >= MaxResultCount)
+                {
+                    skipCount = (int)c - MaxResultCount;
+                }
+
+                var issues = await issueService.GetIssuesInProject(projectId, searchQuery, skipCount);
                 IssueWrappers = issues.Select(s => new IssueWrapper() { Issue = s, }).ToList();
             }
             catch (Exception e)
