@@ -120,10 +120,16 @@ namespace YoutrackHelper2.Models
         /// <returns>非同期操作を表すタスク</returns>
         public async Task LoadChangeHistory(IEnumerable<IssueWrapper> issues)
         {
+            var issueWrappers = issues.ToList();
+            if (!issueWrappers.Any())
+            {
+                return;
+            }
+
             try
             {
                 var issuesService = Connection.CreateIssuesService();
-                foreach (var issue in issues)
+                foreach (var issue in issueWrappers)
                 {
                     var changes = await issuesService.GetChangeHistoryForIssue(issue.ShortName);
                     issue.Changes = changes.ToList();
