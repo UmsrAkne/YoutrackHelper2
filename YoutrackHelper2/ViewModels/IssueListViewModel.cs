@@ -213,11 +213,18 @@ namespace YoutrackHelper2.ViewModels
                     .OrderBy(t => t.Completed)
                     .ThenByDescending(t => t.NumberInProject));
             await connector.LoadTimeTracking(IssueWrappers);
-            await connector.LoadChangeHistory(IssueWrappers);
+            await connector.LoadChangeHistory(IssueWrappers.Where(w => w.Expanded));
 
             ChangeTimerState();
             RaisePropertyChanged(nameof(IssueWrappers));
 
+            UiEnabled = true;
+        });
+
+        public AsyncDelegateCommand<IssueWrapper> LoadChangeHistoriesAsyncCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
+        {
+            UiEnabled = false;
+            await connector.LoadChangeHistory(param);
             UiEnabled = true;
         });
 
