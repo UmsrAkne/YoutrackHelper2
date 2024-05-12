@@ -261,6 +261,8 @@
                                     <ToggleButton
                                         Background="Transparent"
                                         BorderThickness="0"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LoadChangeHistoriesAsyncCommand}"
+                                        CommandParameter="{Binding}"
                                         IsChecked="{Binding Expanded}"
                                         Template="{StaticResource ToggleButtonTemplate}">
 

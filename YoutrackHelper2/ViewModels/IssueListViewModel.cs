@@ -220,6 +220,13 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
         });
 
+        public AsyncDelegateCommand<IssueWrapper> LoadChangeHistoriesAsyncCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
+        {
+            UiEnabled = false;
+            await connector.LoadChangeHistory(param);
+            UiEnabled = true;
+        });
+
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         public void OnNavigatedTo(NavigationContext navigationContext)
