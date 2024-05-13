@@ -348,7 +348,11 @@
                                     </StackPanel>
 
                                     <!--  コメントを入力するためのテキストボックス  -->
-                                    <TextBox Margin="0,2" Text="{Binding TemporaryComment, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox
+                                        Margin="0,2"
+                                        AcceptsReturn="True"
+                                        Text="{Binding TemporaryComment, UpdateSourceTrigger=PropertyChanged}">
+
                                         <TextBox.InputBindings>
                                             <KeyBinding
                                                 Key="Enter"
