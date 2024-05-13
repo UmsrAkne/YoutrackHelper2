@@ -156,7 +156,10 @@ namespace YoutrackHelper2.Models
                     continue;
                 }
 
-                w.Description = t;
+                if (string.IsNullOrWhiteSpace(w.Description))
+                {
+                    w.Description = t;
+                }
             }
 
             return w;
