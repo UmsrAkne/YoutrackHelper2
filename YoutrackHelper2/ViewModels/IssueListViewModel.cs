@@ -55,6 +55,12 @@ namespace YoutrackHelper2.ViewModels
                         timeCounter.GetWorkingDuration(progressingIssue.ShortName, DateTime.Now);
                     }
                 }
+
+                if (ProgressingIssues.Count == 1)
+                {
+                    TitleBarText.CurrentWorkingDuration =
+                        timeCounter.GetWorkingDuration(ProgressingIssues.FirstOrDefault()!.ShortName, DateTime.Now);
+                }
             };
         }
 
