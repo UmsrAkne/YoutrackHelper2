@@ -11,6 +11,13 @@ namespace YoutrackHelper2.Models
             WriteMessageToFile($"{dt} {message}", "log.txt");
         }
 
+        public static void WriteIssueInfoToFile(IssueWrapper issueWrapper)
+        {
+            var wt = issueWrapper.WorkType.ToWorkTypeName();
+            var s = $"{issueWrapper.ShortName} {issueWrapper.Title} {wt} {issueWrapper.Description}";
+            WriteMessageToFile(s, "log.txt");
+        }
+
         private static void WriteMessageToFile(string message, string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
