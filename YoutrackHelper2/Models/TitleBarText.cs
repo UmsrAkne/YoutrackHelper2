@@ -1,3 +1,4 @@
+using System;
 using Prism.Mvvm;
 
 namespace YoutrackHelper2.Models
@@ -7,10 +8,11 @@ namespace YoutrackHelper2.Models
         private string text;
         private string version;
         private bool progressing;
+        private TimeSpan currentWorkingDuration;
 
         public string Text
         {
-            get => Progressing ? $"[w] {text} {Version}" : $"{text} {Version}";
+            get => Progressing ? $"[{(int)CurrentWorkingDuration.TotalMinutes}m] {text} {Version}" : $"{text} {Version}";
             set => SetProperty(ref text, value);
         }
 
@@ -22,6 +24,18 @@ namespace YoutrackHelper2.Models
             set
             {
                 if (SetProperty(ref progressing, value))
+                {
+                    RaisePropertyChanged(nameof(Text));
+                }
+            }
+        }
+
+        public TimeSpan CurrentWorkingDuration
+        {
+            get => currentWorkingDuration;
+            set
+            {
+                if (SetProperty(ref currentWorkingDuration, value))
                 {
                     RaisePropertyChanged(nameof(Text));
                 }
