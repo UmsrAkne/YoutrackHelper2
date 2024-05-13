@@ -106,6 +106,9 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
+            Logger.WriteMessageToFile("課題を新規作成します");
+            Logger.WriteIssueInfoToFile(CurrentIssueWrapper);
+
             UiEnabled = false;
             await connector.CreateIssue(
                 ProjectWrapper.ShortName, issue.Title, issue.Description, CurrentIssueWrapper.WorkType);
@@ -149,6 +152,8 @@ namespace YoutrackHelper2.ViewModels
             {
                 return;
             }
+
+            Logger.WriteMessageToFile($"コメントを投稿します {param.TemporaryComment}");
 
             UiEnabled = false;
             await connector.ApplyCommand(param.ShortName, "comment", param.TemporaryComment);
