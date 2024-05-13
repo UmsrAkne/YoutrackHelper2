@@ -348,7 +348,11 @@
                                     </StackPanel>
 
                                     <!--  コメントを入力するためのテキストボックス  -->
-                                    <TextBox Margin="0,2" Text="{Binding TemporaryComment, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox
+                                        Margin="0,2"
+                                        AcceptsReturn="True"
+                                        Text="{Binding TemporaryComment, UpdateSourceTrigger=PropertyChanged}">
+
                                         <TextBox.InputBindings>
                                             <KeyBinding
                                                 Key="Enter"
@@ -452,7 +456,9 @@
 
             <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Description :" />
-                <TextBox Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!--  投稿する課題の説明を入力するテキストボックス  -->
+                <TextBox AcceptsReturn="True" Text="{Binding CurrentIssueWrapper.Description, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
             <DockPanel Margin="2">
