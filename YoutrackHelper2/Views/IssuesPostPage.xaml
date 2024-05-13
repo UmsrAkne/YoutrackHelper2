@@ -87,9 +87,10 @@
 
                                 <DockPanel>
                                     <TextBlock Opacity="0.6" Text="Work Type :" />
-                                    <Border Margin="2,0" />
+                                    <Border Margin="4,0" />
                                     <ComboBox
                                         Width="180"
+                                        HorizontalAlignment="Left"
                                         ItemsSource="{Binding Source={StaticResource EnumValues}}"
                                         SelectedItem="{Binding WorkType}" />
                                 </DockPanel>
@@ -101,11 +102,19 @@
                                 Grid.Column="2"
                                 Margin="5,0"
                                 Orientation="Horizontal">
-                                <TextBlock Text="Completed : " />
-                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Completed}" />
+                                <TextBlock
+                                    Margin="2,3"
+                                    VerticalAlignment="Bottom"
+                                    Text="Completed : " />
+                                <CheckBox
+                                    Margin="0,2"
+                                    VerticalAlignment="Bottom"
+                                    IsChecked="{Binding Completed}" />
                                 <Border Width="0" Margin="3,0" />
+
                                 <Button
-                                    Padding="5,0"
+                                    Padding="5,1"
+                                    VerticalAlignment="Bottom"
                                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.RemoveIssueCommand}"
                                     CommandParameter="{Binding}"
                                     Content="del" />

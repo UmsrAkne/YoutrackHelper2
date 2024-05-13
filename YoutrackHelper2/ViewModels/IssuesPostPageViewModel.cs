@@ -50,8 +50,11 @@ namespace YoutrackHelper2.ViewModels
                 IssuePosted = true;
             }
 
+            Logger.WriteMessageToFile("課題を新規作成します");
+
             foreach (var issue in IssueWrappers)
             {
+                Logger.WriteIssueInfoToFile(issue);
                 await connector.CreateIssue(
                     projectWrapper.ShortName, issue.Title, issue.Description, issue.WorkType);
             }
