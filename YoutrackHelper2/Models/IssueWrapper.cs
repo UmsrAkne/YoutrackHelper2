@@ -25,6 +25,7 @@ namespace YoutrackHelper2.Models
         private DateTime startedAt1;
         private bool progressing;
         private List<Change> changes = new ();
+        private IEnumerable<Tag> tags;
 
         public Issue Issue
         {
@@ -63,11 +64,15 @@ namespace YoutrackHelper2.Models
                         })
                         .OrderByDescending(c => c.DateTime)
                         .ToList();
+
+                    Tags = value.Tags.Select(t => new Tag() { Text = t.Value, });
                 }
 
                 SetProperty(ref issue, value);
             }
         }
+
+        public IEnumerable<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
 
         public bool Expanded { get => expanded; set => SetProperty(ref expanded, value); }
 

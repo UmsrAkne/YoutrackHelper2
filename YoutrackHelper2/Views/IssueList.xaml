@@ -218,6 +218,22 @@
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
 
+                                    <ItemsControl Margin="3,0" ItemsSource="{Binding Tags}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type models:Tag}">
+                                                <TextBlock
+                                                    Margin="2,0"
+                                                    FontSize="{StaticResource BasicFontsize}"
+                                                    Text="{Binding Text, StringFormat=#{0}}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
                                     <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ], Converter={StaticResource WorkTypeToStringConverter}}" />
 
                                     <TextBlock
@@ -471,6 +487,12 @@
                     ItemsSource="{Binding Source={StaticResource EnumValues}}"
                     SelectedIndex="0"
                     SelectedItem="{Binding CurrentIssueWrapper.WorkType}" />
+
+                <Border Margin="10,0" />
+
+                <TextBlock Padding="3,0" Text="Tag : " />
+                <TextBox DockPanel.Dock="Right" Text="{Binding TagText, UpdateSourceTrigger=PropertyChanged}" />
+
             </DockPanel>
 
             <StackPanel

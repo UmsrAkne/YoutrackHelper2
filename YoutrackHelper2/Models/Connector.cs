@@ -218,5 +218,35 @@ namespace YoutrackHelper2.Models
                 ErrorMessage = "接続に失敗しました";
             }
         }
+
+        public async Task CreateIssue(string projectId, IssueWrapper iw)
+        {
+            try
+            {
+                var issuesService = Connection.CreateIssuesService();
+                var issue = new Issue
+                {
+                    Summary = iw.Title,
+                    Description = iw.Description,
+                    Tags = iw.Tags.Select(t => new SubValue<string>() { Value = t.Text, }),
+                };
+
+                var w = iw.WorkType.ToWorkTypeName();
+
+                if (!string.IsNullOrEmpty(w))
+                {
+                    issue.SetField("Type", w);
+                }
+
+                await issuesService.CreateIssue(projectId, issue);
+            }
+            catch (Exception e)
+            {
+                Logger.WriteMessageToFile("課題の新規作成に失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
+                Debug.WriteLine($"{e}(Connector : 94)");
+                ErrorMessage = "接続に失敗しました";
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace YoutrackHelper2.ViewModels
         private IssueWrapper currentIssueWrapper = new ();
         private TimeSpan totalWorkingDuration = TimeSpan.Zero;
         private IssueWrapper selectedIssue;
+        private string tagText;
 
         public IssueListViewModel(IDialogService dialogService)
         {
@@ -104,6 +105,8 @@ namespace YoutrackHelper2.ViewModels
             private set => SetProperty(ref totalWorkingDuration, value);
         }
 
+        public string TagText { get => tagText; set => SetProperty(ref tagText, value); }
+
         public AsyncDelegateCommand<TextBox> CreateIssueAsyncCommand => new AsyncDelegateCommand<TextBox>(async (textBox) =>
         {
             var issue = CurrentIssueWrapper;
@@ -116,9 +119,15 @@ namespace YoutrackHelper2.ViewModels
             Logger.WriteIssueInfoToFile(CurrentIssueWrapper);
 
             UiEnabled = false;
-            await connector.CreateIssue(
-                ProjectWrapper.ShortName, issue.Title, issue.Description, CurrentIssueWrapper.WorkType);
 
+            if (!string.IsNullOrWhiteSpace(TagText) && TagText.Contains('#'))
+            {
+                issue.Tags = TagText
+                    .Split("#", StringSplitOptions.RemoveEmptyEntries)
+                    .Select(t => new Tag() { Text = t.Trim(), });
+            }
+
+            await connector.CreateIssue(ProjectWrapper.ShortName, issue);
             await LoadIssueWrappersAsyncCommand.ExecuteAsync();
             CurrentIssueWrapper = new IssueWrapper();
             UiEnabled = true;
