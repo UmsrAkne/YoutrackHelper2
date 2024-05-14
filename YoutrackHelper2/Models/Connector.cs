@@ -50,6 +50,8 @@ namespace YoutrackHelper2.Models
             }
             catch (Exception e)
             {
+                Logger.WriteMessageToFile("プロジェクトのロードに失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
                 Debug.WriteLine($"{e}(Connector : 46)");
                 ErrorMessage = "接続に失敗しました";
             }
@@ -77,6 +79,8 @@ namespace YoutrackHelper2.Models
             }
             catch (Exception e)
             {
+                Logger.WriteMessageToFile("課題リストのロードに失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
                 Debug.WriteLine($"{e}(Connector : 46)");
                 throw;
             }
@@ -99,6 +103,8 @@ namespace YoutrackHelper2.Models
             }
             catch (Exception e)
             {
+                Logger.WriteMessageToFile("課題のロードに失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
                 Debug.WriteLine($"{e}(Connector : 84)");
                 throw;
             }
@@ -118,6 +124,8 @@ namespace YoutrackHelper2.Models
             }
             catch (Exception e)
             {
+                Logger.WriteMessageToFile("タイムトラッキング情報のロードに失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
                 Debug.WriteLine($"{e}(Connector : 46)");
                 throw;
             }
@@ -147,6 +155,8 @@ namespace YoutrackHelper2.Models
             }
             catch (Exception e)
             {
+                Logger.WriteMessageToFile("変更ログ情報のロードに失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
                 Debug.WriteLine($"{e}(Connector : 125)");
                 throw;
             }
@@ -173,7 +183,9 @@ namespace YoutrackHelper2.Models
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine($"{e}(Connector : 152)");
+                Logger.WriteMessageToFile("変更ログ情報のロードに失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
+                Debug.WriteLine($"{e}(Connector : 152)");
                 throw;
             }
         }
@@ -200,6 +212,8 @@ namespace YoutrackHelper2.Models
             }
             catch (Exception e)
             {
+                Logger.WriteMessageToFile("課題の新規作成に失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
                 Debug.WriteLine($"{e}(Connector : 94)");
                 ErrorMessage = "接続に失敗しました";
             }
