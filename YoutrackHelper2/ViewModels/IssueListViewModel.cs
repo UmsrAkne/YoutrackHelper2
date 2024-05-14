@@ -239,6 +239,14 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
         });
 
+        public DelegateCommand CollapsedAllIssueCommand => new DelegateCommand(() =>
+        {
+            foreach (var iw in IssueWrappers.Where(i => i.Expanded))
+            {
+                iw.Expanded = false;
+            }
+        });
+
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         public void OnNavigatedTo(NavigationContext navigationContext)
