@@ -482,6 +482,12 @@
                     ItemsSource="{Binding Source={StaticResource EnumValues}}"
                     SelectedIndex="0"
                     SelectedItem="{Binding CurrentIssueWrapper.WorkType}" />
+
+                <Border Margin="10,0" />
+
+                <TextBlock Padding="3,0" Text="Tag : " />
+                <TextBox DockPanel.Dock="Right" Text="{Binding TagText, UpdateSourceTrigger=PropertyChanged}" />
+
             </DockPanel>
 
             <StackPanel
