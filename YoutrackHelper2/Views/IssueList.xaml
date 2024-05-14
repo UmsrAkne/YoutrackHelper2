@@ -219,6 +219,11 @@
                                     Orientation="Horizontal">
 
                                     <ItemsControl Margin="3,0" ItemsSource="{Binding Tags}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate DataType="{x:Type models:Tag}">
                                                 <TextBlock
