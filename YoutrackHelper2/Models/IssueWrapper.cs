@@ -25,7 +25,7 @@ namespace YoutrackHelper2.Models
         private DateTime startedAt1;
         private bool progressing;
         private List<Change> changes = new ();
-        private IEnumerable<Tag> tags;
+        private IEnumerable<Tag> tags = new List<Tag>();
 
         public Issue Issue
         {
