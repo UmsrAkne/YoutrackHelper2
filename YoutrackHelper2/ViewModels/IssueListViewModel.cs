@@ -28,7 +28,7 @@ namespace YoutrackHelper2.ViewModels
         private IssueWrapper currentIssueWrapper = new ();
         private TimeSpan totalWorkingDuration = TimeSpan.Zero;
         private IssueWrapper selectedIssue;
-        private string tagText;
+        private string tagText = "#";
 
         public IssueListViewModel(IDialogService dialogService)
         {
