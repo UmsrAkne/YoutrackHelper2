@@ -9,6 +9,8 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class IssueDetailPageViewModel : BindableBase, IDialogAware
     {
+        private Connector connector;
+
         public event Action<IDialogResult> RequestClose;
 
         public string Title => string.Empty;
@@ -28,6 +30,9 @@ namespace YoutrackHelper2.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
+            connector = parameters.GetValue<Connector>(nameof(Connector));
+            IssueWrapper = parameters.GetValue<IssueWrapper>(nameof(IssueWrapper));
+            RaisePropertyChanged(nameof(IssueWrapper));
         }
     }
 }

@@ -206,6 +206,25 @@ namespace YoutrackHelper2.ViewModels
             });
         });
 
+        public DelegateCommand<IssueWrapper> ShowIssueDetailPageCommand => new DelegateCommand<IssueWrapper>((param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            var dialogParams = new DialogParameters
+            {
+                { nameof(IssueWrapper), param },
+                { nameof(Connector), connector },
+            };
+
+            dialogService.ShowDialog(nameof(IssueDetailPage), dialogParams, _ =>
+            {
+                LoadIssueWrappersAsyncCommand.Execute(null);
+            });
+        });
+
         public DelegateCommand InputIssueInfoCommand => new DelegateCommand(() =>
         {
             if (SelectedIssue == null)
