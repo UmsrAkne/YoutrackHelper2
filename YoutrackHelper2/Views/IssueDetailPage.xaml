@@ -4,11 +4,110 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:YoutrackHelper2.Models"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     Title="IssueDetailPage"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance viewModels:IssueDetailPageViewModel}"
     mc:Ignorable="d">
-    <Grid />
+    <Grid Margin="3">
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+
+            <ObjectDataProvider
+                x:Key="WorkTypeValues"
+                MethodName="GetValues"
+                ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="models:WorkType" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <DockPanel>
+
+                <ComboBox Width="140" ItemsSource="{Binding Source={StaticResource WorkTypeValues}}" />
+                <Border Margin="3,0" />
+                <TextBox DockPanel.Dock="Right" Text="{Binding IssueWrapper.Title}" />
+            </DockPanel>
+
+            <Border Margin="0,2" />
+            <TextBlock Margin="0,2" Text="Description :" />
+            <TextBox Text="{Binding IssueWrapper.Description}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="0,8">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <TextBlock Text="Status : " />
+                <ComboBox Width="140" Margin="4,0" />
+            </StackPanel>
+            <Border Margin="0,5" />
+            <TextBlock Text="Tags : " />
+            <Border Margin="3,2" />
+            <ListBox Height="30" ItemsSource="{Binding IssueWrapper.Tags}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:Tag}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Text, StringFormat=#{0}}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <DockPanel Grid.Row="2">
+            <TextBlock
+                Margin="0,2"
+                HorizontalAlignment="Left"
+                DockPanel.Dock="Top"
+                Text="Comments : " />
+
+            <Border Margin="0,1" />
+            <ListBox
+                HorizontalContentAlignment="Stretch"
+                DockPanel.Dock="Bottom"
+                ItemsSource="{Binding IssueWrapper.Comments}">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:Comment}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding Text}" />
+                            <TextBlock Grid.Column="1" Text="{Binding DateTime}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <Button
+            Grid.Row="3"
+            Width="100"
+            Margin="0,4"
+            HorizontalAlignment="Right"
+            Command="{Binding CloseCommand}"
+            Content="Close" />
+    </Grid>
 </Page>

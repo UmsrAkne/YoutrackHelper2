@@ -2,6 +2,7 @@ using System;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
+using YoutrackHelper2.Models;
 
 namespace YoutrackHelper2.ViewModels
 {
@@ -11,6 +12,8 @@ namespace YoutrackHelper2.ViewModels
         public event Action<IDialogResult> RequestClose;
 
         public string Title => string.Empty;
+
+        public IssueWrapper IssueWrapper { get; set; }
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
