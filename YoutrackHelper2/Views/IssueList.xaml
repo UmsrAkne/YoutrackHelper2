@@ -255,6 +255,10 @@
                                                     <DataTrigger Binding="{Binding Completed}" Value="True">
                                                         <Setter Property="IsEnabled" Value="False" />
                                                     </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Progressing}" Value="True">
+                                                        <Setter Property="Background" Value="Orange" />
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </ToggleButton.Style>
