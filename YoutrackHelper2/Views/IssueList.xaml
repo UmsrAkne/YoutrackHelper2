@@ -111,6 +111,10 @@
 
             <MenuItem Header="表示">
                 <MenuItem Command="{Binding ShowIssuesPostPageCommand}" Header="複数の課題を投稿" />
+                <MenuItem
+                    Command="{Binding ShowIssueDetailPageCommand}"
+                    CommandParameter="{Binding SelectedIssue}"
+                    Header="課題の詳細画面を表示" />
                 <MenuItem Command="{Binding CollapsedAllIssueCommand}" Header="全ての課題を折りたたむ" />
 
             </MenuItem>
