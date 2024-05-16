@@ -152,6 +152,13 @@ namespace YoutrackHelper2.Models
             var texts = text.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
             foreach (var t in texts.Select(s => s.TrimEnd().TrimStart()))
             {
+                // # から始まる文字列の要素はタグとみなす
+                if (t.StartsWith("#"))
+                {
+                    w.Tags = t.Split("#", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(tt => new Tag() { Text = tt.Trim(), }).ToList();
+                }
+
                 if (WorkTypeExtension.CanConvert(t))
                 {
                     w.WorkType = WorkTypeExtension.FromString(t);

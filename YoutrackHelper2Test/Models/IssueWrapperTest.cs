@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 using YoutrackHelper2.Models;
 
@@ -39,6 +40,21 @@ namespace YoutrackHelper2Test.Models
             Assert.AreEqual(title, w1.Title);
             Assert.AreEqual(description, w1.Description);
             Assert.AreEqual(type, w1.WorkType);
+        }
+
+        [Test]
+        public void ToIssueWrapperTest_タグの読み込み()
+        {
+            // ToIssueWrapper() が意図した通りに文字列を変換できるか確認します。
+            // WorkType は未入力の場合は WorkType.Feature が割り当てられるため、今回は WorkType.Bug がセットして確認しています。
+
+            var w1 = IssueWrapper.ToIssueWrapper( "タイトル, 説明, バグ, #tag #Test Tag");
+            Assert.AreEqual("タイトル", w1.Title);
+            Assert.AreEqual("説明", w1.Description);
+            Assert.AreEqual(WorkType.Bug, w1.WorkType);
+
+            Assert.AreEqual("tag", w1.Tags.ToList()[0].Text, "タグとして認識されているか？");
+            Assert.AreEqual("Test Tag", w1.Tags.ToList()[1].Text, "間に半角スペースが含まれても問題ないか？");
         }
     }
 }
