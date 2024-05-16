@@ -124,6 +124,11 @@
                     Command="{Binding InputIssueInfoCommand}"
                     Header="課題の情報を複製"
                     IsEnabled="{Binding SelectedItemIsNotNull}" />
+
+                <MenuItem
+                    Command="{Binding CompleteIssueListCommand}"
+                    CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
+                    Header="選択中の課題を完了する" />
             </MenuItem>
         </Menu>
 
@@ -444,6 +449,7 @@
                     </Style.Triggers>
 
                     <Style.Setters>
+                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListViewItem">

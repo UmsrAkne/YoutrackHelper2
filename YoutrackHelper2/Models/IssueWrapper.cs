@@ -26,6 +26,7 @@ namespace YoutrackHelper2.Models
         private bool progressing;
         private List<Change> changes = new ();
         private IEnumerable<Tag> tags = new List<Tag>();
+        private bool isSelected;
 
         public Issue Issue
         {
@@ -126,6 +127,8 @@ namespace YoutrackHelper2.Models
             get => temporaryComment;
             set => SetProperty(ref temporaryComment, value);
         }
+
+        public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }
 
         /// <summary>
         /// カンマで区切られたテキストから IssueWrapper を生成します。
