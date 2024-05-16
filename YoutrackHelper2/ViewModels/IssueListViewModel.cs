@@ -29,6 +29,7 @@ namespace YoutrackHelper2.ViewModels
         private TimeSpan totalWorkingDuration = TimeSpan.Zero;
         private IssueWrapper selectedIssue;
         private string tagText = "#";
+        private string commandText;
 
         public IssueListViewModel(IDialogService dialogService)
         {
@@ -83,6 +84,8 @@ namespace YoutrackHelper2.ViewModels
             set => SetProperty(ref currentIssueWrapper, value);
         }
 
+        public string CommandText { get => commandText; set => SetProperty(ref commandText, value); }
+
         public bool UiEnabled { get => uiEnabled; set => SetProperty(ref uiEnabled, value); }
 
         public IssueWrapper SelectedIssue
@@ -133,6 +136,31 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
 
             textBox?.Focus();
+        });
+
+        public AsyncDelegateCommand<TextBox> CreateIssueFromStrAsyncCommand => new AsyncDelegateCommand<TextBox>(async (param) =>
+        {
+            if (string.IsNullOrWhiteSpace(CommandText))
+            {
+                return;
+            }
+
+            var iw = !CommandText.Contains(',')
+                ? new IssueWrapper() { Title = CommandText.Trim(), }
+                : IssueWrapper.ToIssueWrapper(CommandText);
+
+            Logger.WriteMessageToFile("課題をコマンドの文字列から新規作成します");
+            Logger.WriteIssueInfoToFile(CurrentIssueWrapper);
+
+            UiEnabled = false;
+
+            await connector.CreateIssue(ProjectWrapper.ShortName, iw);
+            await LoadIssueWrappersAsyncCommand.ExecuteAsync();
+            CurrentIssueWrapper = new IssueWrapper();
+            CommandText = string.Empty;
+            UiEnabled = true;
+
+            param?.Focus();
         });
 
         public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>

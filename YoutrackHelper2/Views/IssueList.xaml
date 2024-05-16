@@ -482,6 +482,19 @@
             </StackPanel.InputBindings>
 
             <DockPanel Margin="2">
+                <TextBlock Width="80" Text="Command :" />
+                <TextBox x:Name="CommandTextBox" Text="{Binding CommandText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding
+                            Key="Enter"
+                            Command="{Binding CreateIssueFromStrAsyncCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}}"
+                            Modifiers="Control+Shift" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </DockPanel>
+
+            <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Title :" />
                 <TextBox x:Name="NewIssueTitleTextBox" Text="{Binding CurrentIssueWrapper.Title, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
