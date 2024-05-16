@@ -157,6 +157,7 @@ namespace YoutrackHelper2.Models
                 {
                     w.Tags = t.Split("#", StringSplitOptions.RemoveEmptyEntries)
                         .Select(tt => new Tag() { Text = tt.Trim(), }).ToList();
+                    continue;
                 }
 
                 if (WorkTypeExtension.CanConvert(t))

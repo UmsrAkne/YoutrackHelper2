@@ -56,5 +56,26 @@ namespace YoutrackHelper2Test.Models
             Assert.AreEqual("tag", w1.Tags.ToList()[0].Text, "タグとして認識されているか？");
             Assert.AreEqual("Test Tag", w1.Tags.ToList()[1].Text, "間に半角スペースが含まれても問題ないか？");
         }
+
+        [Test]
+
+        // 通常の読み取り
+        [TestCase("バグ, タイトル, 説明, #tag #Test tag", "タイトル", "説明", "tag", "Test tag")]
+
+        // タグが前方に来ていても認識されるか
+        [TestCase("#tag #Test tag, バグ, タイトル, 説明, #tag #Test tag", "タイトル", "説明", "tag", "Test tag")]
+        public void ToIssueWrapperTest(string text, string title, string description, string tag1, string tag2)
+        {
+            // ToIssueWrapper() が意図した通りに文字列を変換できるか確認します。
+            // WorkType は未入力の場合は WorkType.Feature が割り当てられるため、今回は WorkType.Bug がセットして確認しています。
+
+            var w1 = IssueWrapper.ToIssueWrapper(text);
+            Assert.AreEqual(title, w1.Title);
+            Assert.AreEqual(description, w1.Description);
+            Assert.AreEqual(WorkType.Bug, w1.WorkType);
+
+            Assert.AreEqual(tag1, w1.Tags.ToList()[0].Text, "タグとして認識されているか？");
+            Assert.AreEqual(tag2, w1.Tags.ToList()[1].Text, "間に半角スペースが含まれても問題ないか？");
+        }
     }
 }
