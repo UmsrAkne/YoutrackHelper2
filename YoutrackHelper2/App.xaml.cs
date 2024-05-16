@@ -20,6 +20,7 @@ namespace YoutrackHelper2
             containerRegistry.RegisterForNavigation<ProjectList>();
             containerRegistry.RegisterForNavigation<IssueList>();
             containerRegistry.RegisterDialog<IssuesPostPage, IssuesPostPageViewModel>();
+            containerRegistry.RegisterDialog<IssueDetailPage, IssueDetailPageViewModel>();
         }
     }
 }

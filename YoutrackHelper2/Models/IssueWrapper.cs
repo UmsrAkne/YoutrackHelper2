@@ -26,6 +26,7 @@ namespace YoutrackHelper2.Models
         private bool progressing;
         private List<Change> changes = new ();
         private IEnumerable<Tag> tags = new List<Tag>();
+        private bool isSelected;
 
         public Issue Issue
         {
@@ -127,6 +128,8 @@ namespace YoutrackHelper2.Models
             set => SetProperty(ref temporaryComment, value);
         }
 
+        public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }
+
         /// <summary>
         /// カンマで区切られたテキストから IssueWrapper を生成します。
         /// </summary>
@@ -149,6 +152,14 @@ namespace YoutrackHelper2.Models
             var texts = text.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
             foreach (var t in texts.Select(s => s.TrimEnd().TrimStart()))
             {
+                // # から始まる文字列の要素はタグとみなす
+                if (t.StartsWith("#"))
+                {
+                    w.Tags = t.Split("#", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(tt => new Tag() { Text = tt.Trim(), }).ToList();
+                    continue;
+                }
+
                 if (WorkTypeExtension.CanConvert(t))
                 {
                     w.WorkType = WorkTypeExtension.FromString(t);

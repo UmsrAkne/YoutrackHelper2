@@ -111,6 +111,10 @@
 
             <MenuItem Header="表示">
                 <MenuItem Command="{Binding ShowIssuesPostPageCommand}" Header="複数の課題を投稿" />
+                <MenuItem
+                    Command="{Binding ShowIssueDetailPageCommand}"
+                    CommandParameter="{Binding SelectedIssue}"
+                    Header="課題の詳細画面を表示" />
                 <MenuItem Command="{Binding CollapsedAllIssueCommand}" Header="全ての課題を折りたたむ" />
 
             </MenuItem>
@@ -120,6 +124,11 @@
                     Command="{Binding InputIssueInfoCommand}"
                     Header="課題の情報を複製"
                     IsEnabled="{Binding SelectedItemIsNotNull}" />
+
+                <MenuItem
+                    Command="{Binding CompleteIssueListCommand}"
+                    CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
+                    Header="選択中の課題を完了する" />
             </MenuItem>
         </Menu>
 
@@ -440,6 +449,7 @@
                     </Style.Triggers>
 
                     <Style.Setters>
+                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListViewItem">
@@ -470,6 +480,19 @@
                     CommandParameter="{Binding ElementName=NewIssueTitleTextBox}"
                     Modifiers="Control+Shift" />
             </StackPanel.InputBindings>
+
+            <DockPanel Margin="2">
+                <TextBlock Width="80" Text="Command :" />
+                <TextBox x:Name="CommandTextBox" Text="{Binding CommandText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding
+                            Key="Enter"
+                            Command="{Binding CreateIssueFromStrAsyncCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}}"
+                            Modifiers="Control+Shift" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </DockPanel>
 
             <DockPanel Margin="2">
                 <TextBlock Width="80" Text="Title :" />
