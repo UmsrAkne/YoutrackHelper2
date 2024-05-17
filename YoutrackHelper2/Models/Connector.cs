@@ -248,5 +248,23 @@ namespace YoutrackHelper2.Models
                 ErrorMessage = "接続に失敗しました";
             }
         }
+
+        public async Task DeleteIssue(string issueId)
+        {
+            Logger.WriteMessageToFile($"{issueId} を削除します");
+
+            try
+            {
+                var issueService = Connection.CreateIssuesService();
+                await issueService.DeleteIssue(issueId);
+            }
+            catch (Exception e)
+            {
+                Logger.WriteMessageToFile("課題の削除に失敗しました");
+                Logger.WriteMessageToFile(e.ToString());
+                Debug.WriteLine($"{e}(Connector : 263)");
+                ErrorMessage = "課題の削除に失敗しました";
+            }
+        }
     }
 }
