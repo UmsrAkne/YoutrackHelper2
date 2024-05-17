@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -163,6 +164,38 @@ namespace YoutrackHelper2.ViewModels
             param?.Focus();
         });
 
+        public DelegateCommand CreateNumberedIssueCommand => new DelegateCommand(() =>
+        {
+            if (SelectedIssue == null)
+            {
+                return;
+            }
+
+            var issueTitle = SelectedIssue.Title;
+            const string pattern = @"^(.+)\[(\d{2})\]$";
+            var match = Regex.Match(issueTitle, pattern);
+
+            // 連番課題のフォーマットに沿ったタイトルであるかを確認し、フォーマット通りであれば連番をインクリメントする。
+            if (match.Success)
+            {
+                var prefix = match.Groups[1].Value;
+                var numberString = match.Groups[2].Value;
+
+                // 二桁の数値を取得して+1
+                var number = int.Parse(numberString);
+                number++;
+
+                CurrentIssueWrapper.Title = $"{prefix}[{number:00}]";
+            }
+            else
+            {
+                CurrentIssueWrapper.Title = SelectedIssue.Title;
+            }
+
+            CurrentIssueWrapper.Description = SelectedIssue.Description;
+            CurrentIssueWrapper.WorkType = SelectedIssue.WorkType;
+        });
+
         public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
         {
             if (param is { Completed: false, })
@@ -190,6 +223,23 @@ namespace YoutrackHelper2.ViewModels
             }
 
             ChangeTimerState();
+            UiEnabled = true;
+        });
+
+        public AsyncDelegateCommand DeleteIssueListAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (!IssueWrappers.Any(iw => iw.IsSelected))
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            foreach (var issueWrapper in IssueWrappers.Where(iw => iw.IsSelected))
+            {
+                await connector.DeleteIssue(issueWrapper.ShortName);
+            }
+
+            LoadIssueWrappersAsyncCommand.Execute(null);
             UiEnabled = true;
         });
 
@@ -279,6 +329,7 @@ namespace YoutrackHelper2.ViewModels
 
             CurrentIssueWrapper.Title = SelectedIssue.Title;
             CurrentIssueWrapper.Description = SelectedIssue.Description;
+            CurrentIssueWrapper.WorkType = SelectedIssue.WorkType;
         });
 
         public DelegateCommand NavigateToProjectListCommand => new DelegateCommand(() =>
