@@ -126,6 +126,11 @@
                     IsEnabled="{Binding SelectedItemIsNotNull}" />
 
                 <MenuItem
+                    Command="{Binding CreateNumberedIssueCommand}"
+                    Header="課題を連番で複製する"
+                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+
+                <MenuItem
                     Command="{Binding CompleteIssueListCommand}"
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="選択中の課題を完了する" />
