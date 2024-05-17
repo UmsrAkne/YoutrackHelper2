@@ -279,6 +279,7 @@ namespace YoutrackHelper2.ViewModels
 
             CurrentIssueWrapper.Title = SelectedIssue.Title;
             CurrentIssueWrapper.Description = SelectedIssue.Description;
+            CurrentIssueWrapper.WorkType = SelectedIssue.WorkType;
         });
 
         public DelegateCommand NavigateToProjectListCommand => new DelegateCommand(() =>
