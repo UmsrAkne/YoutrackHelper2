@@ -134,6 +134,12 @@
                     Command="{Binding CompleteIssueListCommand}"
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="選択中の課題を完了する" />
+
+                <!--  誤って押すと取り返しがつかないので、一段深い場所に実行ボタンを設置する  -->
+                <MenuItem Header="削除">
+
+                    <MenuItem Command="{Binding DeleteIssueListAsyncCommand}" Header="選択中の課題を削除する" />
+                </MenuItem>
             </MenuItem>
         </Menu>
 

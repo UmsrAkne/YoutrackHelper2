@@ -226,6 +226,23 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
         });
 
+        public AsyncDelegateCommand DeleteIssueListAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (!IssueWrappers.Any(iw => iw.IsSelected))
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            foreach (var issueWrapper in IssueWrappers.Where(iw => iw.IsSelected))
+            {
+                await connector.DeleteIssue(issueWrapper.ShortName);
+            }
+
+            LoadIssueWrappersAsyncCommand.Execute(null);
+            UiEnabled = true;
+        });
+
         public AsyncDelegateCommand<IssueWrapper> ToggleIssueStateCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
         {
             if (param is { Completed: true, })
