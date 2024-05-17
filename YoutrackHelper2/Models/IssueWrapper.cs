@@ -27,6 +27,7 @@ namespace YoutrackHelper2.Models
         private List<Change> changes = new ();
         private IEnumerable<Tag> tags = new List<Tag>();
         private bool isSelected;
+        private DateTime resolved;
 
         public Issue Issue
         {
@@ -44,12 +45,12 @@ namespace YoutrackHelper2.Models
                     Completed = ValueGetter.GetString(value, "State") == "完了";
                     State = ValueGetter.GetString(value, "State");
 
-                    var tz = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-                    CreationDateTime = TimeZoneInfo
-                        .ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")), tz)
-                        .DateTime;
+                    CreationDateTime =
+                        ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")));
 
-                    Resolved = DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")).DateTime;
+                    Resolved =
+                        ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")));
+
                     NumberInProject = ValueGetter.GetLong(value, "numberInProject");
                     Progressing = State == "作業中";
                     if (!Expanded)
@@ -89,7 +90,7 @@ namespace YoutrackHelper2.Models
 
         public string State { get => state; set => SetProperty(ref state, value); }
 
-        public DateTime Resolved { get; set; }
+        public DateTime Resolved { get => resolved; private set => SetProperty(ref resolved, value); }
 
         public long NumberInProject { get; set; }
 
@@ -254,6 +255,11 @@ namespace YoutrackHelper2.Models
                 "バグ" => WorkType.Bug,
                 _ => WorkType.Feature,
             };
+        }
+
+        private DateTime ConvertTime(DateTimeOffset dto)
+        {
+            return TimeZoneInfo.ConvertTime(dto, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")).DateTime;
         }
     }
 }
