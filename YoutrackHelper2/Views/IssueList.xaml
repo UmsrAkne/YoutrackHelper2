@@ -75,6 +75,7 @@
         <views:BoolNegativeConverter x:Key="BoolNegativeConverter" />
         <views:ShortNameConverter x:Key="ShortNameConverter" />
         <views:TimeSpanConverter x:Key="TimeSpanConverter" />
+        <views:IssueStatusConverter x:Key="IssueStatusConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -296,21 +297,10 @@
                                             </Style>
                                         </ToggleButton.Style>
 
-                                        <TextBlock FontSize="12" TextAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Progressing}" Value="True">
-                                                            <Setter Property="Text" Value="{Binding WorkingDuration, Converter={StaticResource TimeSpanConverter}}" />
-                                                        </DataTrigger>
-
-                                                        <DataTrigger Binding="{Binding Progressing}" Value="False">
-                                                            <Setter Property="Text" Value="{Binding State}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                        <TextBlock
+                                            FontSize="12"
+                                            Text="{Binding Converter={StaticResource IssueStatusConverter}}"
+                                            TextAlignment="Center" />
                                     </ToggleButton>
 
                                     <ToggleButton
