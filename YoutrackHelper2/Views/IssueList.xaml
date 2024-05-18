@@ -131,9 +131,16 @@
                     IsEnabled="{Binding SelectedItemIsNotNull}" />
 
                 <MenuItem
+                    Command="{Binding CompleteIssueCommand}"
+                    CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
+                    Header="選択中の課題を完了する"
+                    InputGestureText="Ctrl+Shift+F"
+                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+
+                <MenuItem
                     Command="{Binding CompleteIssueListCommand}"
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
-                    Header="選択中の課題を完了する" />
+                    Header="選択中の課題を一括完了する" />
 
                 <!--  誤って押すと取り返しがつかないので、一段深い場所に実行ボタンを設置する  -->
                 <MenuItem Header="削除">
@@ -175,6 +182,12 @@
                     Command="{Binding CopyIssueTitleCommand}"
                     CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
                     Modifiers="Control" />
+
+                <KeyBinding
+                    Key="F"
+                    Command="{Binding CompleteIssueCommand}"
+                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                    Modifiers="Control+Shift" />
             </ListView.InputBindings>
 
             <ListView.ItemTemplate>

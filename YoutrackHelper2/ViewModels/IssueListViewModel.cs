@@ -198,7 +198,7 @@ namespace YoutrackHelper2.ViewModels
 
         public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
         {
-            if (param is { Completed: false, })
+            if (param == null)
             {
                 return;
             }
