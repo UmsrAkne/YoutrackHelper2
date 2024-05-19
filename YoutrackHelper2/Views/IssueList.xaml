@@ -402,7 +402,7 @@
                                             <KeyBinding
                                                 Key="Enter"
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.PostCommentCommand}"
-                                                CommandParameter="{Binding}"
+                                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}}"
                                                 Modifiers="Control" />
                                         </TextBox.InputBindings>
                                     </TextBox>

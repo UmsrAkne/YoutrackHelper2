@@ -256,20 +256,22 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
         });
 
-        public AsyncDelegateCommand<IssueWrapper> PostCommentCommand => new (async (param) =>
+        public AsyncDelegateCommand<TextBox> PostCommentCommand => new (async (param) =>
         {
-            if (param == null || string.IsNullOrWhiteSpace(param.TemporaryComment))
+            if (param?.DataContext is not IssueWrapper iw || string.IsNullOrWhiteSpace(iw.TemporaryComment))
             {
                 return;
             }
 
-            Logger.WriteMessageToFile($"コメントを投稿します {param.TemporaryComment}");
+            Logger.WriteMessageToFile($"コメントを投稿します {iw.TemporaryComment}");
 
             UiEnabled = false;
-            await connector.ApplyCommand(param.ShortName, "comment", param.TemporaryComment);
-            param.Issue = await connector.GetIssueAsync(param.ShortName);
-            param.TemporaryComment = string.Empty;
+            await connector.ApplyCommand(iw.ShortName, "comment", iw.TemporaryComment);
+            iw.Issue = await connector.GetIssueAsync(iw.ShortName);
+            iw.TemporaryComment = string.Empty;
             UiEnabled = true;
+
+            param.Focus();
         });
 
         public TitleBarText TitleBarText { get; set; }
