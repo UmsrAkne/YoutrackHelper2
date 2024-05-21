@@ -250,19 +250,6 @@ namespace YoutrackHelper2.Models
             Issue = await connector.ApplyCommand(ShortName, "state 未完了", string.Empty);
         }
 
-        private static WorkType ConvertStringToWorkType(string wt)
-        {
-            return wt switch
-            {
-                "機能" => WorkType.Feature,
-                "外観" => WorkType.Appearance,
-                "テスト" => WorkType.Test,
-                "タスク" => WorkType.Todo,
-                "バグ" => WorkType.Bug,
-                _ => WorkType.Feature,
-            };
-        }
-
         private DateTime ConvertTime(DateTimeOffset dto)
         {
             return TimeZoneInfo.ConvertTime(dto, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")).DateTime;
