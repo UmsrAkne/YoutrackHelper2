@@ -244,6 +244,12 @@ namespace YoutrackHelper2.Models
             // UpdateWorkingDuration(DateTime.Now);
         }
 
+        public async Task ToIncomplete(Connector connector)
+        {
+            Logger.WriteMessageToFile($"課題を未完了に戻します {ShortName}");
+            Issue = await connector.ApplyCommand(ShortName, "state 未完了", string.Empty);
+        }
+
         private static WorkType ConvertStringToWorkType(string wt)
         {
             return wt switch

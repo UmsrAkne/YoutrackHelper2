@@ -143,6 +143,8 @@
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="選択中の課題を一括完了する" />
 
+                <MenuItem Command="{Binding RevertToIncompleteAsyncCommand}" Header="選択中の課題を未完了にする" />
+
                 <!--  誤って押すと取り返しがつかないので、一段深い場所に実行ボタンを設置する  -->
                 <MenuItem Header="削除">
 
