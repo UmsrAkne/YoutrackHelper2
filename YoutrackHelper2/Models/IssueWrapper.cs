@@ -244,17 +244,10 @@ namespace YoutrackHelper2.Models
             // UpdateWorkingDuration(DateTime.Now);
         }
 
-        private static WorkType ConvertStringToWorkType(string wt)
+        public async Task ToIncomplete(Connector connector)
         {
-            return wt switch
-            {
-                "機能" => WorkType.Feature,
-                "外観" => WorkType.Appearance,
-                "テスト" => WorkType.Test,
-                "タスク" => WorkType.Todo,
-                "バグ" => WorkType.Bug,
-                _ => WorkType.Feature,
-            };
+            Logger.WriteMessageToFile($"課題を未完了に戻します {ShortName}");
+            Issue = await connector.ApplyCommand(ShortName, "state 未完了", string.Empty);
         }
 
         private DateTime ConvertTime(DateTimeOffset dto)

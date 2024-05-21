@@ -209,6 +209,33 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
         });
 
+        public AsyncDelegateCommand RevertToIncompleteAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (!IssueWrappers.Any(iw => iw.IsSelected))
+            {
+                return;
+            }
+
+            UiEnabled = false;
+
+            var candidates = IssueWrappers
+                .Where(iw => iw.IsSelected)
+                .Where(iw => iw.Completed)
+                .ToList();
+
+            foreach (var issueWrapper in candidates)
+            {
+                await issueWrapper.ToIncomplete(connector);
+            }
+
+            if (candidates.Count != 0)
+            {
+                LoadIssueWrappersAsyncCommand.Execute(null);
+            }
+
+            UiEnabled = true;
+        });
+
         public AsyncDelegateCommand CompleteIssueListCommand => new AsyncDelegateCommand(async () =>
         {
             if (!IssueWrappers.Any(iw => iw.IsSelected))
