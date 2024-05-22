@@ -71,7 +71,7 @@ namespace YoutrackHelper2.ViewModels
             regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
 
             var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
-            if (v?.DataContext as IssueListViewModel is { TitleBarText: null, } vm)
+            if (v?.DataContext as IssueListViewModel is { } vm)
             {
                 vm.TitleBarText = TitleBarText;
                 TitleBarText.Text = param.FullName;
