@@ -71,7 +71,7 @@ namespace YoutrackHelper2.ViewModels
             regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
 
             var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
-            if (v?.DataContext as IssueListViewModel is { TitleBarText: null, } vm)
+            if (v?.DataContext as IssueListViewModel is { } vm)
             {
                 vm.TitleBarText = TitleBarText;
                 TitleBarText.Text = param.FullName;
@@ -101,7 +101,7 @@ namespace YoutrackHelper2.ViewModels
         private void SetVersion()
         {
             // リリースビルドの場合のみ実行するコード
-            TitleBarText.Version = "version : " + "20240521" + "a";
+            TitleBarText.Version = "version : " + "20240522" + "a";
         }
     }
 }
