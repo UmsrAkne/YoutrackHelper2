@@ -215,7 +215,6 @@ namespace YoutrackHelper2.Models
                 case "作業中":
                     Issue = await connector.ApplyCommand(ShortName, "state 未完了", comment);
                     StartedAt = default;
-                    // UpdateWorkingDuration(DateTime.Now);
                     break;
             }
         }
@@ -240,8 +239,6 @@ namespace YoutrackHelper2.Models
 
             Issue = await connector.ApplyCommand(ShortName, "state 完了", comment);
             StartedAt = DateTime.MinValue;
-
-            // UpdateWorkingDuration(DateTime.Now);
         }
 
         public async Task ToIncomplete(Connector connector)

@@ -92,13 +92,6 @@ namespace YoutrackHelper2.ViewModels
             var other = pws.Except(favorites).Except(archives).OrderBy(p => p.FullName);
 
             Projects = new ObservableCollection<ProjectWrapper>(favorites.Concat(other).Concat(archives));
-
-            // foreach (var p in ps)
-            // {
-            //     var issueList = await Connector.GetIssues(p.Name);
-            //     p.IssueCount = issueList.Count;
-            //     p.IncompleteIssueCount = issueList.Count(i => !new IssueWrapper(i).Completed);
-            // }
         }
 
         private void WriteJsonFile()

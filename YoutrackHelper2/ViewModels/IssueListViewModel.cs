@@ -82,7 +82,7 @@ namespace YoutrackHelper2.ViewModels
         public IssueWrapper CurrentIssueWrapper
         {
             get => currentIssueWrapper;
-            set => SetProperty(ref currentIssueWrapper, value);
+            private set => SetProperty(ref currentIssueWrapper, value);
         }
 
         public string CommandText { get => commandText; set => SetProperty(ref commandText, value); }
