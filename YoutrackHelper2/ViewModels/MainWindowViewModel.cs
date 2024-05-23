@@ -25,12 +25,6 @@ namespace YoutrackHelper2.ViewModels
 
         public TitleBarText TitleBarText { get; private set; } = new ();
 
-        public DelegateCommand NavigateToProjectListPageCommand => new (() =>
-        {
-            regionManager.RequestNavigate(RegionName, nameof(ProjectList));
-            TitleBarText.Text = "Projects";
-        });
-
         public DelegateCommand AppInitializeCommand => new (() =>
         {
             if (initialized)
@@ -59,6 +53,12 @@ namespace YoutrackHelper2.ViewModels
                     }
                 };
             }
+        });
+
+        private DelegateCommand NavigateToProjectListPageCommand => new (() =>
+        {
+            regionManager.RequestNavigate(RegionName, nameof(ProjectList));
+            TitleBarText.Text = "Projects";
         });
 
         private DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
