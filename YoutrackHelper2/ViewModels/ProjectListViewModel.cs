@@ -18,8 +18,10 @@ namespace YoutrackHelper2.ViewModels
         private ObservableCollection<ProjectWrapper> projects = new ();
         private ProjectWrapper selectedProject;
 
-        public ProjectListViewModel()
+        public ProjectListViewModel(IConnector connector)
         {
+            Connector = connector;
+
             var uri = File.ReadAllText(
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\uri.txt")
             .Replace("\n", string.Empty);
@@ -74,11 +76,11 @@ namespace YoutrackHelper2.ViewModels
 
         public TitleBarText TitleBarText { get; set; }
 
-        private Connector Connector { get; set; }
+        private IConnector Connector { get; set; }
 
         private async Task GetProjectsAsync(string uri, string perm)
         {
-            Connector = new Connector(uri, perm);
+            Connector.SetConnection(uri, perm);
             await Connector.LoadProjects();
             var pws = Connector.ProjectWrappers;
             ReadJsonFile(pws);
