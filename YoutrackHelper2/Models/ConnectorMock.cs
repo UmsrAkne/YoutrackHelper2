@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YouTrackSharp.Issues;
+using YouTrackSharp.Projects;
 
 namespace YoutrackHelper2.Models
 {
     public class ConnectorMock : IConnector
     {
-        public List<ProjectWrapper> ProjectWrappers { get; }
+        public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
         public List<IssueWrapper> IssueWrappers { get; }
 
@@ -14,7 +15,6 @@ namespace YoutrackHelper2.Models
 
         public void SetConnection(string uri, string token)
         {
-            throw new System.NotImplementedException();
         }
 
         public Task<Issue> ApplyCommand(string shortName, string command, string comment)
@@ -24,7 +24,16 @@ namespace YoutrackHelper2.Models
 
         public Task LoadProjects()
         {
-            throw new System.NotImplementedException();
+            ProjectWrappers = new List<ProjectWrapper>()
+            {
+                new ProjectWrapper() { Project = new Project() { Name = "TestProject0", ShortName = "TestP0", }, },
+                new ProjectWrapper() { Project = new Project() { Name = "TestProject1", ShortName = "TestP1", }, },
+                new ProjectWrapper() { Project = new Project() { Name = "TestProject2", ShortName = "TestP2", }, },
+                new ProjectWrapper() { Project = new Project() { Name = "TestProject3", ShortName = "TestP3", }, },
+                new ProjectWrapper() { Project = new Project() { Name = "TestProject4", ShortName = "TestP4", }, },
+            };
+
+            return Task.CompletedTask;
         }
 
         public Task LoadIssues(string projectId)

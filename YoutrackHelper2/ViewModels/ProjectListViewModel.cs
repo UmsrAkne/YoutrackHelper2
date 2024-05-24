@@ -20,7 +20,6 @@ namespace YoutrackHelper2.ViewModels
 
         public ProjectListViewModel(IConnector connector)
         {
-            Console.WriteLine(connector);
             Connector = connector;
 
             var uri = File.ReadAllText(
