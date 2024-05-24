@@ -19,7 +19,7 @@ namespace YoutrackHelper2.Views
 
             if (issueWrapper.Progressing)
             {
-                return issueWrapper.WorkingDuration.ToString("hh:mm:ss");
+                return issueWrapper.WorkingDuration.ToString(@"hh\:mm\:ss");
             }
 
             if (issueWrapper.Completed || issueWrapper.WorkingDuration == TimeSpan.Zero)
