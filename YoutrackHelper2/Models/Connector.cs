@@ -8,7 +8,7 @@ using YouTrackSharp.Issues;
 
 namespace YoutrackHelper2.Models
 {
-    public class Connector
+    public class Connector : IConnector
     {
         public Connector(string url, string token)
         {
