@@ -10,6 +10,10 @@ namespace YoutrackHelper2.Models
 {
     public class Connector : IConnector
     {
+        public Connector()
+        {
+        }
+
         public Connector(string url, string token)
         {
             Connection = new BearerTokenConnection(url, token);
@@ -24,6 +28,11 @@ namespace YoutrackHelper2.Models
         private int MaxResultCount { get; set; } = 40;
 
         private BearerTokenConnection Connection { get; set; }
+
+        public void SetConnection(string uri, string token)
+        {
+            Connection = new BearerTokenConnection(uri, token);
+        }
 
         public async Task<Issue> ApplyCommand(string shortName, string command, string comment)
         {

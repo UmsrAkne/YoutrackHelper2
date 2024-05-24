@@ -13,6 +13,8 @@ namespace YoutrackHelper2.Models
 
         string ErrorMessage { get; set; }
 
+        void SetConnection(string uri, string token);
+
         Task<Issue> ApplyCommand(string shortName, string command, string comment);
 
         Task LoadProjects();

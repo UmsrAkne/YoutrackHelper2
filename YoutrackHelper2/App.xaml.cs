@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Prism.Ioc;
+using YoutrackHelper2.Models;
 using YoutrackHelper2.ViewModels;
 using YoutrackHelper2.Views;
 
@@ -21,6 +22,12 @@ namespace YoutrackHelper2
             containerRegistry.RegisterForNavigation<IssueList>();
             containerRegistry.RegisterDialog<IssuesPostPage, IssuesPostPageViewModel>();
             containerRegistry.RegisterDialog<IssueDetailPage, IssueDetailPageViewModel>();
+
+        #if DEBUG
+            containerRegistry.Register<IConnector, ConnectorMock>();
+        #else
+            containerRegistry.Register<IConnector, Connector>();
+        #endif
         }
     }
 }

@@ -12,6 +12,11 @@ namespace YoutrackHelper2.Models
 
         public string ErrorMessage { get; set; }
 
+        public void SetConnection(string uri, string token)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task<Issue> ApplyCommand(string shortName, string command, string comment)
         {
             throw new System.NotImplementedException();
