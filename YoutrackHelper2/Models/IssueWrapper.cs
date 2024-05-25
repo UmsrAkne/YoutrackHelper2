@@ -88,7 +88,17 @@ namespace YoutrackHelper2.Models
 
         public WorkType WorkType { get => workType; set => SetProperty(ref workType, value); }
 
-        public string State { get => state; set => SetProperty(ref state, value); }
+        public string State
+        {
+            get => state;
+            set
+            {
+                if (SetProperty(ref state, value))
+                {
+                    RaisePropertyChanged(nameof(Self));
+                }
+            }
+        }
 
         public DateTime Resolved { get => resolved; private set => SetProperty(ref resolved, value); }
 
@@ -105,7 +115,13 @@ namespace YoutrackHelper2.Models
         public TimeSpan WorkingDuration
         {
             get => workingDuration;
-            set => SetProperty(ref workingDuration, value);
+            set
+            {
+                if (SetProperty(ref workingDuration, value))
+                {
+                    RaisePropertyChanged(nameof(Self));
+                }
+            }
         }
 
         public DateTime CreationDateTime
@@ -114,7 +130,17 @@ namespace YoutrackHelper2.Models
             private set => SetProperty(ref creationDateTime, value);
         }
 
-        public bool Progressing { get => progressing; set => SetProperty(ref progressing, value); }
+        public bool Progressing
+        {
+            get => progressing;
+            set
+            {
+                if (SetProperty(ref progressing, value))
+                {
+                    RaisePropertyChanged(nameof(Self));
+                }
+            }
+        }
 
         public DelegateCommand ToggleExpandedCommand => new DelegateCommand(() =>
         {
@@ -130,6 +156,18 @@ namespace YoutrackHelper2.Models
         }
 
         public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }
+
+        /// <summary>
+        /// このオブジェクト自身を取得します。以下にこのプロパティの役割を記述。
+        /// このオブジェクトを IssueStatusConverter に渡すことで、状態と作業時間の表示を行っている。
+        /// 変換に必要な情報が多いため、MultiValueConverter を使わないことにした。
+        /// しかし、直接オブジェクトを Binding した場合、変更の通知を飛ばすことができない。
+        /// (単一のオブジェクトなら可能だが、このオブジェクトはリストの要素の一つであるため無理）
+        /// そこで、自身を返すプロパティを実装し、これを Binding。
+        /// 状態の表示を変更する必要が出た場合は、都度別の setter で RaisePropertyChanged() を呼び出す。
+        /// </summary>
+        /// <value> このオブジェクト自身 </value>
+        public IssueWrapper Self => this;
 
         /// <summary>
         /// カンマで区切られたテキストから IssueWrapper を生成します。
