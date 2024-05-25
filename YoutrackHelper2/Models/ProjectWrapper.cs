@@ -28,9 +28,13 @@ namespace YoutrackHelper2.Models
             }
         }
 
-        public string ShortName { get => shortName; private set => SetProperty(ref shortName, value); }
+        // ReSharper disable once MemberCanBePrivate.Global
+        // JsonConverter でのデシリアライズ時に get, set が必要
+        public string ShortName { get => shortName; set => SetProperty(ref shortName, value); }
 
-        public string FullName { get => fullName; private set => SetProperty(ref fullName, value); }
+        // ReSharper disable once MemberCanBePrivate.Global
+        // JsonConverter でのデシリアライズ時に get, set が必要
+        public string FullName { get => fullName; set => SetProperty(ref fullName, value); }
 
         public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
 
