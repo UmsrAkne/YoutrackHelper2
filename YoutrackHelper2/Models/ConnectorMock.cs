@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YouTrackSharp.Issues;
 using YouTrackSharp.Projects;
@@ -19,7 +20,30 @@ namespace YoutrackHelper2.Models
 
         public Task<Issue> ApplyCommand(string shortName, string command, string comment)
         {
-            throw new System.NotImplementedException();
+            var target = IssueWrappers.FirstOrDefault(iw => iw.ShortName == shortName);
+            if (target == null)
+            {
+                return null;
+            }
+
+            if (command == "state 作業中")
+            {
+                target.State = "作業中";
+            }
+
+            if (command == "state 未完了")
+            {
+                target.State = "未完了";
+            }
+
+            var iw = new Issue()
+            {
+                Summary = target.Title,
+                Id = target.ShortName,
+            };
+
+            iw.SetField("State", new List<string>() { target.State });
+            return Task.FromResult(iw);
         }
 
         public Task LoadProjects()
