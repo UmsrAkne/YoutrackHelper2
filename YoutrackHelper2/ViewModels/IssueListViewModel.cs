@@ -21,7 +21,7 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class IssueListViewModel : BindableBase, INavigationAware
     {
-        private readonly Connector connector;
+        private readonly IConnector connector;
         private readonly TimeCounter timeCounter = new () { TotalTimeTracking = true, };
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly IDialogService dialogService;
@@ -32,10 +32,9 @@ namespace YoutrackHelper2.ViewModels
         private string tagText = "#";
         private string commandText;
 
-        public IssueListViewModel(IDialogService dialogService)
+        public IssueListViewModel(IDialogService dialogService, IConnector connector)
         {
             this.dialogService = dialogService;
-            InjectDummies(); // Debugビルドの場合のみ実行される。ダミーの値をリストに入力する。
 
             var uri = File.ReadAllText(
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\uri.txt")
@@ -45,7 +44,9 @@ namespace YoutrackHelper2.ViewModels
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\perm.txt")
             .Replace("\n", string.Empty);
 
-            connector = new Connector(uri, perm);
+            this.connector = connector;
+            connector.SetConnection(uri, perm);
+
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += (_, _) =>
             {
@@ -301,7 +302,7 @@ namespace YoutrackHelper2.ViewModels
             param.Focus();
         });
 
-        public TitleBarText TitleBarText { get; set; }
+        public TitleBarText TitleBarText { get; set; } = new TitleBarText();
 
         public DelegateCommand<IssueWrapper> CopyIssueTitleCommand => new ((param) =>
         {

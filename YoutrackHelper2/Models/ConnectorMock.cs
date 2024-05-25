@@ -9,7 +9,7 @@ namespace YoutrackHelper2.Models
     {
         public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
-        public List<IssueWrapper> IssueWrappers { get; }
+        public List<IssueWrapper> IssueWrappers { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -38,7 +38,40 @@ namespace YoutrackHelper2.Models
 
         public Task LoadIssues(string projectId)
         {
-            throw new System.NotImplementedException();
+            IssueWrappers = new List<IssueWrapper>()
+            {
+                new()
+                {
+                    Title = "テスト課題タイトル1",
+                    ShortName = "ti-1",
+                    Completed = false,
+                    Description = "課題１の説明",
+                    WorkType = WorkType.Feature,
+                    WorkingDuration = default,
+                    State = "未完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = null,
+                    NumberInProject = 1,
+                },
+
+                new()
+                {
+                    Title = "テスト課題タイトル2",
+                    ShortName = "ti-2",
+                    Completed = true,
+                    Description = "課題2の説明",
+                    WorkType = WorkType.Feature,
+                    WorkingDuration = default,
+                    State = "完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = null,
+                    NumberInProject = 2,
+                },
+            };
+
+            return Task.CompletedTask;
         }
 
         public Task<Issue> GetIssueAsync(string issueId)
@@ -48,12 +81,12 @@ namespace YoutrackHelper2.Models
 
         public Task LoadTimeTracking(IEnumerable<IssueWrapper> issues)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task LoadChangeHistory(IEnumerable<IssueWrapper> issues)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task LoadChangeHistory(IssueWrapper issue)
