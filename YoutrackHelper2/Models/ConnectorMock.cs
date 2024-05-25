@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YouTrackSharp.Issues;
 using YouTrackSharp.Projects;
@@ -9,7 +10,7 @@ namespace YoutrackHelper2.Models
     {
         public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
-        public List<IssueWrapper> IssueWrappers { get; }
+        public List<IssueWrapper> IssueWrappers { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -19,7 +20,30 @@ namespace YoutrackHelper2.Models
 
         public Task<Issue> ApplyCommand(string shortName, string command, string comment)
         {
-            throw new System.NotImplementedException();
+            var target = IssueWrappers.FirstOrDefault(iw => iw.ShortName == shortName);
+            if (target == null)
+            {
+                return null;
+            }
+
+            if (command == "state 作業中")
+            {
+                target.State = "作業中";
+            }
+
+            if (command == "state 未完了")
+            {
+                target.State = "未完了";
+            }
+
+            var iw = new Issue()
+            {
+                Summary = target.Title,
+                Id = target.ShortName,
+            };
+
+            iw.SetField("State", new List<string>() { target.State });
+            return Task.FromResult(iw);
         }
 
         public Task LoadProjects()
@@ -38,7 +62,40 @@ namespace YoutrackHelper2.Models
 
         public Task LoadIssues(string projectId)
         {
-            throw new System.NotImplementedException();
+            IssueWrappers = new List<IssueWrapper>()
+            {
+                new()
+                {
+                    Title = "テスト課題タイトル1",
+                    ShortName = "ti-1",
+                    Completed = false,
+                    Description = "課題１の説明",
+                    WorkType = WorkType.Feature,
+                    WorkingDuration = default,
+                    State = "未完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = null,
+                    NumberInProject = 1,
+                },
+
+                new()
+                {
+                    Title = "テスト課題タイトル2",
+                    ShortName = "ti-2",
+                    Completed = true,
+                    Description = "課題2の説明",
+                    WorkType = WorkType.Feature,
+                    WorkingDuration = default,
+                    State = "完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = null,
+                    NumberInProject = 2,
+                },
+            };
+
+            return Task.CompletedTask;
         }
 
         public Task<Issue> GetIssueAsync(string issueId)
@@ -48,12 +105,12 @@ namespace YoutrackHelper2.Models
 
         public Task LoadTimeTracking(IEnumerable<IssueWrapper> issues)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task LoadChangeHistory(IEnumerable<IssueWrapper> issues)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task LoadChangeHistory(IssueWrapper issue)

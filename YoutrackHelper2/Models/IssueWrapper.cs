@@ -182,7 +182,7 @@ namespace YoutrackHelper2.Models
             return w;
         }
 
-        public async Task ToggleStatus(Connector connector, TimeCounter counter)
+        public async Task ToggleStatus(IConnector connector, TimeCounter counter)
         {
             Logger.WriteMessageToFile($"課題の状態を変更 {ShortName} 現在の状態 : {State}");
 
@@ -219,7 +219,7 @@ namespace YoutrackHelper2.Models
             }
         }
 
-        public async Task Complete(Connector connector, TimeCounter counter)
+        public async Task Complete(IConnector connector, TimeCounter counter)
         {
             Logger.WriteMessageToFile($"課題を完了 {ShortName}");
             var comment = string.Empty;
@@ -241,7 +241,7 @@ namespace YoutrackHelper2.Models
             StartedAt = DateTime.MinValue;
         }
 
-        public async Task ToIncomplete(Connector connector)
+        public async Task ToIncomplete(IConnector connector)
         {
             Logger.WriteMessageToFile($"課題を未完了に戻します {ShortName}");
             Issue = await connector.ApplyCommand(ShortName, "state 未完了", string.Empty);
