@@ -52,5 +52,13 @@ namespace YoutrackHelper2.Models
         Task CreateIssue(string projectId, IssueWrapper iw);
 
         Task DeleteIssue(string issueId);
+
+        /// <summary>
+        /// 指定した Issue に作業時間を追加します
+        /// </summary>
+        /// <param name="issueId">作業時間を追加する課題の id</param>
+        /// <param name="durationMinutes">追加する作業時間。分単位で入力</param>
+        /// <returns>非同期操作を表すタスク</returns>
+        Task AddWorkingDuration(string issueId, int durationMinutes);
     }
 }

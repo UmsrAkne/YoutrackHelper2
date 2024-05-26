@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YouTrackSharp.Issues;
 using YouTrackSharp.Projects;
+using YouTrackSharp.TimeTracking;
 
 namespace YoutrackHelper2.Models
 {
     public class ConnectorMock : IConnector
     {
+        private List<WorkItem> timeTracks = new List<WorkItem>();
+
         public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
         public List<IssueWrapper> IssueWrappers { get; set; }
@@ -102,12 +106,12 @@ namespace YoutrackHelper2.Models
 
                 new()
                 {
-                    Title = "テスト課題タイトル3 バグ",
+                    Title = "テスト課題タイトル3 バグ ５分間作業済み",
                     ShortName = "ti-3",
                     Completed = false,
                     Description = "課題3の説明 バグの説明",
                     WorkType = WorkType.Bug,
-                    WorkingDuration = default,
+                    WorkingDuration = TimeSpan.FromMinutes(5),
                     State = "未完了",
                     Progressing = false,
                     Changes = null,
@@ -152,6 +156,18 @@ namespace YoutrackHelper2.Models
         public Task DeleteIssue(string issueId)
         {
             throw new System.NotImplementedException();
+        }
+
+        public Task AddWorkingDuration(string issueId, int durationMinutes)
+        {
+            timeTracks.Add(new WorkItem
+            {
+                Date = DateTime.Now,
+                Duration = TimeSpan.FromMinutes(durationMinutes),
+                Created = DateTime.Now,
+            });
+
+            return Task.CompletedTask;
         }
     }
 }
