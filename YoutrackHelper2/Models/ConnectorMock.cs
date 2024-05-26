@@ -130,6 +130,13 @@ namespace YoutrackHelper2.Models
 
         public Task LoadTimeTracking(IEnumerable<IssueWrapper> issues)
         {
+            foreach (var issueWrapper in issues)
+            {
+                var wi = timeTracks.Where(iw => iw.Id == issueWrapper.ShortName);
+                var d = TimeSpan.FromTicks(wi.Sum(w => w.Duration.Ticks));
+                issueWrapper.WorkingDuration = issueWrapper.WorkingDuration.Add(d);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -162,6 +169,7 @@ namespace YoutrackHelper2.Models
         {
             timeTracks.Add(new WorkItem
             {
+                Id = issueId,
                 Date = DateTime.Now,
                 Duration = TimeSpan.FromMinutes(durationMinutes),
                 Created = DateTime.Now,
