@@ -111,7 +111,7 @@ namespace YoutrackHelper2.Models
                     Completed = false,
                     Description = "課題3の説明 バグの説明",
                     WorkType = WorkType.Bug,
-                    WorkingDuration = TimeSpan.FromMinutes(5),
+                    WorkingDuration = default,
                     State = "未完了",
                     Progressing = false,
                     Changes = null,
@@ -119,6 +119,8 @@ namespace YoutrackHelper2.Models
                     NumberInProject = 3,
                 },
             };
+
+            AddWorkingDuration("ti-3", 5);
 
             return Task.CompletedTask;
         }

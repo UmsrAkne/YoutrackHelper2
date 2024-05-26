@@ -242,6 +242,8 @@ namespace YoutrackHelper2.Models
                 {
                     await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
                 }
+
+                await connector.LoadTimeTracking(new List<IssueWrapper>() { this, });
             }
 
             switch (State)
