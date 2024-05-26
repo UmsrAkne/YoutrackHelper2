@@ -27,7 +27,7 @@ namespace YoutrackHelper2.Views
                 return issueWrapper.State;
             }
 
-            return $"{issueWrapper.WorkingDuration.TotalMinutes} min";
+            return $"{(int)issueWrapper.WorkingDuration.TotalMinutes} min";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

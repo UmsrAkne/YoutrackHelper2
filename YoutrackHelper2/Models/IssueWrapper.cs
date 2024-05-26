@@ -88,7 +88,17 @@ namespace YoutrackHelper2.Models
 
         public WorkType WorkType { get => workType; set => SetProperty(ref workType, value); }
 
-        public string State { get => state; set => SetProperty(ref state, value); }
+        public string State
+        {
+            get => state;
+            set
+            {
+                if (SetProperty(ref state, value))
+                {
+                    RaisePropertyChanged(nameof(Self));
+                }
+            }
+        }
 
         public DateTime Resolved { get => resolved; private set => SetProperty(ref resolved, value); }
 
@@ -105,7 +115,13 @@ namespace YoutrackHelper2.Models
         public TimeSpan WorkingDuration
         {
             get => workingDuration;
-            set => SetProperty(ref workingDuration, value);
+            set
+            {
+                if (SetProperty(ref workingDuration, value))
+                {
+                    RaisePropertyChanged(nameof(Self));
+                }
+            }
         }
 
         public DateTime CreationDateTime
@@ -114,7 +130,17 @@ namespace YoutrackHelper2.Models
             private set => SetProperty(ref creationDateTime, value);
         }
 
-        public bool Progressing { get => progressing; set => SetProperty(ref progressing, value); }
+        public bool Progressing
+        {
+            get => progressing;
+            set
+            {
+                if (SetProperty(ref progressing, value))
+                {
+                    RaisePropertyChanged(nameof(Self));
+                }
+            }
+        }
 
         public DelegateCommand ToggleExpandedCommand => new DelegateCommand(() =>
         {
@@ -130,6 +156,18 @@ namespace YoutrackHelper2.Models
         }
 
         public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }
+
+        /// <summary>
+        /// このオブジェクト自身を取得します。以下にこのプロパティの役割を記述。
+        /// このオブジェクトを IssueStatusConverter に渡すことで、状態と作業時間の表示を行っている。
+        /// 変換に必要な情報が多いため、MultiValueConverter を使わないことにした。
+        /// しかし、直接オブジェクトを Binding した場合、変更の通知を飛ばすことができない。
+        /// (単一のオブジェクトなら可能だが、このオブジェクトはリストの要素の一つであるため無理）
+        /// そこで、自身を返すプロパティを実装し、これを Binding。
+        /// 状態の表示を変更する必要が出た場合は、都度別の setter で RaisePropertyChanged() を呼び出す。
+        /// </summary>
+        /// <value> このオブジェクト自身 </value>
+        public IssueWrapper Self => this;
 
         /// <summary>
         /// カンマで区切られたテキストから IssueWrapper を生成します。
@@ -182,7 +220,7 @@ namespace YoutrackHelper2.Models
             return w;
         }
 
-        public async Task ToggleStatus(Connector connector, TimeCounter counter)
+        public async Task ToggleStatus(IConnector connector, TimeCounter counter)
         {
             Logger.WriteMessageToFile($"課題の状態を変更 {ShortName} 現在の状態 : {State}");
 
@@ -202,8 +240,10 @@ namespace YoutrackHelper2.Models
                 comment = $"中断 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
                 if (duration.TotalSeconds > 60)
                 {
-                    await connector.ApplyCommand(ShortName, $"作業 {(int)duration.TotalMinutes}m", string.Empty);
+                    await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
                 }
+
+                await connector.LoadTimeTracking(new List<IssueWrapper>() { this, });
             }
 
             switch (State)
@@ -219,7 +259,7 @@ namespace YoutrackHelper2.Models
             }
         }
 
-        public async Task Complete(Connector connector, TimeCounter counter)
+        public async Task Complete(IConnector connector, TimeCounter counter)
         {
             Logger.WriteMessageToFile($"課題を完了 {ShortName}");
             var comment = string.Empty;
@@ -241,7 +281,7 @@ namespace YoutrackHelper2.Models
             StartedAt = DateTime.MinValue;
         }
 
-        public async Task ToIncomplete(Connector connector)
+        public async Task ToIncomplete(IConnector connector)
         {
             Logger.WriteMessageToFile($"課題を未完了に戻します {ShortName}");
             Issue = await connector.ApplyCommand(ShortName, "state 未完了", string.Empty);

@@ -277,5 +277,10 @@ namespace YoutrackHelper2.Models
                 ErrorMessage = "課題の削除に失敗しました";
             }
         }
+
+        public async Task AddWorkingDuration(string issueId, int durationMinutes)
+        {
+            await ApplyCommand(issueId, $"作業 {durationMinutes}m", string.Empty);
+        }
     }
 }

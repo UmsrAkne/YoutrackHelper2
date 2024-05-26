@@ -301,7 +301,7 @@
 
                                         <TextBlock
                                             FontSize="12"
-                                            Text="{Binding Converter={StaticResource IssueStatusConverter}}"
+                                            Text="{Binding Self, Converter={StaticResource IssueStatusConverter}}"
                                             TextAlignment="Center" />
                                     </ToggleButton>
 

@@ -1,15 +1,20 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YouTrackSharp.Issues;
 using YouTrackSharp.Projects;
+using YouTrackSharp.TimeTracking;
 
 namespace YoutrackHelper2.Models
 {
     public class ConnectorMock : IConnector
     {
+        private List<WorkItem> timeTracks = new List<WorkItem>();
+
         public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
-        public List<IssueWrapper> IssueWrappers { get; }
+        public List<IssueWrapper> IssueWrappers { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -19,7 +24,36 @@ namespace YoutrackHelper2.Models
 
         public Task<Issue> ApplyCommand(string shortName, string command, string comment)
         {
-            throw new System.NotImplementedException();
+            var target = IssueWrappers.FirstOrDefault(iw => iw.ShortName == shortName);
+            if (target == null)
+            {
+                return null;
+            }
+
+            if (command == "state 作業中")
+            {
+                target.State = "作業中";
+            }
+
+            if (command == "state 未完了")
+            {
+                target.State = "未完了";
+            }
+
+            if (command == "state 完了")
+            {
+                target.State = "完了";
+                target.Completed = true;
+            }
+
+            var issue = new Issue()
+            {
+                Summary = target.Title,
+                Id = target.ShortName,
+            };
+
+            issue.SetField("State", new List<string>() { target.State });
+            return Task.FromResult(issue);
         }
 
         public Task LoadProjects()
@@ -38,7 +72,57 @@ namespace YoutrackHelper2.Models
 
         public Task LoadIssues(string projectId)
         {
-            throw new System.NotImplementedException();
+            IssueWrappers = new List<IssueWrapper>()
+            {
+                new()
+                {
+                    Title = "テスト課題タイトル1",
+                    ShortName = "ti-1",
+                    Completed = false,
+                    Description = "課題１の説明",
+                    WorkType = WorkType.Feature,
+                    WorkingDuration = default,
+                    State = "未完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = null,
+                    NumberInProject = 1,
+                },
+
+                new()
+                {
+                    Title = "テスト課題タイトル2",
+                    ShortName = "ti-2",
+                    Completed = true,
+                    Description = "課題2の説明",
+                    WorkType = WorkType.Feature,
+                    WorkingDuration = default,
+                    State = "完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = null,
+                    NumberInProject = 2,
+                },
+
+                new()
+                {
+                    Title = "テスト課題タイトル3 バグ ５分間作業済み",
+                    ShortName = "ti-3",
+                    Completed = false,
+                    Description = "課題3の説明 バグの説明",
+                    WorkType = WorkType.Bug,
+                    WorkingDuration = default,
+                    State = "未完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = new List<Tag>() { new Tag() { Text = "Star", }, },
+                    NumberInProject = 3,
+                },
+            };
+
+            AddWorkingDuration("ti-3", 5);
+
+            return Task.CompletedTask;
         }
 
         public Task<Issue> GetIssueAsync(string issueId)
@@ -48,12 +132,19 @@ namespace YoutrackHelper2.Models
 
         public Task LoadTimeTracking(IEnumerable<IssueWrapper> issues)
         {
-            throw new System.NotImplementedException();
+            foreach (var issueWrapper in issues)
+            {
+                var wi = timeTracks.Where(iw => iw.Id == issueWrapper.ShortName);
+                var d = TimeSpan.FromTicks(wi.Sum(w => w.Duration.Ticks));
+                issueWrapper.WorkingDuration = issueWrapper.WorkingDuration.Add(d);
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task LoadChangeHistory(IEnumerable<IssueWrapper> issues)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task LoadChangeHistory(IssueWrapper issue)
@@ -74,6 +165,19 @@ namespace YoutrackHelper2.Models
         public Task DeleteIssue(string issueId)
         {
             throw new System.NotImplementedException();
+        }
+
+        public Task AddWorkingDuration(string issueId, int durationMinutes)
+        {
+            timeTracks.Add(new WorkItem
+            {
+                Id = issueId,
+                Date = DateTime.Now,
+                Duration = TimeSpan.FromMinutes(durationMinutes),
+                Created = DateTime.Now,
+            });
+
+            return Task.CompletedTask;
         }
     }
 }
