@@ -36,14 +36,20 @@ namespace YoutrackHelper2.Models
                 target.State = "未完了";
             }
 
-            var iw = new Issue()
+            if (command == "state 完了")
+            {
+                target.State = "完了";
+                target.Completed = true;
+            }
+
+            var issue = new Issue()
             {
                 Summary = target.Title,
                 Id = target.ShortName,
             };
 
-            iw.SetField("State", new List<string>() { target.State });
-            return Task.FromResult(iw);
+            issue.SetField("State", new List<string>() { target.State });
+            return Task.FromResult(issue);
         }
 
         public Task LoadProjects()
@@ -92,6 +98,21 @@ namespace YoutrackHelper2.Models
                     Changes = null,
                     Tags = null,
                     NumberInProject = 2,
+                },
+
+                new()
+                {
+                    Title = "テスト課題タイトル3 バグ",
+                    ShortName = "ti-3",
+                    Completed = false,
+                    Description = "課題3の説明 バグの説明",
+                    WorkType = WorkType.Bug,
+                    WorkingDuration = default,
+                    State = "未完了",
+                    Progressing = false,
+                    Changes = null,
+                    Tags = new List<Tag>() { new Tag() { Text = "Star", }, },
+                    NumberInProject = 3,
                 },
             };
 
