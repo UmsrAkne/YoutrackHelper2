@@ -167,6 +167,13 @@ namespace YoutrackHelper2.Models
             throw new System.NotImplementedException();
         }
 
+        public Task<Issue> ChangeIssueState(string issueId, State state)
+        {
+            var issue = new Issue();
+            issue.SetField(nameof(State), new List<string>() { State.Obsolete.ToStateName(), });
+            return Task.FromResult(issue);
+        }
+
         public Task AddWorkingDuration(string issueId, int durationMinutes)
         {
             timeTracks.Add(new WorkItem

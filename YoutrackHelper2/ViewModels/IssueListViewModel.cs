@@ -401,6 +401,18 @@ namespace YoutrackHelper2.ViewModels
             }
         });
 
+        public AsyncDelegateCommand ToObsoleteCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (SelectedIssue == null)
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            SelectedIssue.Issue = await connector.ChangeIssueState(SelectedIssue.ShortName, State.Obsolete);
+            UiEnabled = true;
+        });
+
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         public void OnNavigatedTo(NavigationContext navigationContext)
