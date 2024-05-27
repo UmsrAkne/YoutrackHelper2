@@ -42,8 +42,8 @@ namespace YoutrackHelper2.Models
 
                     WorkType = WorkTypeExtension.FromString(ValueGetter.GetString(value, "Type"));
 
-                    Completed = ValueGetter.GetString(value, "State") == State.Completed.ToStateName();
                     State = StateExtension.FromString(ValueGetter.GetString(value, "State"));
+                    Completed = State is State.Completed or State.Obsolete;
 
                     CreationDateTime =
                         ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")));
