@@ -151,7 +151,7 @@ namespace YoutrackHelper2.Models
 
         public Task LoadChangeHistory(IssueWrapper issue)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task CreateIssue(string projectId, string title, string description, WorkType workType)
