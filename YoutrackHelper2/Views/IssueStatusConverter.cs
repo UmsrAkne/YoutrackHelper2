@@ -24,7 +24,7 @@ namespace YoutrackHelper2.Views
 
             if (issueWrapper.Completed || issueWrapper.WorkingDuration == TimeSpan.Zero)
             {
-                return issueWrapper.State;
+                return issueWrapper.State.ToStateName();
             }
 
             return $"{(int)issueWrapper.WorkingDuration.TotalMinutes} min";

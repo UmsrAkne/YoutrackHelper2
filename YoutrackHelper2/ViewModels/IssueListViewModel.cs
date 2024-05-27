@@ -401,6 +401,18 @@ namespace YoutrackHelper2.ViewModels
             }
         });
 
+        public AsyncDelegateCommand ToObsoleteCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (SelectedIssue == null)
+            {
+                return;
+            }
+
+            UiEnabled = false;
+            SelectedIssue.Issue = await connector.ChangeIssueState(SelectedIssue.ShortName, State.Obsolete);
+            UiEnabled = true;
+        });
+
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -429,7 +441,7 @@ namespace YoutrackHelper2.ViewModels
         /// </summary>
         private void ChangeTimerState()
         {
-            ProgressingIssues = IssueWrappers.Where(i => i.State == "作業中").ToList();
+            ProgressingIssues = IssueWrappers.Where(i => i.State == State.Progressing).ToList();
             ProgressingIssues.ForEach(i => i.Progressing = true);
             if (ProgressingIssues.Count > 0)
             {

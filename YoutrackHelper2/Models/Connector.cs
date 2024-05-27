@@ -278,8 +278,18 @@ namespace YoutrackHelper2.Models
             }
         }
 
+        public async Task<Issue> ChangeIssueState(string issueId, State state)
+        {
+            return await ApplyCommand(issueId, $"state {state.ToStateName()}", string.Empty);
+        }
+
         public async Task AddWorkingDuration(string issueId, int durationMinutes)
         {
+            if (durationMinutes <= 0)
+            {
+                return;
+            }
+
             await ApplyCommand(issueId, $"作業 {durationMinutes}m", string.Empty);
         }
     }

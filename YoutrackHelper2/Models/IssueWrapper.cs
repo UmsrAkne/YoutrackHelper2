@@ -20,7 +20,7 @@ namespace YoutrackHelper2.Models
         private WorkType workType = WorkType.Feature;
         private DateTime creationDateTime;
         private TimeSpan workingDuration = TimeSpan.Zero;
-        private string state = string.Empty;
+        private State state = State.Incomplete;
         private string temporaryComment;
         private DateTime startedAt1;
         private bool progressing;
@@ -42,8 +42,8 @@ namespace YoutrackHelper2.Models
 
                     WorkType = WorkTypeExtension.FromString(ValueGetter.GetString(value, "Type"));
 
-                    Completed = ValueGetter.GetString(value, "State") == "完了";
-                    State = ValueGetter.GetString(value, "State");
+                    Completed = ValueGetter.GetString(value, "State") == State.Completed.ToStateName();
+                    State = StateExtension.FromString(ValueGetter.GetString(value, "State"));
 
                     CreationDateTime =
                         ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")));
@@ -52,7 +52,7 @@ namespace YoutrackHelper2.Models
                         ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")));
 
                     NumberInProject = ValueGetter.GetLong(value, "numberInProject");
-                    Progressing = State == "作業中";
+                    Progressing = State == State.Progressing;
                     if (!Expanded)
                     {
                         Expanded = Progressing;
@@ -88,7 +88,7 @@ namespace YoutrackHelper2.Models
 
         public WorkType WorkType { get => workType; set => SetProperty(ref workType, value); }
 
-        public string State
+        public State State
         {
             get => state;
             set
@@ -224,35 +224,32 @@ namespace YoutrackHelper2.Models
         {
             Logger.WriteMessageToFile($"課題の状態を変更 {ShortName} 現在の状態 : {State}");
 
-            if (State == "未完了")
+            if (State == State.Incomplete)
             {
                 counter.StartTimeTracking(shortName, DateTime.Now);
             }
 
             var comment = string.Empty;
 
-            if (counter.IsTrackingNameRegistered(ShortName) && State == "作業中")
+            if (counter.IsTrackingNameRegistered(ShortName) && State == State.Progressing)
             {
                 var now = DateTime.Now;
                 var duration = counter.FinishTimeTracking(shortName, now);
                 var startedAt = now - duration;
                 const string f = "yyyy/MM/dd HH:mm";
                 comment = $"中断 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
-                if (duration.TotalSeconds > 60)
-                {
-                    await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
-                }
+                await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
 
                 await connector.LoadTimeTracking(new List<IssueWrapper>() { this, });
             }
 
             switch (State)
             {
-                case "未完了":
+                case State.Incomplete:
                     Issue = await connector.ApplyCommand(ShortName, "state 作業中", comment);
                     StartedAt = DateTime.Now;
                     return;
-                case "作業中":
+                case State.Progressing:
                     Issue = await connector.ApplyCommand(ShortName, "state 未完了", comment);
                     StartedAt = default;
                     break;
@@ -271,10 +268,7 @@ namespace YoutrackHelper2.Models
                 var startedAt = now - duration;
                 const string f = "yyyy/MM/dd HH:mm";
                 comment = $"完了 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
-                if (duration.TotalSeconds > 60)
-                {
-                    await connector.ApplyCommand(ShortName, $"作業 {(int)duration.TotalMinutes}m", string.Empty);
-                }
+                await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
             }
 
             Issue = await connector.ApplyCommand(ShortName, "state 完了", comment);

@@ -32,17 +32,17 @@ namespace YoutrackHelper2.Models
 
             if (command == "state 作業中")
             {
-                target.State = "作業中";
+                target.State = State.Progressing;
             }
 
             if (command == "state 未完了")
             {
-                target.State = "未完了";
+                target.State = State.Incomplete;
             }
 
             if (command == "state 完了")
             {
-                target.State = "完了";
+                target.State = State.Completed;
                 target.Completed = true;
             }
 
@@ -52,7 +52,7 @@ namespace YoutrackHelper2.Models
                 Id = target.ShortName,
             };
 
-            issue.SetField("State", new List<string>() { target.State });
+            issue.SetField(nameof(State), new List<string>() { target.State.ToStateName() });
             return Task.FromResult(issue);
         }
 
@@ -82,7 +82,7 @@ namespace YoutrackHelper2.Models
                     Description = "課題１の説明",
                     WorkType = WorkType.Feature,
                     WorkingDuration = default,
-                    State = "未完了",
+                    State = State.Incomplete,
                     Progressing = false,
                     Changes = null,
                     Tags = null,
@@ -97,7 +97,7 @@ namespace YoutrackHelper2.Models
                     Description = "課題2の説明",
                     WorkType = WorkType.Feature,
                     WorkingDuration = default,
-                    State = "完了",
+                    State = State.Completed,
                     Progressing = false,
                     Changes = null,
                     Tags = null,
@@ -112,7 +112,7 @@ namespace YoutrackHelper2.Models
                     Description = "課題3の説明 バグの説明",
                     WorkType = WorkType.Bug,
                     WorkingDuration = default,
-                    State = "未完了",
+                    State = State.Incomplete,
                     Progressing = false,
                     Changes = null,
                     Tags = new List<Tag>() { new Tag() { Text = "Star", }, },
@@ -167,13 +167,20 @@ namespace YoutrackHelper2.Models
             throw new System.NotImplementedException();
         }
 
+        public Task<Issue> ChangeIssueState(string issueId, State state)
+        {
+            var issue = new Issue();
+            issue.SetField(nameof(State), new List<string>() { State.Obsolete.ToStateName(), });
+            return Task.FromResult(issue);
+        }
+
         public Task AddWorkingDuration(string issueId, int durationMinutes)
         {
             timeTracks.Add(new WorkItem
             {
                 Id = issueId,
                 Date = DateTime.Now,
-                Duration = TimeSpan.FromMinutes(durationMinutes),
+                Duration = TimeSpan.FromMinutes(durationMinutes + 1),
                 Created = DateTime.Now,
             });
 
