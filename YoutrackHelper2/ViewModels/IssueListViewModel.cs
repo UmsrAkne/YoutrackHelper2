@@ -429,7 +429,7 @@ namespace YoutrackHelper2.ViewModels
         /// </summary>
         private void ChangeTimerState()
         {
-            ProgressingIssues = IssueWrappers.Where(i => i.State == "作業中").ToList();
+            ProgressingIssues = IssueWrappers.Where(i => i.State == State.Progressing).ToList();
             ProgressingIssues.ForEach(i => i.Progressing = true);
             if (ProgressingIssues.Count > 0)
             {
