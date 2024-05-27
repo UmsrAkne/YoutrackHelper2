@@ -12,11 +12,60 @@ namespace YoutrackHelper2.Models
     {
         private List<WorkItem> timeTracks = new List<WorkItem>();
 
+        public ConnectorMock()
+        {
+            DummyIssues = new List<Issue>()
+            {
+                new Issue
+                {
+                    Id = "test-1",
+                    Summary = "テスト課題01",
+                    Description = "テスト課題 01 の説明",
+                },
+                new Issue
+                {
+                    Id = "test-2",
+                    Summary = "テスト課題02",
+                    Description = "テスト課題 02 の説明",
+                },
+                new Issue
+                {
+                    Id = "test-3",
+                    Summary = "テスト課題03",
+                    Description = "テスト課題 03 の説明",
+                },
+                new Issue
+                {
+                    Id = "test-4",
+                    Summary = "テスト課題04",
+                    Description = "テスト課題 04 の説明",
+                },
+            };
+
+            DummyIssues[0].SetField(nameof(State), new List<string>() { State.Completed.ToStateName(), });
+            DummyIssues[0].SetField("Type", new List<string>() { WorkType.Feature.ToWorkTypeName(), });
+            DummyIssues[0].SetField("numberInProject", 1);
+
+            DummyIssues[1].SetField(nameof(State), new List<string>() { State.Incomplete.ToStateName(), });
+            DummyIssues[1].SetField("Type", new List<string>() { WorkType.Bug.ToWorkTypeName(), });
+            DummyIssues[1].SetField("numberInProject", 2);
+
+            DummyIssues[2].SetField(nameof(State), new List<string>() { State.Obsolete.ToStateName(), });
+            DummyIssues[2].SetField("Type", new List<string>() { WorkType.Test.ToWorkTypeName(), });
+            DummyIssues[2].SetField("numberInProject", 3);
+
+            DummyIssues[3].SetField(nameof(State), new List<string>() { State.Incomplete.ToStateName(), });
+            DummyIssues[3].SetField("Type", new List<string>() { WorkType.Feature.ToWorkTypeName(), });
+            DummyIssues[3].SetField("numberInProject", 4);
+        }
+
         public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
         public List<IssueWrapper> IssueWrappers { get; set; }
 
         public string ErrorMessage { get; set; }
+
+        private List<Issue> DummyIssues { get; set; }
 
         public void SetConnection(string uri, string token)
         {
@@ -72,55 +121,8 @@ namespace YoutrackHelper2.Models
 
         public Task LoadIssues(string projectId)
         {
-            IssueWrappers = new List<IssueWrapper>()
-            {
-                new()
-                {
-                    Title = "テスト課題タイトル1",
-                    ShortName = "ti-1",
-                    Completed = false,
-                    Description = "課題１の説明",
-                    WorkType = WorkType.Feature,
-                    WorkingDuration = default,
-                    State = State.Incomplete,
-                    Progressing = false,
-                    Changes = null,
-                    Tags = null,
-                    NumberInProject = 1,
-                },
-
-                new()
-                {
-                    Title = "テスト課題タイトル2",
-                    ShortName = "ti-2",
-                    Completed = true,
-                    Description = "課題2の説明",
-                    WorkType = WorkType.Feature,
-                    WorkingDuration = default,
-                    State = State.Completed,
-                    Progressing = false,
-                    Changes = null,
-                    Tags = null,
-                    NumberInProject = 2,
-                },
-
-                new()
-                {
-                    Title = "テスト課題タイトル3 バグ ５分間作業済み",
-                    ShortName = "ti-3",
-                    Completed = false,
-                    Description = "課題3の説明 バグの説明",
-                    WorkType = WorkType.Bug,
-                    WorkingDuration = default,
-                    State = State.Incomplete,
-                    Progressing = false,
-                    Changes = null,
-                    Tags = new List<Tag>() { new Tag() { Text = "Star", }, },
-                    NumberInProject = 3,
-                },
-            };
-
-            AddWorkingDuration("ti-3", 5);
+            IssueWrappers = DummyIssues.Select(i => new IssueWrapper() { Issue = i, }).ToList();
+            AddWorkingDuration("test-3", 5);
 
             return Task.CompletedTask;
         }
@@ -169,7 +171,12 @@ namespace YoutrackHelper2.Models
 
         public Task<Issue> ChangeIssueState(string issueId, State state)
         {
-            var issue = new Issue();
+            var issue = DummyIssues.FirstOrDefault(i => i.Id == issueId);
+            if (issue == null)
+            {
+                throw new ArgumentException($"指定された issueId が不正です。 id:{issueId}");
+            }
+
             issue.SetField(nameof(State), new List<string>() { State.Obsolete.ToStateName(), });
             return Task.FromResult(issue);
         }
