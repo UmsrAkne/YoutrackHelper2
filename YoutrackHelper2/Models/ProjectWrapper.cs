@@ -11,6 +11,7 @@ namespace YoutrackHelper2.Models
         private Project project;
         private bool isFavorite;
         private bool archived;
+        private WorkType defaultWorkType = WorkType.Feature;
 
         [JsonIgnore]
         public Project Project
@@ -39,5 +40,11 @@ namespace YoutrackHelper2.Models
         public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
 
         public bool Archived { get => archived; set => SetProperty(ref archived, value); }
+
+        public WorkType DefaultWorkType
+        {
+            get => defaultWorkType;
+            set => SetProperty(ref defaultWorkType, value);
+        }
     }
 }
