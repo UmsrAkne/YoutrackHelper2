@@ -161,7 +161,7 @@ namespace YoutrackHelper2.Models
 
         public Task CreateIssue(string projectId, IssueWrapper iw)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task DeleteIssue(string issueId)
