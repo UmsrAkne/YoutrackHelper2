@@ -280,6 +280,11 @@ namespace YoutrackHelper2.Models
 
         public async Task AddWorkingDuration(string issueId, int durationMinutes)
         {
+            if (durationMinutes <= 0)
+            {
+                return;
+            }
+
             await ApplyCommand(issueId, $"作業 {durationMinutes}m", string.Empty);
         }
     }

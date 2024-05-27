@@ -173,7 +173,7 @@ namespace YoutrackHelper2.Models
             {
                 Id = issueId,
                 Date = DateTime.Now,
-                Duration = TimeSpan.FromMinutes(durationMinutes),
+                Duration = TimeSpan.FromMinutes(durationMinutes + 1),
                 Created = DateTime.Now,
             });
 

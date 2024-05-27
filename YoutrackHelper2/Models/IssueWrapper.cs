@@ -238,10 +238,7 @@ namespace YoutrackHelper2.Models
                 var startedAt = now - duration;
                 const string f = "yyyy/MM/dd HH:mm";
                 comment = $"中断 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
-                if (duration.TotalSeconds > 60)
-                {
-                    await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
-                }
+                await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
 
                 await connector.LoadTimeTracking(new List<IssueWrapper>() { this, });
             }
@@ -271,10 +268,7 @@ namespace YoutrackHelper2.Models
                 var startedAt = now - duration;
                 const string f = "yyyy/MM/dd HH:mm";
                 comment = $"完了 作業時間 {(int)duration.TotalMinutes} min ({startedAt.ToString(f)} - {now.ToString(f)})";
-                if (duration.TotalSeconds > 60)
-                {
-                    await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
-                }
+                await connector.AddWorkingDuration(ShortName, (int)duration.TotalMinutes);
             }
 
             Issue = await connector.ApplyCommand(ShortName, "state 完了", comment);
