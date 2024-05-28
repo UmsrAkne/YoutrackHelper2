@@ -74,6 +74,16 @@ namespace YoutrackHelper2.ViewModels
             WriteJsonFile();
         });
 
+        public DelegateCommand<ProjectWrapper> ChangeDefaultWorkTypeCommand => new DelegateCommand<ProjectWrapper>((param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            WriteJsonFile();
+        });
+
         public TitleBarText TitleBarText { get; set; }
 
         private IConnector Connector { get; set; }
@@ -123,6 +133,7 @@ namespace YoutrackHelper2.ViewModels
                 {
                     p.IsFavorite = pw.IsFavorite;
                     p.Archived = pw.Archived;
+                    p.DefaultWorkType = pw.DefaultWorkType;
                 }
             }
         }

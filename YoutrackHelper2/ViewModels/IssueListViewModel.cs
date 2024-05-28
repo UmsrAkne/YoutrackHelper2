@@ -31,6 +31,7 @@ namespace YoutrackHelper2.ViewModels
         private IssueWrapper selectedIssue;
         private string tagText = "#";
         private string commandText;
+        private ProjectWrapper projectWrapper;
 
         public IssueListViewModel(IDialogService dialogService, IConnector connector)
         {
@@ -70,7 +71,18 @@ namespace YoutrackHelper2.ViewModels
 
         public event EventHandler NavigationRequest;
 
-        public ProjectWrapper ProjectWrapper { get; set; }
+        public ProjectWrapper ProjectWrapper
+        {
+            get => projectWrapper;
+            set
+            {
+                projectWrapper = value;
+                if (value != null)
+                {
+                    CurrentIssueWrapper.WorkType = projectWrapper.DefaultWorkType;
+                }
+            }
+        }
 
         public ObservableCollection<IssueWrapper> IssueWrappers { get; set; } = new ();
 
@@ -134,7 +146,7 @@ namespace YoutrackHelper2.ViewModels
 
             await connector.CreateIssue(ProjectWrapper.ShortName, issue);
             await LoadIssueWrappersAsyncCommand.ExecuteAsync();
-            CurrentIssueWrapper = new IssueWrapper();
+            CurrentIssueWrapper = new IssueWrapper() { WorkType = ProjectWrapper.DefaultWorkType, };
             UiEnabled = true;
 
             textBox?.Focus();
@@ -206,6 +218,7 @@ namespace YoutrackHelper2.ViewModels
 
             UiEnabled = false;
             await param.Complete(connector, timeCounter);
+            param.Issue = await connector.RemoveTagFromIssue(param.ShortName, "スター");
             ChangeTimerState();
             UiEnabled = true;
         });
@@ -365,6 +378,7 @@ namespace YoutrackHelper2.ViewModels
         public DelegateCommand NavigateToProjectListCommand => new DelegateCommand(() =>
         {
             NavigationRequest?.Invoke(this, new NavigationEventArgs(nameof(ProjectList)));
+            IssueWrappers.Clear();
         });
 
         public bool Initialized { get; set; }
