@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YouTrackSharp;
 using YouTrackSharp.Issues;
 using YouTrackSharp.Projects;
 using YouTrackSharp.TimeTracking;
@@ -49,6 +50,7 @@ namespace YoutrackHelper2.Models
             DummyIssues[1].SetField(nameof(State), new List<string>() { State.Incomplete.ToStateName(), });
             DummyIssues[1].SetField("Type", new List<string>() { WorkType.Bug.ToWorkTypeName(), });
             DummyIssues[1].SetField("numberInProject", 2);
+            DummyIssues[1].Tags = new List<SubValue<string>>() { new() { Value = "Star", }, };
 
             DummyIssues[2].SetField(nameof(State), new List<string>() { State.Obsolete.ToStateName(), });
             DummyIssues[2].SetField("Type", new List<string>() { WorkType.Test.ToWorkTypeName(), });
@@ -179,6 +181,18 @@ namespace YoutrackHelper2.Models
 
             issue.SetField(nameof(State), new List<string>() { State.Obsolete.ToStateName(), });
             return Task.FromResult(issue);
+        }
+
+        public Task<Issue> RemoveTagFromIssue(string issueId, string tag)
+        {
+            var target = DummyIssues.FirstOrDefault(issue => issue.Id == issueId);
+            if (target == null)
+            {
+                throw new ArgumentException($"指定された issueId が不正です。 id:{issueId}");
+            }
+
+            target.Tags = target.Tags.Where(t => t.Value != "Star");
+            return Task.FromResult(target);
         }
 
         public Task AddWorkingDuration(string issueId, int durationMinutes)

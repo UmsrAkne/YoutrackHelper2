@@ -218,6 +218,7 @@ namespace YoutrackHelper2.ViewModels
 
             UiEnabled = false;
             await param.Complete(connector, timeCounter);
+            param.Issue = await connector.RemoveTagFromIssue(param.ShortName, "スター");
             ChangeTimerState();
             UiEnabled = true;
         });

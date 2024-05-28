@@ -283,6 +283,11 @@ namespace YoutrackHelper2.Models
             return await ApplyCommand(issueId, $"state {state.ToStateName()}", string.Empty);
         }
 
+        public async Task<Issue> RemoveTagFromIssue(string issueId, string tag)
+        {
+            return await ApplyCommand(issueId, $"remove tag {tag}", string.Empty);
+        }
+
         public async Task AddWorkingDuration(string issueId, int durationMinutes)
         {
             if (durationMinutes <= 0)
