@@ -378,6 +378,7 @@ namespace YoutrackHelper2.ViewModels
         public DelegateCommand NavigateToProjectListCommand => new DelegateCommand(() =>
         {
             NavigationRequest?.Invoke(this, new NavigationEventArgs(nameof(ProjectList)));
+            IssueWrappers.Clear();
         });
 
         public bool Initialized { get; set; }
