@@ -23,171 +23,188 @@
         </ObjectDataProvider>
     </UserControl.Resources>
 
-    <ListView
-        HorizontalContentAlignment="Stretch"
-        AlternationCount="2"
-        ItemsSource="{Binding Projects}"
-        SelectedItem="{Binding SelectedProject}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <ListView.ItemTemplate>
-            <DataTemplate DataType="{x:Type models:ProjectWrapper}">
-                <DataTemplate.Resources>
-                    <system:Double x:Key="BasicFontsize">15.0</system:Double>
-                </DataTemplate.Resources>
+        <StackPanel Grid.Row="0">
+            <Menu>
+                <MenuItem Header="File" />
+            </Menu>
+            <StatusBar>
+                <TextBlock Text="" />
+            </StatusBar>
+        </StackPanel>
 
-                <Border>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+        <ListView
+            Grid.Row="1"
+            HorizontalContentAlignment="Stretch"
+            AlternationCount="2"
+            ItemsSource="{Binding Projects}"
+            SelectedItem="{Binding SelectedProject}">
 
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <ContentControl>
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleFavoriteCommand}" CommandParameter="{Binding}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:ProjectWrapper}">
+                    <DataTemplate.Resources>
+                        <system:Double x:Key="BasicFontsize">15.0</system:Double>
+                    </DataTemplate.Resources>
 
-                                <TextBlock FontSize="{StaticResource BasicFontsize}" Text="★">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsFavorite}" Value="False">
-                                                    <Setter Property="Opacity" Value="0.2" />
-                                                    <Setter Property="Foreground" Value="Black" />
-                                                </DataTrigger>
+                    <Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
 
-                                                <DataTrigger Binding="{Binding IsFavorite}" Value="True">
-                                                    <Setter Property="Opacity" Value="1" />
-                                                    <Setter Property="Foreground" Value="Coral" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </ContentControl>
-
-                            <TextBlock
-                                Margin="6,0"
-                                FontSize="{StaticResource BasicFontsize}"
-                                Text="{Binding FullName}" />
-
-                        </StackPanel>
-
-                        <StackPanel
-                            Grid.Column="1"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
-
-                            <TextBlock
-                                Margin="5,0"
-                                FontSize="{StaticResource BasicFontsize}"
-                                Text="Default WorkType :" />
-
-                            <ComboBox
-                                Width="120"
-                                ItemsSource="{Binding Source={StaticResource WorkTypeValues}}"
-                                SelectedItem="{Binding DefaultWorkType}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ChangeDefaultWorkTypeCommand}" CommandParameter="{Binding}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </ComboBox>
-
-                            <ToggleButton
-                                Margin="2,0"
-                                Padding="5,0"
-                                HorizontalAlignment="Right"
-                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleArchiveCommand}"
-                                CommandParameter="{Binding}"
-                                Content="Archived"
-                                IsChecked="{Binding Archived}">
-                                <ToggleButton.Template>
-                                    <ControlTemplate TargetType="ToggleButton">
-                                        <Border
-                                            x:Name="border"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="0"
-                                            CornerRadius="3">
-                                            <ContentPresenter
-                                                Margin="{TemplateBinding Padding}"
-                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="LightPink" />
-                                            </Trigger>
-
-                                            <Trigger Property="IsPressed" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="LightSalmon" />
-                                            </Trigger>
-
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="Orange" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                        </StackPanel>
-                    </Grid>
-
-                </Border>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-
-        <ListView.ItemContainerStyle>
-            <Style TargetType="ListViewItem">
-                <Style.Triggers>
-                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                        <Setter Property="Background" Value="Transparent" />
-                    </Trigger>
-
-                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                        <Setter Property="Background" Value="AntiqueWhite" />
-                    </Trigger>
-
-                    <Trigger Property="IsSelected" Value="true">
-                        <Setter Property="Background" Value="LightSalmon" />
-                    </Trigger>
-
-                    <DataTrigger Binding="{Binding Archived}" Value="true">
-                        <Setter Property="Opacity" Value="0.4" />
-                    </DataTrigger>
-                </Style.Triggers>
-
-                <Style.Setters>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
                                 <ContentControl>
                                     <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding DataContext.NavigationRequestCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}" />
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleFavoriteCommand}" CommandParameter="{Binding}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
-                                    <Border
-                                        x:Name="Border"
-                                        Padding="3,1"
-                                        Background="{TemplateBinding Background}"
-                                        CornerRadius="2">
 
-                                        <ContentPresenter />
-                                    </Border>
+                                    <TextBlock FontSize="{StaticResource BasicFontsize}" Text="★">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsFavorite}" Value="False">
+                                                        <Setter Property="Opacity" Value="0.2" />
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                        <Setter Property="Opacity" Value="1" />
+                                                        <Setter Property="Foreground" Value="Coral" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </ContentControl>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style.Setters>
 
-            </Style>
-        </ListView.ItemContainerStyle>
+                                <TextBlock
+                                    Margin="6,0"
+                                    FontSize="{StaticResource BasicFontsize}"
+                                    Text="{Binding FullName}" />
 
-    </ListView>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+
+                                <TextBlock
+                                    Margin="5,0"
+                                    FontSize="{StaticResource BasicFontsize}"
+                                    Text="Default WorkType :" />
+
+                                <ComboBox
+                                    Width="120"
+                                    ItemsSource="{Binding Source={StaticResource WorkTypeValues}}"
+                                    SelectedItem="{Binding DefaultWorkType}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ChangeDefaultWorkTypeCommand}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+
+                                <ToggleButton
+                                    Margin="2,0"
+                                    Padding="5,0"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleArchiveCommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="Archived"
+                                    IsChecked="{Binding Archived}">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border
+                                                x:Name="border"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="0"
+                                                CornerRadius="3">
+                                                <ContentPresenter
+                                                    Margin="{TemplateBinding Padding}"
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="LightPink" />
+                                                </Trigger>
+
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="LightSalmon" />
+                                                </Trigger>
+
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="Orange" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                            </StackPanel>
+                        </Grid>
+
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Trigger>
+
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="AntiqueWhite" />
+                        </Trigger>
+
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="LightSalmon" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding Archived}" Value="true">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                    <Style.Setters>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ContentControl>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.NavigationRequestCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <Border
+                                            x:Name="Border"
+                                            Padding="3,1"
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="2">
+
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ContentControl>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style.Setters>
+
+                </Style>
+            </ListView.ItemContainerStyle>
+
+        </ListView>
+    </Grid>
 </UserControl>
