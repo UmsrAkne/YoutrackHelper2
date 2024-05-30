@@ -97,11 +97,17 @@ namespace YoutrackHelper2.Models
                 target.Completed = true;
             }
 
-            var issue = new Issue()
+            target.Issue ??= new Issue()
             {
                 Summary = target.Title,
                 Id = target.ShortName,
             };
+
+            var issue = target.Issue;
+            if (command == "comment")
+            {
+                issue.Comments.Add(new YouTrackSharp.Issues.Comment { Text = comment, });
+            }
 
             issue.SetField(nameof(State), new List<string>() { target.State.ToStateName() });
             return Task.FromResult(issue);
