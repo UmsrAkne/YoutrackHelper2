@@ -7,6 +7,7 @@
     xmlns:models="clr-namespace:YoutrackHelper2.Models"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
+    xmlns:views="clr-namespace:YoutrackHelper2.Views"
     Title="IssueDetailPage"
     Width="800"
     Height="450"
@@ -71,6 +72,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <views:AddWorkingDurationControls DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}, Path=DataContext.AddWorkingDurationViewModel}" />
         </StackPanel>
 
         <DockPanel Grid.Row="2">
