@@ -53,7 +53,7 @@ namespace YoutrackHelper2.ViewModels
                 TimeRangeDirection.From =>
                     $"作業時間を追加 {dt.ToString(DateTimeFormat)} - {dt.AddMinutes(dur).ToString(DateTimeFormat)}",
                 TimeRangeDirection.To =>
-                    $"作業時間を追加 {dt.Subtract(dt).ToString(DateTimeFormat)} - {dt.ToString(DateTimeFormat)}",
+                    $"作業時間を追加 {dt.AddMinutes(dur * -1).ToString(DateTimeFormat)} - {dt.ToString(DateTimeFormat)}",
                 _ => string.Empty,
             };
 
