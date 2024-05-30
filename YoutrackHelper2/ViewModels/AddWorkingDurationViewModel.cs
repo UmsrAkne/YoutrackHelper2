@@ -42,8 +42,10 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
+            var tt = TimeText!.Replace(" ", string.Empty);
+
             // 空白ではないが、時刻が変換できない場合は入力をミスと判定し、キャンセルする
-            if (!IsValidDateTime(TimeText, out var dt))
+            if (!IsValidDateTime(tt, out var dt))
             {
                 return;
             }
@@ -67,7 +69,7 @@ namespace YoutrackHelper2.ViewModels
         public void SetDefaultTexts()
         {
             DurationText = string.Empty;
-            TimeText = DateTime.Now.ToString("yyyyMMddHHmm");
+            TimeText = DateTime.Now.ToString("yyyy MMdd HHmm");
         }
 
         private bool IsValidDateTime(string input, out DateTime dateTime)
