@@ -36,6 +36,7 @@ namespace YoutrackHelper2.ViewModels
             IssueWrapper = parameters.GetValue<IssueWrapper>(nameof(IssueWrapper));
             AddWorkingDurationViewModel.Connector = connector;
             AddWorkingDurationViewModel.CurrentIssueWrapper = IssueWrapper;
+            AddWorkingDurationViewModel.SetDefaultTexts();
             RaisePropertyChanged(nameof(IssueWrapper));
         }
     }

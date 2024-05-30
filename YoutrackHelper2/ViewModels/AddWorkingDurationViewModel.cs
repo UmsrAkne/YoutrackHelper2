@@ -61,6 +61,15 @@ namespace YoutrackHelper2.ViewModels
             CurrentIssueWrapper.Issue = await Connector.ApplyCommand(CurrentIssueWrapper.ShortName, "comment", comment);
         });
 
+        /// <summary>
+        /// このビューモデルのテキストプロパティの値を初期化します
+        /// </summary>
+        public void SetDefaultTexts()
+        {
+            DurationText = string.Empty;
+            TimeText = DateTime.Now.ToString("yyyyMMddHHmm");
+        }
+
         private bool IsValidDateTime(string input, out DateTime dateTime)
         {
             return DateTime.TryParseExact(input, "yyyyMMddHHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime);
