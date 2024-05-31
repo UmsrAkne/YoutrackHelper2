@@ -67,7 +67,11 @@ namespace YoutrackHelper2.Models
                         .OrderByDescending(c => c.DateTime)
                         .ToList();
 
-                    Tags = value.Tags.Select(t => new Tag() { Text = t.Value, });
+                    Tags = value.Tags.Select(t => new Tag()
+                    {
+                        Text = t.Value,
+                        ParentIssueId = ShortName,
+                    });
                 }
 
                 SetProperty(ref issue, value);
