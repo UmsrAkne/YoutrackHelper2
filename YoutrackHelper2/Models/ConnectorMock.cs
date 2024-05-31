@@ -197,7 +197,7 @@ namespace YoutrackHelper2.Models
                 throw new ArgumentException($"指定された issueId が不正です。 id:{issueId}");
             }
 
-            target.Tags = target.Tags.Where(t => t.Value != "Star");
+            target.Tags = target.Tags.Where(t => t.Value != tag);
             return Task.FromResult(target);
         }
 

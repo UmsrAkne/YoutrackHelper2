@@ -21,7 +21,6 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class IssueListViewModel : BindableBase, INavigationAware
     {
-        private readonly IConnector connector;
         private readonly TimeCounter timeCounter = new () { TotalTimeTracking = true, };
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly IDialogService dialogService;
@@ -45,8 +44,8 @@ namespace YoutrackHelper2.ViewModels
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\perm.txt")
             .Replace("\n", string.Empty);
 
-            this.connector = connector;
-            connector.SetConnection(uri, perm);
+            Connector = connector;
+            Connector.SetConnection(uri, perm);
 
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += (_, _) =>
@@ -124,6 +123,8 @@ namespace YoutrackHelper2.ViewModels
 
         public string TagText { get => tagText; set => SetProperty(ref tagText, value); }
 
+        public IConnector Connector { get; set; }
+
         public AsyncDelegateCommand<TextBox> CreateIssueAsyncCommand => new AsyncDelegateCommand<TextBox>(async (textBox) =>
         {
             var issue = CurrentIssueWrapper;
@@ -144,7 +145,7 @@ namespace YoutrackHelper2.ViewModels
                     .Select(t => new Tag() { Text = t.Trim(), });
             }
 
-            await connector.CreateIssue(ProjectWrapper.ShortName, issue);
+            await Connector.CreateIssue(ProjectWrapper.ShortName, issue);
             await LoadIssueWrappersAsyncCommand.ExecuteAsync();
             CurrentIssueWrapper = new IssueWrapper() { WorkType = ProjectWrapper.DefaultWorkType, };
             UiEnabled = true;
@@ -168,7 +169,7 @@ namespace YoutrackHelper2.ViewModels
 
             UiEnabled = false;
 
-            await connector.CreateIssue(ProjectWrapper.ShortName, iw);
+            await Connector.CreateIssue(ProjectWrapper.ShortName, iw);
             await LoadIssueWrappersAsyncCommand.ExecuteAsync();
             CurrentIssueWrapper = new IssueWrapper();
             CommandText = string.Empty;
@@ -217,8 +218,8 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await param.Complete(connector, timeCounter);
-            param.Issue = await connector.RemoveTagFromIssue(param.ShortName, "スター");
+            await param.Complete(Connector, timeCounter);
+            param.Issue = await Connector.RemoveTagFromIssue(param.ShortName, "スター");
             ChangeTimerState();
             UiEnabled = true;
         });
@@ -239,7 +240,7 @@ namespace YoutrackHelper2.ViewModels
 
             foreach (var issueWrapper in candidates)
             {
-                await issueWrapper.ToIncomplete(connector);
+                await issueWrapper.ToIncomplete(Connector);
             }
 
             if (candidates.Count != 0)
@@ -260,7 +261,7 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = false;
             foreach (var issueWrapper in IssueWrappers.Where(iw => iw.IsSelected))
             {
-                await issueWrapper.Complete(connector, timeCounter);
+                await issueWrapper.Complete(Connector, timeCounter);
             }
 
             ChangeTimerState();
@@ -277,7 +278,7 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = false;
             foreach (var issueWrapper in IssueWrappers.Where(iw => iw.IsSelected))
             {
-                await connector.DeleteIssue(issueWrapper.ShortName);
+                await Connector.DeleteIssue(issueWrapper.ShortName);
             }
 
             LoadIssueWrappersAsyncCommand.Execute(null);
@@ -292,7 +293,7 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            await param.ToggleStatus(connector, timeCounter);
+            await param.ToggleStatus(Connector, timeCounter);
             ChangeTimerState();
             UiEnabled = true;
         });
@@ -307,8 +308,8 @@ namespace YoutrackHelper2.ViewModels
             Logger.WriteMessageToFile($"コメントを投稿します {iw.TemporaryComment}");
 
             UiEnabled = false;
-            await connector.ApplyCommand(iw.ShortName, "comment", iw.TemporaryComment);
-            iw.Issue = await connector.GetIssueAsync(iw.ShortName);
+            await Connector.ApplyCommand(iw.ShortName, "comment", iw.TemporaryComment);
+            iw.Issue = await Connector.GetIssueAsync(iw.ShortName);
             iw.TemporaryComment = string.Empty;
             UiEnabled = true;
 
@@ -332,7 +333,7 @@ namespace YoutrackHelper2.ViewModels
             var dialogParams = new DialogParameters
             {
                 { nameof(ProjectWrapper), ProjectWrapper },
-                { nameof(Connector), connector },
+                { nameof(Models.Connector), Connector },
             };
 
             dialogService.ShowDialog(nameof(IssuesPostPage), dialogParams, result =>
@@ -354,7 +355,7 @@ namespace YoutrackHelper2.ViewModels
             var dialogParams = new DialogParameters
             {
                 { nameof(IssueWrapper), param },
-                { nameof(Connector), connector },
+                { nameof(Models.Connector), Connector },
             };
 
             dialogService.ShowDialog(nameof(IssueDetailPage), dialogParams, _ =>
@@ -386,13 +387,13 @@ namespace YoutrackHelper2.ViewModels
         public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
             UiEnabled = false;
-            await connector.LoadIssues(ProjectWrapper.ShortName);
+            await Connector.LoadIssues(ProjectWrapper.ShortName);
             IssueWrappers = new ObservableCollection<IssueWrapper>(
-                connector.IssueWrappers
+                Connector.IssueWrappers
                     .OrderBy(t => t.Completed)
                     .ThenByDescending(t => t.NumberInProject));
-            await connector.LoadTimeTracking(IssueWrappers.Where(w => !w.Completed));
-            await connector.LoadChangeHistory(IssueWrappers.Where(w => w.Expanded));
+            await Connector.LoadTimeTracking(IssueWrappers.Where(w => !w.Completed));
+            await Connector.LoadChangeHistory(IssueWrappers.Where(w => w.Expanded));
 
             ChangeTimerState();
             RaisePropertyChanged(nameof(IssueWrappers));
@@ -403,7 +404,7 @@ namespace YoutrackHelper2.ViewModels
         public AsyncDelegateCommand<IssueWrapper> LoadChangeHistoriesAsyncCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
         {
             UiEnabled = false;
-            await connector.LoadChangeHistory(param);
+            await Connector.LoadChangeHistory(param);
             UiEnabled = true;
         });
 
@@ -423,8 +424,19 @@ namespace YoutrackHelper2.ViewModels
             }
 
             UiEnabled = false;
-            SelectedIssue.Issue = await connector.ChangeIssueState(SelectedIssue.ShortName, State.Obsolete);
+            SelectedIssue.Issue = await Connector.ChangeIssueState(SelectedIssue.ShortName, State.Obsolete);
             UiEnabled = true;
+        });
+
+        public AsyncDelegateCommand<Tag> RemoveTagAsyncCommand => new AsyncDelegateCommand<Tag>(async (param) =>
+        {
+            var iw = IssueWrappers.FirstOrDefault(w => w.ShortName == param.ParentIssueId);
+            if (iw == null)
+            {
+                return;
+            }
+
+            iw.Issue = await Connector.RemoveTagFromIssue(iw.ShortName, param.Text);
         });
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
