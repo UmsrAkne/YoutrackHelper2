@@ -428,6 +428,17 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = true;
         });
 
+        public AsyncDelegateCommand<Tag> RemoveTagAsyncCommand => new AsyncDelegateCommand<Tag>(async (param) =>
+        {
+            var iw = IssueWrappers.FirstOrDefault(w => w.ShortName == param.ParentIssueId);
+            if (iw == null)
+            {
+                return;
+            }
+
+            iw.Issue = await Connector.RemoveTagFromIssue(iw.ShortName, param.Text);
+        });
+
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         public void OnNavigatedTo(NavigationContext navigationContext)
