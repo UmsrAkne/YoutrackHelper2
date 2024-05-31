@@ -2,6 +2,58 @@
     x:Class="YoutrackHelper2.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models1="clr-namespace:YoutrackHelper2.Models"
     xmlns:prism="http://prismlibrary.com/">
-    <Application.Resources />
+
+    <Application.Resources>
+        <DataTemplate x:Key="TagListDataTemplate" DataType="{x:Type models1:Tag}">
+            <Border
+                Margin="2,2"
+                Padding="4,2"
+                Background="White"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                CornerRadius="3">
+
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Content="X">
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border
+                                    Name="border"
+                                    Padding="5,0"
+                                    Background="Transparent"
+                                    BorderBrush="DarkGray"
+                                    BorderThickness="1"
+                                    CornerRadius="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="PowderBlue" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="LightBlue" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <TextBlock
+                        Margin="2,0"
+                        FontSize="14"
+                        Text="{Binding Text, StringFormat=#{0}}" />
+
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <!--  リソースを一つしか宣言していない状態だと、そのリソースを参照できない。このリソースは使わないが、宣言していないと動かない。らしい  -->
+        <SolidColorBrush x:Key="MyBackground" Color="Blue" />
+    </Application.Resources>
 </prism:PrismApplication>
