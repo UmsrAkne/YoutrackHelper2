@@ -31,6 +31,7 @@ namespace YoutrackHelper2Test.ViewModels
             Assert.That(issue.Comments.First().Text, Is.EqualTo("作業時間を追加 2000/10/01 00:00 - 2000/10/01 00:10"));
 
             vm.TimeRangeDirection = TimeRangeDirection.From;
+            vm.DurationText = 10.ToString();
             await vm.AddWorkingDurationAsyncCommand.ExecuteAsync();
             Assert.That(issue.Comments.Count, Is.EqualTo(2));
             Assert.That(issue.Comments[1].Text, Is.EqualTo("作業時間を追加 2000/10/01 00:10 - 2000/10/01 00:20"));
