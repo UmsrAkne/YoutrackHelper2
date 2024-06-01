@@ -285,6 +285,11 @@ namespace YoutrackHelper2.Models
 
         public async Task<Issue> RemoveTagFromIssue(string issueId, string tag)
         {
+            if (tag == "Star")
+            {
+                tag = "スター"; // 取得するときは英語だが、削除のリクエストのときは日本語じゃないとダメみたい
+            }
+
             return await ApplyCommand(issueId, $"remove tag {tag}", string.Empty);
         }
 
