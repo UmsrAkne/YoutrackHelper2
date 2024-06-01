@@ -12,6 +12,7 @@ namespace YoutrackHelper2.ViewModels
         private string timeText;
         private string durationText;
         private TimeRangeDirection timeRangeDirection;
+        private bool enabledUi = true;
 
         public IConnector Connector { get; set; }
 
@@ -27,6 +28,8 @@ namespace YoutrackHelper2.ViewModels
 
         public string DurationText { get => durationText; set => SetProperty(ref durationText, value); }
 
+        public bool EnabledUi { get => enabledUi; set => SetProperty(ref enabledUi, value); }
+
         public AsyncDelegateCommand AddWorkingDurationAsyncCommand => new AsyncDelegateCommand(async () =>
         {
             // DurationText が変換不可能なら、そもそも処理の必要がない。また、常識に考えて異常に大きな時間が入力された場合も不正な値とする。
@@ -35,12 +38,17 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
+            EnabledUi = false;
+
             // 時刻のテキストボックスが空白の場合は、時刻指定なしとして扱う
             if (string.IsNullOrWhiteSpace(TimeText) && dur > 0)
             {
                 await Connector.AddWorkingDuration(CurrentIssueWrapper.ShortName, dur);
                 CurrentIssueWrapper.Issue = await Connector.ApplyCommand(
                     CurrentIssueWrapper.ShortName, "comment", "時刻指定なしで作業時間を追加");
+
+                DurationText = string.Empty;
+                EnabledUi = true;
                 return;
             }
 
@@ -49,6 +57,7 @@ namespace YoutrackHelper2.ViewModels
             // 空白ではないが、時刻が変換できない場合は入力をミスと判定し、キャンセルする
             if (!IsValidDateTime(tt, out var dt))
             {
+                EnabledUi = true;
                 return;
             }
 
@@ -63,6 +72,9 @@ namespace YoutrackHelper2.ViewModels
 
             await Connector.AddWorkingDuration(CurrentIssueWrapper.ShortName, dur);
             CurrentIssueWrapper.Issue = await Connector.ApplyCommand(CurrentIssueWrapper.ShortName, "comment", comment);
+
+            DurationText = string.Empty;
+            EnabledUi = true;
         });
 
         /// <summary>

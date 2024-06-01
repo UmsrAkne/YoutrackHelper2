@@ -16,6 +16,12 @@
 
     <UserControl.InputBindings>
         <KeyBinding Key="F5" Command="{Binding LoadIssueWrappersAsyncCommand}" />
+
+        <KeyBinding
+            Key="I"
+            Command="{Binding ShowIssueDetailPageCommand}"
+            CommandParameter="{Binding SelectedIssue}"
+            Modifiers="Control" />
     </UserControl.InputBindings>
 
     <UserControl.Style>
@@ -115,7 +121,8 @@
                 <MenuItem
                     Command="{Binding ShowIssueDetailPageCommand}"
                     CommandParameter="{Binding SelectedIssue}"
-                    Header="課題の詳細画面を表示" />
+                    Header="課題の詳細画面を表示"
+                    InputGestureText="Ctrl+I" />
                 <MenuItem Command="{Binding CollapsedAllIssueCommand}" Header="全ての課題を折りたたむ" />
 
             </MenuItem>

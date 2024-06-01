@@ -8,6 +8,7 @@
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:AddWorkingDurationViewModel}"
     d:DesignWidth="500"
+    IsEnabled="{Binding EnabledUi}"
     mc:Ignorable="d">
 
     <StackPanel Margin="2">
