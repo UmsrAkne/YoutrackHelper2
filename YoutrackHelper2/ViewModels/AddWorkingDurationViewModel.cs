@@ -41,6 +41,8 @@ namespace YoutrackHelper2.ViewModels
                 await Connector.AddWorkingDuration(CurrentIssueWrapper.ShortName, dur);
                 CurrentIssueWrapper.Issue = await Connector.ApplyCommand(
                     CurrentIssueWrapper.ShortName, "comment", "時刻指定なしで作業時間を追加");
+
+                DurationText = string.Empty;
                 return;
             }
 
@@ -63,6 +65,7 @@ namespace YoutrackHelper2.ViewModels
 
             await Connector.AddWorkingDuration(CurrentIssueWrapper.ShortName, dur);
             CurrentIssueWrapper.Issue = await Connector.ApplyCommand(CurrentIssueWrapper.ShortName, "comment", comment);
+            DurationText = string.Empty;
         });
 
         /// <summary>
