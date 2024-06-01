@@ -46,7 +46,18 @@
 
             <Border Margin="0,2" />
             <TextBlock Margin="0,2" Text="Description :" />
-            <TextBox Text="{Binding IssueWrapper.Description}" />
+            <TextBox Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Description.TextChanged}" Value="True">
+                                <Setter Property="BorderBrush" Value="DeepSkyBlue" />
+                                <Setter Property="BorderThickness" Value="2" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="0,8">

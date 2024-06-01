@@ -17,6 +17,8 @@ namespace YoutrackHelper2.ViewModels
 
         public IssueWrapper IssueWrapper { get; set; }
 
+        public TextWrapper Description { get; set; } = new TextWrapper();
+
         public AddWorkingDurationViewModel AddWorkingDurationViewModel { get; set; } = new ();
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
@@ -34,6 +36,8 @@ namespace YoutrackHelper2.ViewModels
         {
             connector = parameters.GetValue<IConnector>(nameof(Connector));
             IssueWrapper = parameters.GetValue<IssueWrapper>(nameof(IssueWrapper));
+            Description.Text = IssueWrapper.Description;
+            Description.TextChanged = false;
             AddWorkingDurationViewModel.Connector = connector;
             AddWorkingDurationViewModel.CurrentIssueWrapper = IssueWrapper;
             AddWorkingDurationViewModel.SetDefaultTexts();
