@@ -10,11 +10,11 @@
         <DataTemplate x:Key="TagListDataTemplate" DataType="{x:Type models1:Tag}">
             <Border
                 Margin="2,2"
-                Padding="4,2"
+                Padding="3,2,4,2"
                 Background="White"
                 BorderBrush="Gray"
                 BorderThickness="1"
-                CornerRadius="3">
+                CornerRadius="10,3,3,10">
 
                 <StackPanel Orientation="Horizontal">
                     <Button
@@ -32,7 +32,7 @@
                                     Background="Transparent"
                                     BorderBrush="DarkGray"
                                     BorderThickness="1"
-                                    CornerRadius="2">
+                                    CornerRadius="8">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
                                 <ControlTemplate.Triggers>

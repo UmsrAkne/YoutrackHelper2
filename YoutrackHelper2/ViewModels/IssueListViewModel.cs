@@ -499,6 +499,7 @@ namespace YoutrackHelper2.ViewModels
                     ShortName = "SHORTNAME-01",
                     Description = "課題の詳細説明が入力されます",
                     WorkType = WorkType.Feature,
+                    Tags = new ObservableCollection<Tag>() { new () { Text = "testTag1", }, new () { Text = "testTag2", }, },
                 },
                 new IssueWrapper()
                 {
@@ -508,6 +509,7 @@ namespace YoutrackHelper2.ViewModels
                     Comments = dummyComments,
                     Expanded = true,
                     WorkType = WorkType.Bug,
+                    Tags = new ObservableCollection<Tag>() { new () { Text = "testTag2", }, },
                 },
                 new IssueWrapper()
                 {
@@ -516,7 +518,7 @@ namespace YoutrackHelper2.ViewModels
                     ShortName = "SHORTNAME-03",
                     Expanded = true,
                     Comments = dummyComments,
-                    WorkType = WorkType.Bug,
+                    WorkType = WorkType.Test,
                 },
             });
         }

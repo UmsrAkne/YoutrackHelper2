@@ -285,7 +285,19 @@
 
                                     </ItemsControl>
 
-                                    <TextBlock Margin="3,0" Text="{Binding WorkType, StringFormat=[ {0} ], Converter={StaticResource WorkTypeToStringConverter}}" />
+                                    <Border
+                                        Width="50"
+                                        Margin="3,2"
+                                        BorderBrush="DimGray"
+                                        BorderThickness="1,0"
+                                        CornerRadius="4">
+
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding WorkType, Converter={StaticResource WorkTypeToStringConverter}}" />
+
+                                    </Border>
 
                                     <TextBlock
                                         Margin="3,0"
