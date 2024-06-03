@@ -201,17 +201,6 @@ namespace YoutrackHelper2.Models
             return Task.FromResult(target);
         }
 
-        public Task<Issue> UpdateDescriptionAsync(string issueId, string newDescription)
-        {
-            var target = DummyIssues.FirstOrDefault(issue => issue.Id == issueId);
-            if (target != null)
-            {
-                target.Description = newDescription;
-            }
-
-            return Task.FromResult(target);
-        }
-
         public Task<Issue> UpdateIssueTexts(string issueId, string newTitle, string newDescription)
         {
             var target = DummyIssues.FirstOrDefault(issue => issue.Id == issueId);

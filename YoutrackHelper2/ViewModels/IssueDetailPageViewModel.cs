@@ -28,18 +28,6 @@ namespace YoutrackHelper2.ViewModels
             RequestClose?.Invoke(new DialogResult());
         });
 
-        public AsyncDelegateCommand UpdateDescriptionAsyncCommand => new AsyncDelegateCommand(async () =>
-        {
-            if (!Description.TextChanged)
-            {
-                return;
-            }
-
-            IssueWrapper.Issue = await connector.UpdateDescriptionAsync(IssueWrapper.ShortName, Description.Text);
-            Description.Text = IssueWrapper.Description;
-            Description.TextChanged = false;
-        });
-
         public AsyncDelegateCommand UpdateIssueTextsAsyncCommand => new AsyncDelegateCommand(async () =>
         {
             if (!Description.TextChanged && !IssueTitle.TextChanged)
