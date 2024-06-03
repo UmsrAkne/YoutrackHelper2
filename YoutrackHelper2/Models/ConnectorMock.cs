@@ -212,6 +212,18 @@ namespace YoutrackHelper2.Models
             return Task.FromResult(target);
         }
 
+        public Task<Issue> UpdateIssueTexts(string issueId, string newTitle, string newDescription)
+        {
+            var target = DummyIssues.FirstOrDefault(issue => issue.Id == issueId);
+            if (target != null)
+            {
+                target.Description = newDescription;
+                target.Summary = newTitle;
+            }
+
+            return Task.FromResult(target);
+        }
+
         public Task AddWorkingDuration(string issueId, int durationMinutes)
         {
             timeTracks.Add(new WorkItem

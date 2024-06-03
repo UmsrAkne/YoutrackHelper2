@@ -303,6 +303,17 @@ namespace YoutrackHelper2.Models
             return issue;
         }
 
+        public async Task<Issue> UpdateIssueTexts(string issueId, string newTitle, string newDescription)
+        {
+            var issueService = Connection.CreateIssuesService();
+            var issue = await issueService.GetIssue(issueId);
+            issue.Summary = newTitle;
+            issue.Description = newDescription;
+
+            await issueService.UpdateIssue(issueId, issue.Summary, newDescription);
+            return issue;
+        }
+
         public async Task AddWorkingDuration(string issueId, int durationMinutes)
         {
             if (durationMinutes <= 0)
