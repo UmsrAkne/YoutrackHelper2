@@ -57,7 +57,14 @@ namespace YoutrackHelper2.Models
 
         Task<Issue> RemoveTagFromIssue(string issueId, string tag);
 
-        Task<Issue> UpdateDescriptionAsync(string issueId, string newDescription);
+        /// <summary>
+        /// 指定した課題のタイトルと詳細説明文を更新します。
+        /// </summary>
+        /// <param name="issueId">更新する課題のID。</param>
+        /// <param name="newTitle">新しいタイトル</param>
+        /// <param name="newDescription">新しい詳細説明</param>
+        /// <returns>情報が更新された課題を含む Task</returns>
+        Task<Issue> UpdateIssueTexts(string issueId, string newTitle, string newDescription);
 
         /// <summary>
         /// 指定した Issue に作業時間を追加します

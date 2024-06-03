@@ -16,7 +16,7 @@
     <Page.InputBindings>
         <KeyBinding
             Key="S"
-            Command="{Binding UpdateDescriptionAsyncCommand}"
+            Command="{Binding UpdateIssueTextsAsyncCommand}"
             Modifiers="Control" />
     </Page.InputBindings>
 
@@ -48,12 +48,23 @@
 
                 <ComboBox Width="140" ItemsSource="{Binding Source={StaticResource WorkTypeValues}}" />
                 <Border Margin="3,0" />
-                <TextBox DockPanel.Dock="Right" Text="{Binding IssueWrapper.Title}" />
+                <TextBox DockPanel.Dock="Right" Text="{Binding IssueTitle.Text, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IssueTitle.TextChanged}" Value="True">
+                                    <Setter Property="BorderBrush" Value="DeepSkyBlue" />
+                                    <Setter Property="BorderThickness" Value="2" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </DockPanel>
 
             <Border Margin="0,2" />
             <TextBlock Margin="0,2" Text="Description :" />
-            <TextBox Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox AcceptsReturn="True" Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Style.Triggers>
