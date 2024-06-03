@@ -53,7 +53,7 @@
 
             <Border Margin="0,2" />
             <TextBlock Margin="0,2" Text="Description :" />
-            <TextBox Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox AcceptsReturn="True" Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Style.Triggers>
