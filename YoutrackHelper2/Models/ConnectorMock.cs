@@ -59,6 +59,8 @@ namespace YoutrackHelper2.Models
             DummyIssues[3].SetField(nameof(State), new List<string>() { State.Incomplete.ToStateName(), });
             DummyIssues[3].SetField("Type", new List<string>() { WorkType.Feature.ToWorkTypeName(), });
             DummyIssues[3].SetField("numberInProject", 4);
+
+            IssueWrappers = DummyIssues.Select(i => new IssueWrapper() { Issue = i, }).ToList();
         }
 
         public List<ProjectWrapper> ProjectWrappers { get; private set; }

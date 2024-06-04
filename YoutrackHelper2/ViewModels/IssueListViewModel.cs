@@ -496,7 +496,7 @@ namespace YoutrackHelper2.ViewModels
                 new IssueWrapper()
                 {
                     Title = "テスト課題のタイトル",
-                    ShortName = "SHORTNAME-01",
+                    ShortName = "test-1",
                     Description = "課題の詳細説明が入力されます",
                     WorkType = WorkType.Feature,
                     Tags = new ObservableCollection<Tag>() { new () { Text = "testTag1", }, new () { Text = "testTag2", }, },
@@ -504,7 +504,7 @@ namespace YoutrackHelper2.ViewModels
                 new IssueWrapper()
                 {
                     Title = "２つ目のテスト課題のタイトル",
-                    ShortName = "SHORTNAME-01",
+                    ShortName = "test-2",
                     Description = "課題の詳細説明が入力されます",
                     Comments = dummyComments,
                     Expanded = true,
@@ -515,7 +515,16 @@ namespace YoutrackHelper2.ViewModels
                 {
                     Title = "３つ目のテスト課題のタイトル",
                     Description = "課題の説明\n 課題の説明２行目",
-                    ShortName = "SHORTNAME-03",
+                    ShortName = "test-3",
+                    Expanded = true,
+                    Comments = dummyComments,
+                    WorkType = WorkType.Test,
+                },
+                new IssueWrapper()
+                {
+                    Title = "４つ目のテスト課題のタイトル",
+                    Description = "課題の説明\n 課題の説明２行目",
+                    ShortName = "test-4",
                     Expanded = true,
                     Comments = dummyComments,
                     WorkType = WorkType.Test,
