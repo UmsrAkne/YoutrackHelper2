@@ -106,13 +106,21 @@
         </StackPanel>
 
         <DockPanel Grid.Row="2">
-            <TextBlock
-                Margin="0,2"
-                HorizontalAlignment="Left"
-                DockPanel.Dock="Top"
-                Text="Comments : " />
+            <DockPanel Margin="0,4" DockPanel.Dock="Top">
+                <TextBlock Margin="4,0" Text="Comment :" />
+                <TextBox
+                    AcceptsReturn="True"
+                    DockPanel.Dock="Right"
+                    Text="{Binding TemporaryComment.Text, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding
+                            Key="Enter"
+                            Command="{Binding PostCommentAsyncCommand}"
+                            Modifiers="Control" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </DockPanel>
 
-            <Border Margin="0,1" />
             <ListBox
                 HorizontalContentAlignment="Stretch"
                 DockPanel.Dock="Bottom"
@@ -134,12 +142,26 @@
             </ListBox>
         </DockPanel>
 
-        <Button
+        <StackPanel
             Grid.Row="3"
-            Width="100"
-            Margin="0,4"
             HorizontalAlignment="Right"
-            Command="{Binding CloseCommand}"
-            Content="Close" />
+            Orientation="Horizontal">
+
+            <Button
+                Margin="5,4"
+                Padding="10,0"
+                HorizontalAlignment="Right"
+                Command="{Binding PostCommentAsyncCommand}"
+                Content="Post Comment (Ctrl + Enter)"
+                IsEnabled="{Binding TemporaryComment.TextChanged}" />
+
+            <Button
+                Width="100"
+                Margin="0,4"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseCommand}"
+                Content="Close" />
+
+        </StackPanel>
     </Grid>
 </Page>

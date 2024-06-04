@@ -21,6 +21,8 @@ namespace YoutrackHelper2.ViewModels
 
         public TextWrapper IssueTitle { get; set; } = new TextWrapper();
 
+        public TextWrapper TemporaryComment { get; set; } = new TextWrapper();
+
         public AddWorkingDurationViewModel AddWorkingDurationViewModel { get; set; } = new ();
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
@@ -40,6 +42,20 @@ namespace YoutrackHelper2.ViewModels
 
             Description.TextChanged = false;
             IssueTitle.TextChanged = false;
+        });
+
+        public AsyncDelegateCommand PostCommentAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (!TemporaryComment.TextChanged || string.IsNullOrWhiteSpace(TemporaryComment.Text))
+            {
+                return;
+            }
+
+            IssueWrapper.Issue =
+                await connector.ApplyCommand(IssueWrapper.ShortName, "comment", TemporaryComment.Text);
+
+            TemporaryComment.Text = string.Empty;
+            TemporaryComment.TextChanged = false;
         });
 
         public bool CanCloseDialog() => true;
