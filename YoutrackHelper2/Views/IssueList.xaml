@@ -342,9 +342,10 @@
 
                                         <Border
                                             Padding="4,0"
-                                            Background="LightSalmon"
-                                            CornerRadius="8">
-                                            <TextBlock FontSize="12">
+                                            VerticalAlignment="Center"
+                                            Background="LightCoral"
+                                            CornerRadius="6">
+                                            <TextBlock Padding="2,1" FontSize="12">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
                                                         <Style.Triggers>
