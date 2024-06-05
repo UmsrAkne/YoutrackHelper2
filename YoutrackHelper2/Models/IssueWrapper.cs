@@ -106,7 +106,7 @@ namespace YoutrackHelper2.Models
 
         public DateTime Resolved { get => resolved; private set => SetProperty(ref resolved, value); }
 
-        public long NumberInProject { get; set; }
+        public long NumberInProject { get; private set; }
 
         public DateTime StartedAt { get => startedAt1; set => SetProperty(ref startedAt1, value); }
 
