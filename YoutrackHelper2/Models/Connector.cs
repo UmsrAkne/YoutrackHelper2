@@ -8,6 +8,8 @@ using YouTrackSharp.Issues;
 
 namespace YoutrackHelper2.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
+    // DI により注入されるクラスであるため、警告を抑制する。
     public class Connector : IConnector
     {
         public Connector()

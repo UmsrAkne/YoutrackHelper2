@@ -111,7 +111,7 @@ namespace YoutrackHelper2.Models
                 issue.Comments.Add(new YouTrackSharp.Issues.Comment { Text = comment, });
             }
 
-            issue.SetField(nameof(State), new List<string>() { target.State.ToStateName() });
+            issue.SetField(nameof(State), new List<string>() { target.State.ToStateName(), });
             return Task.FromResult(issue);
         }
 
