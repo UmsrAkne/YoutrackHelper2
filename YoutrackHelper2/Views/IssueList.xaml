@@ -11,6 +11,7 @@
     xmlns:views="clr-namespace:YoutrackHelper2.Views"
     d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
     d:DesignWidth="800"
+    Background="{StaticResource ListViewBackgroundColor}"
     IsEnabled="{Binding UiEnabled}"
     mc:Ignorable="d">
 
@@ -35,6 +36,11 @@
     </UserControl.Style>
 
     <UserControl.Resources>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource ListViewBackgroundColor}" />
+            <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+        </Style>
 
         <views:WorkTypeToStringConverter x:Key="WorkTypeToStringConverter" />
 
@@ -178,7 +184,7 @@
 
             <TextBlock
                 Margin="4,0"
-                FontSize="14"
+                FontSize="{StaticResource BasicFontsize}"
                 Text="{Binding TotalWorkingDuration, Converter={StaticResource TimeSpanConverter}, StringFormat=　総作業時間 {0}}" />
         </StackPanel>
 
@@ -188,6 +194,7 @@
             Grid.Row="2"
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
+            Background="{StaticResource ListViewBackgroundColor}"
             ItemsSource="{Binding IssueWrappers}"
             ScrollViewer.VerticalScrollBarVisibility="Visible"
             SelectedItem="{Binding SelectedIssue}">
@@ -209,9 +216,9 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <DataTemplate.Resources>
-                        <system:Double x:Key="BasicFontsize">15.0</system:Double>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
+                            <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
                             <Setter Property="VerticalAlignment" Value="Center" />
                         </Style>
                     </DataTemplate.Resources>
@@ -328,6 +335,7 @@
 
                                         <TextBlock
                                             FontSize="12"
+                                            Foreground="Black"
                                             Text="{Binding Self, Converter={StaticResource IssueStatusConverter}}"
                                             TextAlignment="Center" />
                                     </ToggleButton>
@@ -459,10 +467,16 @@
 
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="{x:Type models:Comment}">
+                                                <DataTemplate.Resources>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                                                    </Style>
+                                                </DataTemplate.Resources>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontSize="{StaticResource BasicFontsize}" Text="{Binding Text}" />
+                                                    <TextBlock Text="{Binding Text}" />
                                                     <Border Width="0" Margin="4,0" />
-                                                    <TextBlock FontSize="{StaticResource BasicFontsize}" Text="{Binding DateTime, StringFormat=({0}), Converter={StaticResource DateTimeConverter}}" />
+                                                    <TextBlock Text="{Binding DateTime, StringFormat=({0}), Converter={StaticResource DateTimeConverter}}" />
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
@@ -479,16 +493,13 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Style.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Trigger>
 
                         <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="AntiqueWhite" />
+                            <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
                         </Trigger>
 
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="LightSalmon" />
+                            <Setter Property="Background" Value="{StaticResource SelectionBackgroundColor}" />
                         </Trigger>
                     </Style.Triggers>
 
@@ -516,6 +527,12 @@
         </ListView>
 
         <StackPanel Grid.Row="3">
+
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                </Style>
+            </StackPanel.Resources>
 
             <StackPanel.InputBindings>
                 <KeyBinding
@@ -557,7 +574,13 @@
                     HorizontalAlignment="Left"
                     ItemsSource="{Binding Source={StaticResource EnumValues}}"
                     SelectedIndex="0"
-                    SelectedItem="{Binding CurrentIssueWrapper.WorkType}" />
+                    SelectedItem="{Binding CurrentIssueWrapper.WorkType}">
+                    <ComboBox.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="Black" />
+                        </Style>
+                    </ComboBox.Resources>
+                </ComboBox>
 
                 <Border Margin="10,0" />
 

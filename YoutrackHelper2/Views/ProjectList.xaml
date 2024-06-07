@@ -42,6 +42,7 @@
             Grid.Row="1"
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
+            Background="{StaticResource ListViewBackgroundColor}"
             ItemsSource="{Binding Projects}"
             SelectedItem="{Binding SelectedProject}">
 
@@ -53,6 +54,11 @@
 
                     <Border>
                         <Grid>
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                                </Style>
+                            </Grid.Resources>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
@@ -106,6 +112,12 @@
                                     Width="120"
                                     ItemsSource="{Binding Source={StaticResource WorkTypeValues}}"
                                     SelectedItem="{Binding DefaultWorkType}">
+                                    <ComboBox.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Black" />
+                                        </Style>
+                                    </ComboBox.Resources>
+
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
                                             <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ChangeDefaultWorkTypeCommand}" CommandParameter="{Binding}" />
@@ -161,16 +173,13 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Style.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Trigger>
 
                         <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="AntiqueWhite" />
+                            <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
                         </Trigger>
 
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="LightSalmon" />
+                            <Setter Property="Background" Value="{StaticResource SelectionBackgroundColor}" />
                         </Trigger>
 
                         <DataTrigger Binding="{Binding Archived}" Value="true">

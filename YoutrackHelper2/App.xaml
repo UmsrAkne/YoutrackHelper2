@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:models1="clr-namespace:YoutrackHelper2.Models"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels">
 
     <Application.Resources>
@@ -56,6 +57,12 @@
                 </StackPanel>
             </Border>
         </DataTemplate>
+
+        <SolidColorBrush x:Key="ListViewBackgroundColor" Color="#333344" />
+        <SolidColorBrush x:Key="ListViewLightBackgroundColor" Color="#444455" />
+        <SolidColorBrush x:Key="BasicFontColor" Color="WhiteSmoke" />
+        <SolidColorBrush x:Key="SelectionBackgroundColor" Color="#336699" />
+        <system:Double x:Key="BasicFontsize">15.0</system:Double>
 
         <!--  リソースを一つしか宣言していない状態だと、そのリソースを参照できない。このリソースは使わないが、宣言していないと動かない。らしい  -->
         <SolidColorBrush x:Key="MyBackground" Color="Blue" />
