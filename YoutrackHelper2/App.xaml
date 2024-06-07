@@ -57,6 +57,11 @@
             </Border>
         </DataTemplate>
 
+        <SolidColorBrush x:Key="ListViewBackgroundColor" Color="#333344" />
+        <SolidColorBrush x:Key="ListViewLightBackgroundColor" Color="#444455" />
+        <SolidColorBrush x:Key="BasicFontColor" Color="WhiteSmoke" />
+        <SolidColorBrush x:Key="SelectionBackgroundColor" Color="#336699" />
+
         <!--  リソースを一つしか宣言していない状態だと、そのリソースを参照できない。このリソースは使わないが、宣言していないと動かない。らしい  -->
         <SolidColorBrush x:Key="MyBackground" Color="Blue" />
     </Application.Resources>
