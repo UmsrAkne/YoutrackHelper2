@@ -194,7 +194,6 @@
             Grid.Row="2"
             HorizontalContentAlignment="Stretch"
             AlternationCount="2"
-            Background="{StaticResource ListViewBackgroundColor}"
             ItemsSource="{Binding IssueWrappers}"
             ScrollViewer.VerticalScrollBarVisibility="Visible"
             SelectedItem="{Binding SelectedIssue}">
@@ -212,6 +211,22 @@
                     CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
                     Modifiers="Control+Shift" />
             </ListView.InputBindings>
+
+            <!--  ListView が無効状態の時、背景色が白になってしまうのを防ぐためにテンプレートを設定している  -->
+            <ListView.Template>
+                <ControlTemplate TargetType="ListView">
+                    <Border
+                        x:Name="border"
+                        Background="{StaticResource ListViewBackgroundColor}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch" />
+                    </Border>
+                </ControlTemplate>
+            </ListView.Template>
 
             <ListView.ItemTemplate>
                 <DataTemplate>
