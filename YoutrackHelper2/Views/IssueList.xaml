@@ -613,7 +613,9 @@
                     Width="250"
                     Margin="5,0"
                     Command="{Binding CreateIssueAsyncCommand}"
-                    Content="Create new Issue (Ctrl + Shift + Enter)" />
+                    Content="Create new Issue (Ctrl + Shift + Enter)"
+                    Template="{StaticResource ButtonCustomTemplate}" />
+
             </StackPanel>
         </StackPanel>
     </Grid>

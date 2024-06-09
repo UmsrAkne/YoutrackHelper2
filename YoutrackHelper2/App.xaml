@@ -58,6 +58,30 @@
             </Border>
         </DataTemplate>
 
+        <ControlTemplate x:Key="ButtonCustomTemplate" TargetType="Button">
+            <Border
+                x:Name="border"
+                Padding="{TemplateBinding Padding}"
+                Background="SlateBlue"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="2">
+                <ContentPresenter
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="border" Property="Background" Value="RoyalBlue" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="border" Property="Background" Value="CornflowerBlue" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <SolidColorBrush x:Key="ListViewBackgroundColor" Color="#333344" />
         <SolidColorBrush x:Key="ListViewLightBackgroundColor" Color="#444455" />
         <SolidColorBrush x:Key="BasicFontColor" Color="WhiteSmoke" />
