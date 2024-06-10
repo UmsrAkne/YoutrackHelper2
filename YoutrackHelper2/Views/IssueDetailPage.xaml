@@ -19,6 +19,8 @@
             Key="S"
             Command="{Binding UpdateIssueTextsAsyncCommand}"
             Modifiers="Control" />
+
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
     </Page.InputBindings>
 
     <Grid Margin="3">
