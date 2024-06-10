@@ -12,18 +12,41 @@
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance viewModels:IssueDetailPageViewModel}"
+    Background="{StaticResource ListViewBackgroundColor}"
     mc:Ignorable="d">
     <Page.InputBindings>
         <KeyBinding
             Key="S"
             Command="{Binding UpdateIssueTextsAsyncCommand}"
             Modifiers="Control" />
+
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
     </Page.InputBindings>
 
     <Grid Margin="3">
         <Grid.Resources>
             <Style TargetType="TextBlock">
                 <Setter Property="FontSize" Value="13" />
+                <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
+                <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="Template" Value="{StaticResource ButtonCustomTemplate}" />
+            </Style>
+
+            <Style TargetType="ComboBox">
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Foreground="Black" Text="{Binding}" />
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <ObjectDataProvider
@@ -51,6 +74,9 @@
                 <TextBox DockPanel.Dock="Right" Text="{Binding IssueTitle.Text, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
+
+                            <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IssueTitle.TextChanged}" Value="True">
                                     <Setter Property="BorderBrush" Value="DeepSkyBlue" />
@@ -67,6 +93,9 @@
             <TextBox AcceptsReturn="True" Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
+
+                        <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
+                        <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Description.TextChanged}" Value="True">
                                 <Setter Property="BorderBrush" Value="DeepSkyBlue" />
@@ -86,7 +115,10 @@
             <Border Margin="0,5" />
             <TextBlock Text="Tags : " />
             <Border Margin="3,2" />
-            <ListBox Height="30" ItemsSource="{Binding IssueWrapper.Tags}">
+            <ListBox
+                Height="30"
+                Background="{StaticResource ListViewBackgroundColor}"
+                ItemsSource="{Binding IssueWrapper.Tags}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -96,7 +128,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:Tag}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Text, StringFormat=#{0}}" />
+                            <TextBlock Foreground="{StaticResource BasicFontColor}" Text="{Binding Text, StringFormat=#{0}}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -123,6 +155,7 @@
 
             <ListBox
                 HorizontalContentAlignment="Stretch"
+                Background="{StaticResource ListViewBackgroundColor}"
                 DockPanel.Dock="Bottom"
                 ItemsSource="{Binding IssueWrapper.Comments}">
 
@@ -133,6 +166,12 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                                </Style>
+                            </Grid.Resources>
 
                             <TextBlock Grid.Column="0" Text="{Binding Text}" />
                             <TextBlock Grid.Column="1" Text="{Binding DateTime}" />
@@ -148,7 +187,7 @@
             Orientation="Horizontal">
 
             <Button
-                Margin="5,4"
+                Margin="0,4"
                 Padding="10,0"
                 HorizontalAlignment="Right"
                 Command="{Binding PostCommentAsyncCommand}"
@@ -156,8 +195,26 @@
                 IsEnabled="{Binding TemporaryComment.TextChanged}" />
 
             <Button
+                Margin="10,4"
+                Padding="10,0"
+                HorizontalAlignment="Right"
+                Command="{Binding UpdateIssueTextsAsyncCommand}"
+                Content="Save (Ctrl + S)"
+                IsEnabled="{Binding NeedsSave}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding NeedsSave}" Value="True">
+                                <Setter Property="BorderBrush" Value="LightSkyBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button
                 Width="100"
-                Margin="0,4"
+                Margin="10,4"
                 HorizontalAlignment="Right"
                 Command="{Binding CloseCommand}"
                 Content="Close" />

@@ -10,6 +10,7 @@ namespace YoutrackHelper2.ViewModels
     public class IssueDetailPageViewModel : BindableBase, IDialogAware
     {
         private IConnector connector;
+        private bool initialized;
 
         public event Action<IDialogResult> RequestClose;
 
@@ -22,6 +23,8 @@ namespace YoutrackHelper2.ViewModels
         public TextWrapper IssueTitle { get; set; } = new TextWrapper();
 
         public TextWrapper TemporaryComment { get; set; } = new TextWrapper();
+
+        public bool NeedsSave => IssueTitle.TextChanged || Description.TextChanged;
 
         public AddWorkingDurationViewModel AddWorkingDurationViewModel { get; set; } = new ();
 
@@ -76,6 +79,22 @@ namespace YoutrackHelper2.ViewModels
             AddWorkingDurationViewModel.CurrentIssueWrapper = IssueWrapper;
             AddWorkingDurationViewModel.SetDefaultTexts();
             RaisePropertyChanged(nameof(IssueWrapper));
+
+            if (initialized)
+            {
+                return;
+            }
+
+            initialized = true;
+            IssueTitle.TextChangedEvent += UpdatedNeedsSave;
+            Description.TextChangedEvent += UpdatedNeedsSave;
+
+            return;
+
+            void UpdatedNeedsSave(object sender, EventArgs e)
+            {
+                RaisePropertyChanged(nameof(NeedsSave));
+            }
         }
     }
 }
