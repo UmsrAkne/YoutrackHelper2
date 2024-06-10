@@ -197,7 +197,18 @@
                 Padding="10,0"
                 HorizontalAlignment="Right"
                 Command="{Binding UpdateIssueTextsAsyncCommand}"
-                Content="Save (Ctrl + S)" />
+                Content="Save (Ctrl + S)"
+                IsEnabled="{Binding NeedsSave}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding NeedsSave}" Value="True">
+                                <Setter Property="BorderBrush" Value="LightSkyBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
             <Button
                 Width="100"

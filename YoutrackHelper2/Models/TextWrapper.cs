@@ -1,3 +1,4 @@
+using System;
 using Prism.Mvvm;
 
 namespace YoutrackHelper2.Models
@@ -6,6 +7,8 @@ namespace YoutrackHelper2.Models
     {
         private string text = string.Empty;
         private bool textChanged;
+
+        public event EventHandler TextChangedEvent;
 
         public string Text
         {
@@ -19,6 +22,21 @@ namespace YoutrackHelper2.Models
             }
         }
 
-        public bool TextChanged { get => textChanged; set => SetProperty(ref textChanged, value); }
+        public bool TextChanged
+        {
+            get => textChanged;
+            set
+            {
+                if (SetProperty(ref textChanged, value))
+                {
+                    OnTextChanged();
+                }
+            }
+        }
+
+        private void OnTextChanged()
+        {
+            TextChangedEvent?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
