@@ -34,7 +34,7 @@ namespace YoutrackHelper2.ViewModels
 
         public async void OnDialogOpened(IDialogParameters parameters)
         {
-            connector = parameters.GetValue<Connector>(nameof(Connector));
+            connector = parameters.GetValue<IConnector>(nameof(Connector));
             if (connector != null)
             {
                 Tags = new ObservableCollection<Tag>(await connector.GetTags());
