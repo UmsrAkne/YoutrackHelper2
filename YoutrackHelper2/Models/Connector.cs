@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using YoutrackHelper2.Models.Tags;
 using YouTrackSharp;
 using YouTrackSharp.Issues;
 
@@ -19,11 +20,15 @@ namespace YoutrackHelper2.Models
         public Connector(string url, string token)
         {
             Connection = new BearerTokenConnection(url, token);
+            TagProvider = new TagProvider();
+            TagProvider.SetConnection(url, token);
         }
 
         public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
         public List<IssueWrapper> IssueWrappers { get; private set; }
+
+        public ITagProvider TagProvider { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -34,6 +39,8 @@ namespace YoutrackHelper2.Models
         public void SetConnection(string uri, string token)
         {
             Connection = new BearerTokenConnection(uri, token);
+            TagProvider = new TagProvider();
+            TagProvider.SetConnection(uri, token);
         }
 
         public async Task<Issue> ApplyCommand(string shortName, string command, string comment)
@@ -241,7 +248,7 @@ namespace YoutrackHelper2.Models
                 {
                     Summary = iw.Title,
                     Description = iw.Description,
-                    Tags = iw.Tags.Select(t => new SubValue<string>() { Value = t.Text, }),
+                    Tags = iw.Tags.Select(t => new SubValue<string>() { Value = t.Name, }),
                 };
 
                 var w = iw.WorkType.ToWorkTypeName();
@@ -314,6 +321,11 @@ namespace YoutrackHelper2.Models
             }
 
             await ApplyCommand(issueId, $"作業 {durationMinutes}m", string.Empty);
+        }
+
+        public async Task<List<Tag>> GetTags()
+        {
+            return await TagProvider.GetTags();
         }
     }
 }

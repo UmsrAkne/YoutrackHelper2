@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:YoutrackHelper2.Models"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:tags="clr-namespace:YoutrackHelper2.Models.Tags"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     Title="{Binding Title}"
     Width="600"
@@ -105,8 +106,8 @@
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
-                                            <DataTemplate DataType="{x:Type models:Tag}">
-                                                <TextBlock Margin="2,0" Text="{Binding Text, StringFormat=#{0}}" />
+                                            <DataTemplate DataType="{x:Type tags:Tag}">
+                                                <TextBlock Margin="2,0" Text="{Binding Name, StringFormat=#{0}}" />
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

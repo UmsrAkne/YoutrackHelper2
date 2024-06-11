@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using YoutrackHelper2.Models;
 using YoutrackHelper2.Views;
 
@@ -15,10 +16,11 @@ namespace YoutrackHelper2.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ProjectListViewModel : BindableBase
     {
+        private readonly IDialogService dialogService;
         private ObservableCollection<ProjectWrapper> projects = new ();
         private ProjectWrapper selectedProject;
 
-        public ProjectListViewModel(IConnector connector)
+        public ProjectListViewModel(IConnector connector, IDialogService dialogService)
         {
             Connector = connector;
 
@@ -31,6 +33,8 @@ namespace YoutrackHelper2.ViewModels
             .Replace("\n", string.Empty);
 
             _ = GetProjectsAsync(uri, perm);
+
+            this.dialogService = dialogService;
         }
 
         public event EventHandler NavigationRequest;
@@ -82,6 +86,16 @@ namespace YoutrackHelper2.ViewModels
             }
 
             WriteJsonFile();
+        });
+
+        public DelegateCommand ShowTagManagementPageCommand => new DelegateCommand(() =>
+        {
+            var dialogParams = new DialogParameters
+            {
+                { nameof(Models.Connector), Connector },
+            };
+
+            dialogService.ShowDialog(nameof(TagManagementPage), dialogParams, _ => { });
         });
 
         public TitleBarText TitleBarText { get; set; }

@@ -5,10 +5,11 @@
     xmlns:models1="clr-namespace:YoutrackHelper2.Models"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:tags="clr-namespace:YoutrackHelper2.Models.Tags"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels">
 
     <Application.Resources>
-        <DataTemplate x:Key="TagListDataTemplate" DataType="{x:Type models1:Tag}">
+        <DataTemplate x:Key="TagListDataTemplate" DataType="{x:Type tags:Tag}">
             <Border
                 Margin="2,2"
                 Padding="3,1,4,1"
@@ -52,7 +53,7 @@
                         Margin="2,0"
                         Padding="0"
                         FontSize="14"
-                        Text="{Binding Text, StringFormat=#{0}}" />
+                        Text="{Binding Name, StringFormat=#{0}}" />
 
                 </StackPanel>
             </Border>

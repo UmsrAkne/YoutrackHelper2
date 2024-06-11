@@ -53,8 +53,8 @@ namespace YoutrackHelper2Test.Models
             Assert.AreEqual("説明", w1.Description);
             Assert.AreEqual(WorkType.Bug, w1.WorkType);
 
-            Assert.AreEqual("tag", w1.Tags.ToList()[0].Text, "タグとして認識されているか？");
-            Assert.AreEqual("Test Tag", w1.Tags.ToList()[1].Text, "間に半角スペースが含まれても問題ないか？");
+            Assert.AreEqual("tag", w1.Tags.ToList()[0].Name, "タグとして認識されているか？");
+            Assert.AreEqual("Test Tag", w1.Tags.ToList()[1].Name, "間に半角スペースが含まれても問題ないか？");
         }
 
         [Test]
@@ -74,8 +74,8 @@ namespace YoutrackHelper2Test.Models
             Assert.AreEqual(description, w1.Description);
             Assert.AreEqual(WorkType.Bug, w1.WorkType);
 
-            Assert.AreEqual(tag1, w1.Tags.ToList()[0].Text, "タグとして認識されているか？");
-            Assert.AreEqual(tag2, w1.Tags.ToList()[1].Text, "間に半角スペースが含まれても問題ないか？");
+            Assert.AreEqual(tag1, w1.Tags.ToList()[0].Name, "タグとして認識されているか？");
+            Assert.AreEqual(tag2, w1.Tags.ToList()[1].Name, "間に半角スペースが含まれても問題ないか？");
         }
     }
 }

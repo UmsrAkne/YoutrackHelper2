@@ -31,7 +31,9 @@
 
         <StackPanel Grid.Row="0">
             <Menu>
-                <MenuItem Header="File" />
+                <MenuItem Header="View">
+                    <MenuItem Command="{Binding ShowTagManagementPageCommand}" Header="タグ管理ページ" />
+                </MenuItem>
             </Menu>
             <StatusBar>
                 <TextBlock Text="" />

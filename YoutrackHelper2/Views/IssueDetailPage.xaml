@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:YoutrackHelper2.Models"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:tags="clr-namespace:YoutrackHelper2.Models.Tags"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     xmlns:views="clr-namespace:YoutrackHelper2.Views"
     Title="IssueDetailPage"
@@ -126,9 +127,9 @@
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:Tag}">
+                    <DataTemplate DataType="{x:Type tags:Tag}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Foreground="{StaticResource BasicFontColor}" Text="{Binding Text, StringFormat=#{0}}" />
+                            <TextBlock Foreground="{StaticResource BasicFontColor}" Text="{Binding Name, StringFormat=#{0}}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
