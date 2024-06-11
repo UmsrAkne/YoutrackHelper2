@@ -70,7 +70,7 @@ namespace YoutrackHelper2.Models
 
                     Tags = value.Tags.Select(t => new Tag()
                     {
-                        Text = t.Value,
+                        Name = t.Value,
                         ParentIssueId = ShortName,
                     });
                 }
@@ -200,7 +200,7 @@ namespace YoutrackHelper2.Models
                 if (t.StartsWith("#"))
                 {
                     w.Tags = t.Split("#", StringSplitOptions.RemoveEmptyEntries)
-                        .Select(tt => new Tag() { Text = tt.Trim(), }).ToList();
+                        .Select(tt => new Tag() { Name = tt.Trim(), }).ToList();
                     continue;
                 }
 

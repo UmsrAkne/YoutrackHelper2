@@ -241,7 +241,7 @@ namespace YoutrackHelper2.Models
                 {
                     Summary = iw.Title,
                     Description = iw.Description,
-                    Tags = iw.Tags.Select(t => new SubValue<string>() { Value = t.Text, }),
+                    Tags = iw.Tags.Select(t => new SubValue<string>() { Value = t.Name, }),
                 };
 
                 var w = iw.WorkType.ToWorkTypeName();

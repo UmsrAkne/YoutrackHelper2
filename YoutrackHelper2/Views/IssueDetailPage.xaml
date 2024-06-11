@@ -129,7 +129,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type tags:Tag}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Foreground="{StaticResource BasicFontColor}" Text="{Binding Text, StringFormat=#{0}}" />
+                            <TextBlock Foreground="{StaticResource BasicFontColor}" Text="{Binding Name, StringFormat=#{0}}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

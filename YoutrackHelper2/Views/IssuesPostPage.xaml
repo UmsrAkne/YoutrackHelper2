@@ -107,7 +107,7 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate DataType="{x:Type tags:Tag}">
-                                                <TextBlock Margin="2,0" Text="{Binding Text, StringFormat=#{0}}" />
+                                                <TextBlock Margin="2,0" Text="{Binding Name, StringFormat=#{0}}" />
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

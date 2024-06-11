@@ -143,7 +143,7 @@ namespace YoutrackHelper2.ViewModels
             {
                 issue.Tags = TagText
                     .Split("#", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(t => new Tag() { Text = t.Trim(), });
+                    .Select(t => new Tag() { Name = t.Trim(), });
             }
 
             await Connector.CreateIssue(ProjectWrapper.ShortName, issue);
@@ -437,7 +437,7 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
-            iw.Issue = await Connector.RemoveTagFromIssue(iw.ShortName, param.Text);
+            iw.Issue = await Connector.RemoveTagFromIssue(iw.ShortName, param.Name);
         });
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
@@ -500,7 +500,7 @@ namespace YoutrackHelper2.ViewModels
                     ShortName = "test-1",
                     Description = "課題の詳細説明が入力されます",
                     WorkType = WorkType.Feature,
-                    Tags = new ObservableCollection<Tag>() { new () { Text = "testTag1", }, new () { Text = "testTag2", }, },
+                    Tags = new ObservableCollection<Tag>() { new () { Name = "testTag1", }, new () { Name = "testTag2", }, },
                 },
                 new IssueWrapper()
                 {
@@ -510,7 +510,7 @@ namespace YoutrackHelper2.ViewModels
                     Comments = dummyComments,
                     Expanded = true,
                     WorkType = WorkType.Bug,
-                    Tags = new ObservableCollection<Tag>() { new () { Text = "testTag2", }, },
+                    Tags = new ObservableCollection<Tag>() { new () { Name = "testTag2", }, },
                 },
                 new IssueWrapper()
                 {
