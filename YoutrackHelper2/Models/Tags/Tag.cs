@@ -1,8 +1,8 @@
-namespace YoutrackHelper2.Models
+namespace YoutrackHelper2.Models.Tags
 {
     public class Tag
     {
-        public string Text { get; init; }
+        public string Name { get; init; }
 
         public string ParentIssueId { get; init; } = string.Empty;
     }

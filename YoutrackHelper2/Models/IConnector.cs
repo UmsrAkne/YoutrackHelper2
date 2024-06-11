@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YoutrackHelper2.Models.Tags;
 using YouTrackSharp.Issues;
 
 namespace YoutrackHelper2.Models
@@ -10,6 +11,8 @@ namespace YoutrackHelper2.Models
         List<ProjectWrapper> ProjectWrappers { get; }
 
         List<IssueWrapper> IssueWrappers { get; }
+
+        public ITagProvider TagProvider { get; set; }
 
         string ErrorMessage { get; set; }
 
@@ -73,5 +76,11 @@ namespace YoutrackHelper2.Models
         /// <param name="durationMinutes">追加する作業時間。分単位で入力</param>
         /// <returns>非同期操作を表すタスク</returns>
         Task AddWorkingDuration(string issueId, int durationMinutes);
+
+        /// <summary>
+        /// 現存する全てのタグを取得します。
+        /// </summary>
+        /// <returns>全てのタグのリスト。</returns>
+        Task<List<Tag>> GetTags();
     }
 }

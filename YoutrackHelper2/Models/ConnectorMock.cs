@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YoutrackHelper2.Models.Tags;
 using YouTrackSharp;
 using YouTrackSharp.Issues;
 using YouTrackSharp.Projects;
@@ -67,12 +68,16 @@ namespace YoutrackHelper2.Models
 
         public List<IssueWrapper> IssueWrappers { get; set; }
 
+        public ITagProvider TagProvider { get; set; }
+
         public string ErrorMessage { get; set; }
 
         private List<Issue> DummyIssues { get; set; }
 
         public void SetConnection(string uri, string token)
         {
+            TagProvider = new DummyTagProvider();
+            TagProvider.SetConnection(uri, token);
         }
 
         public Task<Issue> ApplyCommand(string shortName, string command, string comment)
@@ -226,6 +231,11 @@ namespace YoutrackHelper2.Models
             });
 
             return Task.CompletedTask;
+        }
+
+        public Task<List<Tag>> GetTags()
+        {
+            return TagProvider.GetTags();
         }
     }
 }
