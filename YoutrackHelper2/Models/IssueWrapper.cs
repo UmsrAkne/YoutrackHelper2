@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Mvvm;
+using YoutrackHelper2.Models.Tags;
 using YouTrackSharp.Issues;
 
 namespace YoutrackHelper2.Models

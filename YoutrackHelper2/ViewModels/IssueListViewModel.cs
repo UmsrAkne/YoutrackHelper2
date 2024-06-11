@@ -14,6 +14,7 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using YoutrackHelper2.Models;
 using YoutrackHelper2.Models.Generics;
+using YoutrackHelper2.Models.Tags;
 using YoutrackHelper2.Views;
 
 namespace YoutrackHelper2.ViewModels

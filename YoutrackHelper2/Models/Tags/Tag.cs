@@ -1,4 +1,4 @@
-namespace YoutrackHelper2.Models
+namespace YoutrackHelper2.Models.Tags
 {
     public class Tag
     {
