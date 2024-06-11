@@ -62,7 +62,7 @@
             <Border
                 x:Name="border"
                 Padding="{TemplateBinding Padding}"
-                Background="SlateBlue"
+                Background="LightSkyBlue"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="2">
@@ -74,10 +74,10 @@
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="border" Property="Background" Value="RoyalBlue" />
+                    <Setter TargetName="border" Property="Background" Value="LightBlue" />
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="border" Property="Background" Value="CornflowerBlue" />
+                    <Setter TargetName="border" Property="Background" Value="RoyalBlue" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
