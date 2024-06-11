@@ -1,0 +1,46 @@
+<Page
+    x:Class="YoutrackHelper2.Views.TagManagementPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
+    Title="{Binding TitleBarText.Text}"
+    Width="800"
+    Height="450"
+    d:DataContext="{d:DesignInstance viewModels:TagManagementPageViewModel}"
+    Background="{StaticResource ListViewBackgroundColor}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Template" Value="{StaticResource ButtonCustomTemplate}" />
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListView Background="{StaticResource ListViewBackgroundColor}" ItemsSource="{Binding Tags}" />
+
+        <StackPanel
+            Grid.Row="1"
+            Margin="8"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+
+            <Button Padding="12,1" Command="{Binding CloseCommand}">
+                <Button.Content>
+                    <TextBlock Text="Close" />
+                </Button.Content>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

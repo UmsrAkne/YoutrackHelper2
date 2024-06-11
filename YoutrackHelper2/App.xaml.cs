@@ -22,6 +22,7 @@ namespace YoutrackHelper2
             containerRegistry.RegisterForNavigation<IssueList>();
             containerRegistry.RegisterDialog<IssuesPostPage, IssuesPostPageViewModel>();
             containerRegistry.RegisterDialog<IssueDetailPage, IssueDetailPageViewModel>();
+            containerRegistry.RegisterDialog<TagManagementPage, TagManagementPageViewModel>();
 
         #if DEBUG
             containerRegistry.Register<IConnector, ConnectorMock>();
