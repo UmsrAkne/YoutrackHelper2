@@ -26,12 +26,40 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ListView Background="{StaticResource ListViewBackgroundColor}" ItemsSource="{Binding Tags}" />
 
         <StackPanel
             Grid.Row="1"
+            Margin="8"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <TextBox
+                Width="300"
+                Margin="10,0"
+                Text="{Binding TagNameText, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Padding="12,1" Command="{Binding CreateTagAsyncCommand}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding TagNameText}" Value="">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+                <Button.Content>
+                    <TextBlock Text="Create Tag" />
+                </Button.Content>
+            </Button>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="2"
             Margin="8"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
