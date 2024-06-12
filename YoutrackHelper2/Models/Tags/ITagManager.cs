@@ -8,5 +8,7 @@ namespace YoutrackHelper2.Models.Tags
         void SetConnection(string url, string tokenStr);
 
         Task<List<Tag>> GetTags();
+
+        Task AddTag(Tag tag);
     }
 }
