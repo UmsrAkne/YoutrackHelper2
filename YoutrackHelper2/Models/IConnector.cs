@@ -82,5 +82,7 @@ namespace YoutrackHelper2.Models
         /// </summary>
         /// <returns>全てのタグのリスト。</returns>
         Task<List<Tag>> GetTags();
+
+        Task CreateTag(Tag tag);
     }
 }
