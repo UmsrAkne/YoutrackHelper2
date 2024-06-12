@@ -12,7 +12,7 @@ namespace YoutrackHelper2.Models
 
         List<IssueWrapper> IssueWrappers { get; }
 
-        public ITagProvider TagProvider { get; set; }
+        public ITagManager TagManager { get; set; }
 
         string ErrorMessage { get; set; }
 

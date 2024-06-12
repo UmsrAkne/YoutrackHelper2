@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace YoutrackHelper2.Models.Tags
 {
-    public class DummyTagProvider : ITagProvider
+    public class DummyTagManager : ITagManager
     {
         public void SetConnection(string url, string tokenStr)
         {

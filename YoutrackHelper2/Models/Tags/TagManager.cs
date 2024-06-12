@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace YoutrackHelper2.Models.Tags
 {
-    public class TagProvider : ITagProvider
+    public class TagManager : ITagManager
     {
         private string uri;
         private string token;

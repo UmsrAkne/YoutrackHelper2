@@ -20,15 +20,15 @@ namespace YoutrackHelper2.Models
         public Connector(string url, string token)
         {
             Connection = new BearerTokenConnection(url, token);
-            TagProvider = new TagProvider();
-            TagProvider.SetConnection(url, token);
+            TagManager = new TagManager();
+            TagManager.SetConnection(url, token);
         }
 
         public List<ProjectWrapper> ProjectWrappers { get; private set; }
 
         public List<IssueWrapper> IssueWrappers { get; private set; }
 
-        public ITagProvider TagProvider { get; set; }
+        public ITagManager TagManager { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -39,8 +39,8 @@ namespace YoutrackHelper2.Models
         public void SetConnection(string uri, string token)
         {
             Connection = new BearerTokenConnection(uri, token);
-            TagProvider = new TagProvider();
-            TagProvider.SetConnection(uri, token);
+            TagManager = new TagManager();
+            TagManager.SetConnection(uri, token);
         }
 
         public async Task<Issue> ApplyCommand(string shortName, string command, string comment)
@@ -325,7 +325,7 @@ namespace YoutrackHelper2.Models
 
         public async Task<List<Tag>> GetTags()
         {
-            return await TagProvider.GetTags();
+            return await TagManager.GetTags();
         }
     }
 }

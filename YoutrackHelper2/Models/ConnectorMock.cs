@@ -68,7 +68,7 @@ namespace YoutrackHelper2.Models
 
         public List<IssueWrapper> IssueWrappers { get; set; }
 
-        public ITagProvider TagProvider { get; set; }
+        public ITagManager TagManager { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -76,8 +76,8 @@ namespace YoutrackHelper2.Models
 
         public void SetConnection(string uri, string token)
         {
-            TagProvider = new DummyTagProvider();
-            TagProvider.SetConnection(uri, token);
+            TagManager = new DummyTagManager();
+            TagManager.SetConnection(uri, token);
         }
 
         public Task<Issue> ApplyCommand(string shortName, string command, string comment)
@@ -235,7 +235,7 @@ namespace YoutrackHelper2.Models
 
         public Task<List<Tag>> GetTags()
         {
-            return TagProvider.GetTags();
+            return TagManager.GetTags();
         }
     }
 }
