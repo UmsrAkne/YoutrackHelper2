@@ -12,7 +12,7 @@ namespace YoutrackHelper2.ViewModels
     public class TagManagementPageViewModel : BindableBase, IDialogAware
     {
         private IConnector connector;
-        private string tagNameText;
+        private string tagNameText = string.Empty;
 
         public event Action<IDialogResult> RequestClose;
 
