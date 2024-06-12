@@ -237,5 +237,10 @@ namespace YoutrackHelper2.Models
         {
             return TagManager.GetTags();
         }
+
+        public async Task CreateTag(Tag tag)
+        {
+            await TagManager.AddTag(tag);
+        }
     }
 }
