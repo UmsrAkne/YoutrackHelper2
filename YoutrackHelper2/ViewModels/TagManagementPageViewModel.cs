@@ -12,6 +12,7 @@ namespace YoutrackHelper2.ViewModels
     public class TagManagementPageViewModel : BindableBase, IDialogAware
     {
         private IConnector connector;
+        private string tagNameText = string.Empty;
 
         public event Action<IDialogResult> RequestClose;
 
@@ -19,11 +20,24 @@ namespace YoutrackHelper2.ViewModels
 
         public TitleBarText TitleBarText { get; } = new () { Text = "Tag management page", };
 
+        public string TagNameText { get => tagNameText; set => SetProperty(ref tagNameText, value); }
+
         public ObservableCollection<Tag> Tags { get; set; }
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
             RequestClose?.Invoke(new DialogResult());
+        });
+
+        public AsyncDelegateCommand CreateTagAsyncCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (string.IsNullOrWhiteSpace(TagNameText))
+            {
+                return;
+            }
+
+            await connector.CreateTag(new Tag() { Name = TagNameText, });
+            TagNameText = string.Empty;
         });
 
         public bool CanCloseDialog() => true;

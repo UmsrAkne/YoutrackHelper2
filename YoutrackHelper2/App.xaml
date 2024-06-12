@@ -80,6 +80,10 @@
                 <Trigger Property="IsPressed" Value="True">
                     <Setter TargetName="border" Property="Background" Value="RoyalBlue" />
                 </Trigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="border" Property="Background" Value="SlateBlue" />
+                </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
