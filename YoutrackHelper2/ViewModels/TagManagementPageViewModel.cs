@@ -44,6 +44,7 @@ namespace YoutrackHelper2.ViewModels
             }
 
             await connector.CreateTag(new Tag() { Name = TagNameText, });
+            Tags = new ObservableCollection<Tag>(await connector.GetTags());
             TagNameText = string.Empty;
         });
 
