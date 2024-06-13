@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tags="clr-namespace:YoutrackHelper2.Models.Tags"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     Title="{Binding TitleBarText.Text}"
     Width="800"
@@ -29,7 +30,48 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ListView Background="{StaticResource ListViewBackgroundColor}" ItemsSource="{Binding Tags}" />
+        <ListView
+            AlternationCount="2"
+            Background="{StaticResource ListViewBackgroundColor}"
+            ItemsSource="{Binding Tags}">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type tags:Tag}">
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Width="20"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Template="{StaticResource ButtonCustomTemplate}">
+                            <TextBlock
+                                Padding="0,0,0,2"
+                                FontSize="14"
+                                Text="x" />
+                        </Button>
+                        <Border Margin="4,0" />
+                        <TextBlock
+                            FontSize="{StaticResource BasicFontsize}"
+                            Foreground="{StaticResource BasicFontColor}"
+                            Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Style.Triggers>
+
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{StaticResource SelectionBackgroundColor}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+        </ListView>
 
         <StackPanel
             Grid.Row="1"

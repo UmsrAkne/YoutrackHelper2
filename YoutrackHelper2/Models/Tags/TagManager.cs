@@ -8,8 +8,9 @@ using Newtonsoft.Json;
 
 namespace YoutrackHelper2.Models.Tags
 {
-    public class TagManager : ITagManager
+    public sealed class TagManager : ITagManager, IDisposable
     {
+        private readonly HttpClient client = new ();
         private string uri;
         private string token;
 
@@ -21,7 +22,6 @@ namespace YoutrackHelper2.Models.Tags
 
         public async Task<List<Tag>> GetTags()
         {
-            using var client = new HttpClient();
             client.BaseAddress = new Uri(uri);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -36,7 +36,6 @@ namespace YoutrackHelper2.Models.Tags
 
         public async Task AddTag(Tag tag)
         {
-            using var client = new HttpClient();
             client.BaseAddress = new Uri(uri);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -50,6 +49,11 @@ namespace YoutrackHelper2.Models.Tags
             // GETリクエストか、POSTリクエストかで処理の内容が変化する。
             var response = await client.PostAsync("api/tags?fields=id,name", content);
             response.EnsureSuccessStatusCode();
+        }
+
+        public void Dispose()
+        {
+            client.Dispose();
         }
     }
 }

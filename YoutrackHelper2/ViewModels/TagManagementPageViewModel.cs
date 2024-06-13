@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -13,6 +14,12 @@ namespace YoutrackHelper2.ViewModels
     {
         private IConnector connector;
         private string tagNameText = string.Empty;
+        private ObservableCollection<Tag> tags;
+
+        public TagManagementPageViewModel()
+        {
+            SetDummies();
+        }
 
         public event Action<IDialogResult> RequestClose;
 
@@ -22,7 +29,7 @@ namespace YoutrackHelper2.ViewModels
 
         public string TagNameText { get => tagNameText; set => SetProperty(ref tagNameText, value); }
 
-        public ObservableCollection<Tag> Tags { get; set; }
+        public ObservableCollection<Tag> Tags { get => tags; private set => SetProperty(ref tags, value); }
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
@@ -37,6 +44,7 @@ namespace YoutrackHelper2.ViewModels
             }
 
             await connector.CreateTag(new Tag() { Name = TagNameText, });
+            Tags = new ObservableCollection<Tag>(await connector.GetTags());
             TagNameText = string.Empty;
         });
 
@@ -53,6 +61,13 @@ namespace YoutrackHelper2.ViewModels
             {
                 Tags = new ObservableCollection<Tag>(await connector.GetTags());
             }
+        }
+
+        [Conditional("DEBUG")]
+        private void SetDummies()
+        {
+            var ts = new DummyTagManager().GetTags().Result;
+            Tags = new ObservableCollection<Tag>(ts);
         }
     }
 }
