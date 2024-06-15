@@ -12,6 +12,7 @@
     Width="600"
     Height="300"
     d:DataContext="{d:DesignInstance viewModels:IssuesPostPageViewModel}"
+    Background="{StaticResource ListViewBackgroundColor}"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -23,6 +24,19 @@
                 <x:Type TypeName="models:WorkType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
+            <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Template" Value="{StaticResource ButtonCustomTemplate}" />
+        </Style>
 
     </Page.Resources>
 
@@ -55,6 +69,18 @@
             <ItemsControl ItemsSource="{Binding IssueWrappers}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:IssueWrapper}">
+                        <DataTemplate.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                            </Style>
+
+                            <Style TargetType="TextBox">
+                                <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
+                                <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                            </Style>
+
+                        </DataTemplate.Resources>
+
                         <Grid Margin="0,2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -93,7 +119,13 @@
                                         Width="180"
                                         HorizontalAlignment="Left"
                                         ItemsSource="{Binding Source={StaticResource EnumValues}}"
-                                        SelectedItem="{Binding WorkType}" />
+                                        SelectedItem="{Binding WorkType}">
+                                        <ComboBox.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="Black" />
+                                            </Style>
+                                        </ComboBox.Resources>
+                                    </ComboBox>
                                 </DockPanel>
 
                                 <DockPanel>
@@ -145,7 +177,7 @@
 
         <StackPanel
             Grid.Row="2"
-            Margin="0,2"
+            Margin="0,4"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
 
@@ -173,7 +205,7 @@
 
             <Button
                 Width="80"
-                Margin="15,0"
+                Margin="5,0"
                 Padding="10,0"
                 HorizontalAlignment="Right"
                 Command="{Binding CloseCommand}"
