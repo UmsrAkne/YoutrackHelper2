@@ -9,8 +9,8 @@
     xmlns:tags="clr-namespace:YoutrackHelper2.Models.Tags"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     Title="{Binding Title}"
-    Width="600"
-    Height="300"
+    MinWidth="600"
+    MinHeight="300"
     d:DataContext="{d:DesignInstance viewModels:IssuesPostPageViewModel}"
     Background="{StaticResource ListViewBackgroundColor}"
     mc:Ignorable="d">
