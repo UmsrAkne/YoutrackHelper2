@@ -12,7 +12,7 @@ namespace YoutrackHelper2.ViewModels
     public class IssuesPostPageViewModel : BindableBase, IDialogAware
     {
         private ProjectWrapper projectWrapper;
-        private Connector connector;
+        private IConnector connector;
         private ObservableCollection<IssueWrapper> issueWrappers = new ObservableCollection<IssueWrapper>();
         private bool uiEnabled = true;
         private string issuesText;
@@ -99,7 +99,7 @@ namespace YoutrackHelper2.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            connector = parameters.GetValue<Connector>(nameof(Connector));
+            connector = parameters.GetValue<IConnector>(nameof(Connector));
             projectWrapper = parameters.GetValue<ProjectWrapper>(nameof(ProjectWrapper));
             Title = projectWrapper.FullName;
         }
