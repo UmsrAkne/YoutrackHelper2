@@ -69,6 +69,13 @@ namespace YoutrackHelper2.ViewModels
             };
         }
 
+        // ReSharper disable once UnusedMember.Global
+        // デザイン確認用に呼び出される。デバッグ・リリース共に、通常のビルド時には呼び出されない。
+        public IssueListViewModel()
+        {
+            InjectDummies();
+        }
+
         public event EventHandler NavigationRequest;
 
         public ProjectWrapper ProjectWrapper
