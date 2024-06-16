@@ -283,6 +283,14 @@
                                         </TextBlock.Style>
                                     </TextBlock>
 
+                                    <Button
+                                        Margin="6,0"
+                                        Padding="4,0"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ShowIssueDetailPageCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="Edit"
+                                        Template="{StaticResource ButtonCustomTemplate}" />
+
                                 </StackPanel>
 
                                 <StackPanel
