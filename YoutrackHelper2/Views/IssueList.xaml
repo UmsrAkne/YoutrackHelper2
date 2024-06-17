@@ -185,6 +185,7 @@
             <TextBlock
                 Margin="4,0"
                 FontSize="{StaticResource BasicFontsize}"
+                Foreground="{StaticResource BasicFontColor}"
                 Text="{Binding TotalWorkingDuration, Converter={StaticResource TimeSpanConverter}, StringFormat=　総作業時間 {0}}" />
         </StackPanel>
 
