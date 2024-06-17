@@ -44,6 +44,22 @@ namespace YoutrackHelper2.Models
                 },
             };
 
+            for (var i = 0; i < 20; i++)
+            {
+                var w = new Issue()
+                {
+                    Summary = $"{i}つ目のテスト課題のタイトル",
+                    Description = "課題の説明\n 課題の説明２行目",
+                    Id = $"test-{i + 5}",
+                };
+
+                w.SetField(nameof(State), new List<string>() { State.Incomplete.ToStateName(), });
+                w.SetField("Type", new List<string>() { WorkType.Feature.ToWorkTypeName(), });
+                w.SetField("numberInProject", 5 + i);
+
+                DummyIssues.Add(w);
+            }
+
             DummyIssues[0].SetField(nameof(State), new List<string>() { State.Completed.ToStateName(), });
             DummyIssues[0].SetField("Type", new List<string>() { WorkType.Feature.ToWorkTypeName(), });
             DummyIssues[0].SetField("numberInProject", 1);
