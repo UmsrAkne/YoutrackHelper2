@@ -492,52 +492,8 @@ namespace YoutrackHelper2.ViewModels
         [Conditional("DEBUG")]
         private void InjectDummies()
         {
-            var dummyComments = new List<Comment>()
-            {
-                new () { Text = "テストコメントテストコメント", DateTime = new DateTime(2024, 4, 28, 12, 0, 0), },
-                new () { Text = "テストコメントテストコメント\n改行コメント", DateTime = new DateTime(2024, 4, 28, 13, 0, 0), },
-                new () { Text = "テストコメントテストコメント", DateTime = new DateTime(2024, 4, 28, 14, 0, 0), },
-            };
-
-            IssueWrappers.AddRange(new[]
-            {
-                new IssueWrapper()
-                {
-                    Title = "テスト課題のタイトル",
-                    ShortName = "test-1",
-                    Description = "課題の詳細説明が入力されます",
-                    WorkType = WorkType.Feature,
-                    Tags = new ObservableCollection<Tag>() { new () { Name = "testTag1", }, new () { Name = "testTag2", }, },
-                },
-                new IssueWrapper()
-                {
-                    Title = "２つ目のテスト課題のタイトル",
-                    ShortName = "test-2",
-                    Description = "課題の詳細説明が入力されます",
-                    Comments = dummyComments,
-                    Expanded = true,
-                    WorkType = WorkType.Bug,
-                    Tags = new ObservableCollection<Tag>() { new () { Name = "testTag2", }, },
-                },
-                new IssueWrapper()
-                {
-                    Title = "３つ目のテスト課題のタイトル",
-                    Description = "課題の説明\n 課題の説明２行目",
-                    ShortName = "test-3",
-                    Expanded = true,
-                    Comments = dummyComments,
-                    WorkType = WorkType.Test,
-                },
-                new IssueWrapper()
-                {
-                    Title = "４つ目のテスト課題のタイトル",
-                    Description = "課題の説明\n 課題の説明２行目",
-                    ShortName = "test-4",
-                    Expanded = true,
-                    Comments = dummyComments,
-                    WorkType = WorkType.Test,
-                },
-            });
+            IssueWrappers = new ObservableCollection<IssueWrapper>(
+                new ConnectorMock().IssueWrappers);
         }
     }
 }

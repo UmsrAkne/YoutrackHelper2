@@ -185,369 +185,370 @@
             <TextBlock
                 Margin="4,0"
                 FontSize="{StaticResource BasicFontsize}"
+                Foreground="{StaticResource BasicFontColor}"
                 Text="{Binding TotalWorkingDuration, Converter={StaticResource TimeSpanConverter}, StringFormat=　総作業時間 {0}}" />
         </StackPanel>
 
         <!--  課題リストを表示する部分  -->
-        <ListView
-            x:Name="ListView"
-            Grid.Row="2"
-            HorizontalContentAlignment="Stretch"
-            AlternationCount="2"
-            ItemsSource="{Binding IssueWrappers}"
-            ScrollViewer.VerticalScrollBarVisibility="Visible"
-            SelectedItem="{Binding SelectedIssue}">
-            <ListView.InputBindings>
+        <ScrollViewer Grid.Row="2">
+            <ListView
+                x:Name="ListView"
+                HorizontalContentAlignment="Stretch"
+                AlternationCount="2"
+                ItemsSource="{Binding IssueWrappers}"
+                SelectedItem="{Binding SelectedIssue}">
+                <ListView.InputBindings>
 
-                <KeyBinding
-                    Key="C"
-                    Command="{Binding CopyIssueTitleCommand}"
-                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
-                    Modifiers="Control" />
+                    <KeyBinding
+                        Key="C"
+                        Command="{Binding CopyIssueTitleCommand}"
+                        CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                        Modifiers="Control" />
 
-                <KeyBinding
-                    Key="F"
-                    Command="{Binding CompleteIssueCommand}"
-                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
-                    Modifiers="Control+Shift" />
-            </ListView.InputBindings>
+                    <KeyBinding
+                        Key="F"
+                        Command="{Binding CompleteIssueCommand}"
+                        CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                        Modifiers="Control+Shift" />
+                </ListView.InputBindings>
 
-            <!--  ListView が無効状態の時、背景色が白になってしまうのを防ぐためにテンプレートを設定している  -->
-            <ListView.Template>
-                <ControlTemplate TargetType="ListView">
-                    <Border
-                        x:Name="border"
-                        Background="{StaticResource ListViewBackgroundColor}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <ItemsPresenter
-                            Margin="{TemplateBinding Padding}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch" />
-                    </Border>
-                </ControlTemplate>
-            </ListView.Template>
+                <!--  ListView が無効状態の時、背景色が白になってしまうのを防ぐためにテンプレートを設定している  -->
+                <ListView.Template>
+                    <ControlTemplate TargetType="ListView">
+                        <Border
+                            x:Name="border"
+                            Background="{StaticResource ListViewBackgroundColor}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ItemsPresenter
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                        </Border>
+                    </ControlTemplate>
+                </ListView.Template>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <DataTemplate.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
-                            <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataTemplate.Resources>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <DataTemplate.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
+                                <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataTemplate.Resources>
 
-                    <ContentControl>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding ToggleExpandedCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
+                        <ContentControl>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding ToggleExpandedCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
 
-                        <Border Padding="3,0">
-                            <Grid>
+                            <Border Padding="3,0">
+                                <Grid>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
 
-                                <StackPanel
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-
-                                    <CheckBox
-                                        Margin="3,0"
+                                    <StackPanel
+                                        Grid.Row="0"
+                                        Grid.Column="0"
                                         VerticalAlignment="Center"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.CompleteIssueCommand}"
-                                        CommandParameter="{Binding}"
-                                        IsChecked="{Binding Completed}"
-                                        IsEnabled="{Binding Completed, Converter={StaticResource BoolNegativeConverter}}" />
-                                    <TextBlock Text="{Binding Title}">
-                                        <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Completed}" Value="True">
-                                                        <Setter Property="Opacity" Value="0.4" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                        Orientation="Horizontal">
 
-                                    <Button
-                                        Margin="6,0"
-                                        Padding="4,0"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ShowIssueDetailPageCommand}"
-                                        CommandParameter="{Binding}"
-                                        Content="Edit"
-                                        Template="{StaticResource ButtonCustomTemplate}" />
-
-                                </StackPanel>
-
-                                <StackPanel
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-
-                                    <ItemsControl
-                                        Margin="3,0"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        ItemTemplate="{StaticResource TagListDataTemplate}"
-                                        ItemsSource="{Binding Tags}">
-
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-
-                                    </ItemsControl>
-
-                                    <Border
-                                        Width="50"
-                                        Margin="3,2"
-                                        BorderBrush="DimGray"
-                                        BorderThickness="1,0"
-                                        CornerRadius="4">
-
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
+                                        <CheckBox
+                                            Margin="3,0"
                                             VerticalAlignment="Center"
-                                            Text="{Binding WorkType, Converter={StaticResource WorkTypeToStringConverter}}" />
-
-                                    </Border>
-
-                                    <TextBlock
-                                        Margin="3,0"
-                                        HorizontalAlignment="Right"
-                                        Text="{Binding ShortName, Converter={StaticResource ShortNameConverter}}" />
-
-                                    <ToggleButton
-                                        Width="70"
-                                        Margin="5,0"
-                                        HorizontalContentAlignment="Center"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleIssueStateCommand}"
-                                        CommandParameter="{Binding}"
-                                        Template="{StaticResource ToggleButtonTemplate}">
-
-                                        <ToggleButton.Style>
-                                            <Style TargetType="ToggleButton">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Completed}" Value="True">
-                                                        <Setter Property="IsEnabled" Value="False" />
-                                                    </DataTrigger>
-
-                                                    <DataTrigger Binding="{Binding Progressing}" Value="True">
-                                                        <Setter Property="Background" Value="Orange" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ToggleButton.Style>
-
-                                        <TextBlock
-                                            FontSize="12"
-                                            Foreground="Black"
-                                            Text="{Binding Self, Converter={StaticResource IssueStatusConverter}}"
-                                            TextAlignment="Center" />
-                                    </ToggleButton>
-
-                                    <ToggleButton
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LoadChangeHistoriesAsyncCommand}"
-                                        CommandParameter="{Binding}"
-                                        IsChecked="{Binding Expanded}"
-                                        Template="{StaticResource ToggleButtonTemplate}">
-
-                                        <Border
-                                            Padding="4,0"
-                                            VerticalAlignment="Center"
-                                            Background="LightCoral"
-                                            CornerRadius="6">
-                                            <TextBlock Padding="2,1" FontSize="12">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Expanded}" Value="True">
-                                                                <Setter Property="Text" Value="▲" />
-                                                            </DataTrigger>
-
-                                                            <DataTrigger Binding="{Binding Expanded}" Value="False">
-                                                                <Setter Property="Text" Value="▼" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Border>
-                                    </ToggleButton>
-
-                                </StackPanel>
-
-                                <!--  ここからデフォルトでは隠れている詳細情報欄  クリックで開閉する  -->
-                                <StackPanel
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Grid.ColumnSpan="2"
-                                    Margin="21,0,0,0">
-                                    <StackPanel.Style>
-                                        <Style TargetType="StackPanel">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Expanded}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-
-                                                <DataTrigger Binding="{Binding Expanded}" Value="False">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </StackPanel.Style>
-
-                                    <TextBlock Text="{Binding Description}">
-                                        <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <Trigger Property="Text" Value="">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            Text="{Binding CreationDateTime, Converter={StaticResource DateTimeConverter}, StringFormat=作成日時 : {0}}" />
-
-                                        <TextBlock
-                                            Margin="4,0,0,0"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            Text="{Binding Resolved, Converter={StaticResource DateTimeConverter}, StringFormat=/ 完了日時 : {0}}">
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.CompleteIssueCommand}"
+                                            CommandParameter="{Binding}"
+                                            IsChecked="{Binding Completed}"
+                                            IsEnabled="{Binding Completed, Converter={StaticResource BoolNegativeConverter}}" />
+                                        <TextBlock Text="{Binding Title}">
                                             <TextBlock.Style>
                                                 <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Completed}" Value="False">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        <DataTrigger Binding="{Binding Completed}" Value="True">
+                                                            <Setter Property="Opacity" Value="0.4" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
 
+                                        <Button
+                                            Margin="6,0"
+                                            Padding="4,0"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ShowIssueDetailPageCommand}"
+                                            CommandParameter="{Binding}"
+                                            Content="Edit"
+                                            Template="{StaticResource ButtonCustomTemplate}" />
+
                                     </StackPanel>
 
-                                    <!--  コメントを入力するためのテキストボックス  -->
-                                    <TextBox
-                                        Margin="0,2"
-                                        AcceptsReturn="True"
-                                        Text="{Binding TemporaryComment, UpdateSourceTrigger=PropertyChanged}">
+                                    <StackPanel
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
 
-                                        <TextBox.InputBindings>
-                                            <KeyBinding
-                                                Key="Enter"
-                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.PostCommentCommand}"
-                                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}}"
-                                                Modifiers="Control" />
-                                        </TextBox.InputBindings>
-                                    </TextBox>
+                                        <ItemsControl
+                                            Margin="3,0"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            ItemTemplate="{StaticResource TagListDataTemplate}"
+                                            ItemsSource="{Binding Tags}">
 
-                                    <ListBox
-                                        Padding="0"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        ItemsSource="{Binding Comments}">
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="ListBoxItem">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="ListBoxItem">
-                                                            <Border Background="Transparent" BorderThickness="0">
-                                                                <ContentPresenter />
-                                                            </Border>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
 
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
+                                        </ItemsControl>
+
+                                        <Border
+                                            Width="50"
+                                            Margin="3,2"
+                                            BorderBrush="DimGray"
+                                            BorderThickness="1,0"
+                                            CornerRadius="4">
+
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding WorkType, Converter={StaticResource WorkTypeToStringConverter}}" />
+
+                                        </Border>
+
+                                        <TextBlock
+                                            Margin="3,0"
+                                            HorizontalAlignment="Right"
+                                            Text="{Binding ShortName, Converter={StaticResource ShortNameConverter}}" />
+
+                                        <ToggleButton
+                                            Width="70"
+                                            Margin="5,0"
+                                            HorizontalContentAlignment="Center"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.ToggleIssueStateCommand}"
+                                            CommandParameter="{Binding}"
+                                            Template="{StaticResource ToggleButtonTemplate}">
+
+                                            <ToggleButton.Style>
+                                                <Style TargetType="ToggleButton">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Completed}" Value="True">
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Progressing}" Value="True">
+                                                            <Setter Property="Background" Value="Orange" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ToggleButton.Style>
+
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="Black"
+                                                Text="{Binding Self, Converter={StaticResource IssueStatusConverter}}"
+                                                TextAlignment="Center" />
+                                        </ToggleButton>
+
+                                        <ToggleButton
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LoadChangeHistoriesAsyncCommand}"
+                                            CommandParameter="{Binding}"
+                                            IsChecked="{Binding Expanded}"
+                                            Template="{StaticResource ToggleButtonTemplate}">
+
+                                            <Border
+                                                Padding="4,0"
+                                                VerticalAlignment="Center"
+                                                Background="LightCoral"
+                                                CornerRadius="6">
+                                                <TextBlock Padding="2,1" FontSize="12">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Expanded}" Value="True">
+                                                                    <Setter Property="Text" Value="▲" />
+                                                                </DataTrigger>
+
+                                                                <DataTrigger Binding="{Binding Expanded}" Value="False">
+                                                                    <Setter Property="Text" Value="▼" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </ToggleButton>
+
+                                    </StackPanel>
+
+                                    <!--  ここからデフォルトでは隠れている詳細情報欄  クリックで開閉する  -->
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        Margin="21,0,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Expanded}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Expanded}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
                                             </Style>
-                                        </ListBox.ItemContainerStyle>
+                                        </StackPanel.Style>
 
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate DataType="{x:Type models:Comment}">
-                                                <DataTemplate.Resources>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
-                                                        <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                                        <TextBlock Text="{Binding Description}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Text" Value="">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+
+                                            <TextBlock
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Text="{Binding CreationDateTime, Converter={StaticResource DateTimeConverter}, StringFormat=作成日時 : {0}}" />
+
+                                            <TextBlock
+                                                Margin="4,0,0,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Text="{Binding Resolved, Converter={StaticResource DateTimeConverter}, StringFormat=/ 完了日時 : {0}}">
+                                                <TextBlock.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Completed}" Value="False">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
                                                     </Style>
-                                                </DataTemplate.Resources>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Text}" />
-                                                    <Border Width="0" Margin="4,0" />
-                                                    <TextBlock Text="{Binding DateTime, StringFormat=({0}), Converter={StaticResource DateTimeConverter}}" />
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
+                                                </TextBlock.Style>
+                                            </TextBlock>
 
-                                    </ListBox>
-                                </StackPanel>
-                            </Grid>
+                                        </StackPanel>
 
-                        </Border>
-                    </ContentControl>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+                                        <!--  コメントを入力するためのテキストボックス  -->
+                                        <TextBox
+                                            Margin="0,2"
+                                            AcceptsReturn="True"
+                                            Text="{Binding TemporaryComment, UpdateSourceTrigger=PropertyChanged}">
 
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Style.Triggers>
+                                            <TextBox.InputBindings>
+                                                <KeyBinding
+                                                    Key="Enter"
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.PostCommentCommand}"
+                                                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}}"
+                                                    Modifiers="Control" />
+                                            </TextBox.InputBindings>
+                                        </TextBox>
 
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
-                        </Trigger>
+                                        <ListBox
+                                            Padding="0"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            ItemsSource="{Binding Comments}">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border Background="Transparent" BorderThickness="0">
+                                                                    <ContentPresenter />
+                                                                </Border>
 
-                        <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="{StaticResource SelectionBackgroundColor}" />
-                        </Trigger>
-                    </Style.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
 
-                    <Style.Setters>
-                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <Border
-                                        x:Name="Border"
-                                        Padding="3,1"
-                                        Background="{TemplateBinding Background}"
-                                        CornerRadius="2">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type models:Comment}">
+                                                    <DataTemplate.Resources>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
+                                                            <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
+                                                        </Style>
+                                                    </DataTemplate.Resources>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Text}" />
+                                                        <Border Width="0" Margin="4,0" />
+                                                        <TextBlock Text="{Binding DateTime, StringFormat=({0}), Converter={StaticResource DateTimeConverter}}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
 
-                                        <ContentPresenter />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style.Setters>
+                                        </ListBox>
+                                    </StackPanel>
+                                </Grid>
 
-                </Style>
-            </ListView.ItemContainerStyle>
+                            </Border>
+                        </ContentControl>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
 
-        </ListView>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Style.Triggers>
+
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
+                            </Trigger>
+
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="{StaticResource SelectionBackgroundColor}" />
+                            </Trigger>
+                        </Style.Triggers>
+
+                        <Style.Setters>
+                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border
+                                            x:Name="Border"
+                                            Padding="3,1"
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="2">
+
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style.Setters>
+
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+            </ListView>
+        </ScrollViewer>
 
         <StackPanel Grid.Row="3">
 
