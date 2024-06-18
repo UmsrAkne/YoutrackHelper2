@@ -59,6 +59,15 @@
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
 
+            <ObjectDataProvider
+                x:Key="StateValues"
+                MethodName="GetValues"
+                ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="models:State" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -70,7 +79,11 @@
         <StackPanel Grid.Row="0">
             <DockPanel>
 
-                <ComboBox Width="140" ItemsSource="{Binding Source={StaticResource WorkTypeValues}}" />
+                <ComboBox
+                    Width="140"
+                    ItemsSource="{Binding Source={StaticResource WorkTypeValues}}"
+                    SelectedItem="{Binding IssueWrapper.WorkType}" />
+
                 <Border Margin="3,0" />
                 <TextBox DockPanel.Dock="Right" Text="{Binding IssueTitle.Text, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.Style>
@@ -111,8 +124,13 @@
         <StackPanel Grid.Row="1" Margin="0,8">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <TextBlock Text="Status : " />
-                <ComboBox Width="140" Margin="4,0" />
+                <ComboBox
+                    Width="140"
+                    Margin="4,0"
+                    ItemsSource="{Binding Source={StaticResource StateValues}}"
+                    SelectedItem="{Binding IssueWrapper.State}" />
             </StackPanel>
+
             <Border Margin="0,5" />
             <TextBlock Text="Tags : " />
             <Border Margin="3,2" />
