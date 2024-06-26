@@ -27,13 +27,13 @@ namespace YoutrackHelper2.Models
                 new Issue
                 {
                     Id = "test-2",
-                    Summary = "テスト課題02",
+                    Summary = "テスト課題02長い名前の課題テスト長い名前の課題テスト長い名前の課題テスト長い名前の課題テスト",
                     Description = "テスト課題 02 の説明",
                 },
                 new Issue
                 {
                     Id = "test-3",
-                    Summary = "テスト課題03",
+                    Summary = "テスト課題03長い名前の課題テスト長い名前の課題テスト長い名前の課題テスト長い名前の課題テスト",
                     Description = "テスト課題 03 の説明",
                 },
                 new Issue
