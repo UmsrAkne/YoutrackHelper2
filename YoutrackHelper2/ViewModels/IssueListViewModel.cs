@@ -32,6 +32,7 @@ namespace YoutrackHelper2.ViewModels
         private string tagText = "#";
         private string commandText;
         private ProjectWrapper projectWrapper;
+        private List<ProjectWrapper> favoriteProjects;
 
         public IssueListViewModel(IDialogService dialogService, IConnector connector)
         {
@@ -446,6 +447,24 @@ namespace YoutrackHelper2.ViewModels
 
             iw.Issue = await Connector.RemoveTagFromIssue(iw.ShortName, param.Name);
         });
+
+        public DelegateCommand<ProjectWrapper> ChangeProjectCommand => new DelegateCommand<ProjectWrapper>( (param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            ProjectWrapper = param;
+            LoadIssueWrappersAsyncCommand.Execute(null);
+            TitleBarText.Text = param.FullName;
+        });
+
+        public List<ProjectWrapper> FavoriteProjects
+        {
+            get => favoriteProjects;
+            set => SetProperty(ref favoriteProjects, value);
+        }
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 

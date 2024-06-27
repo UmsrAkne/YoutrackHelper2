@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -50,6 +51,7 @@ namespace YoutrackHelper2.ViewModels
                     if (ne.DestViewName == nameof(IssueList))
                     {
                         NavigateToIssueListPageCommand.Execute(vm.SelectedProject);
+                        NavigateToIssueListPage(vm.SelectedProject, ((NavigationEventArgs)e).FavoriteProjects);
                     }
                 };
             }
@@ -60,6 +62,43 @@ namespace YoutrackHelper2.ViewModels
             regionManager.RequestNavigate(RegionName, nameof(ProjectList));
             TitleBarText.Text = "Projects";
         });
+
+        private void NavigateToIssueListPage(ProjectWrapper projectWrapper, List<ProjectWrapper> favorites)
+        {
+            var parameters = new NavigationParameters
+            {
+                { nameof(IssueListViewModel.ProjectWrapper), projectWrapper },
+            };
+
+            regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
+
+            var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
+            if (v?.DataContext as IssueListViewModel is { } vm)
+            {
+                vm.TitleBarText = TitleBarText;
+                TitleBarText.Text = projectWrapper.FullName;
+                vm.FavoriteProjects = favorites;
+
+                if (vm.Initialized)
+                {
+                    return;
+                }
+
+                vm.Initialized = true;
+                vm.NavigationRequest += (_, e) =>
+                {
+                    if (e is not NavigationEventArgs ne)
+                    {
+                        return;
+                    }
+
+                    if (ne.DestViewName == nameof(ProjectList))
+                    {
+                        NavigateToProjectListPageCommand.Execute();
+                    }
+                };
+            }
+        }
 
         private DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
         {
