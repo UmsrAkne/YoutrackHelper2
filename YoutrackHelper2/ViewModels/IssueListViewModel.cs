@@ -448,6 +448,18 @@ namespace YoutrackHelper2.ViewModels
             iw.Issue = await Connector.RemoveTagFromIssue(iw.ShortName, param.Name);
         });
 
+        public DelegateCommand<ProjectWrapper> ChangeProjectCommand => new DelegateCommand<ProjectWrapper>( (param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            ProjectWrapper = param;
+            LoadIssueWrappersAsyncCommand.Execute(null);
+            TitleBarText.Text = param.FullName;
+        });
+
         public List<ProjectWrapper> FavoriteProjects
         {
             get => favoriteProjects;

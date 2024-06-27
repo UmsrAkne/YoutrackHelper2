@@ -109,6 +109,20 @@
                 Command="{Binding NavigateToProjectListCommand}"
                 Header="&lt;- Project List" />
 
+            <MenuItem
+                Background="GhostWhite"
+                Header="お気に入りのプロジェクト"
+                ItemsSource="{Binding FavoriteProjects}">
+                <MenuItem.ItemTemplate>
+                    <DataTemplate>
+                        <MenuItem
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.ChangeProjectCommand}"
+                            CommandParameter="{Binding}"
+                            Header="{Binding FullName}" />
+                    </DataTemplate>
+                </MenuItem.ItemTemplate>
+            </MenuItem>
+
             <MenuItem Header="機能">
                 <MenuItem
                     Command="{Binding CopyIssueTitleCommand}"
