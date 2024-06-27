@@ -53,7 +53,12 @@ namespace YoutrackHelper2.ViewModels
 
         public DelegateCommand NavigationRequestCommand => new DelegateCommand(() =>
         {
-            NavigationRequest?.Invoke(this, new NavigationEventArgs(nameof(IssueList)));
+            var nea = new NavigationEventArgs(nameof(IssueList))
+            {
+                FavoriteProjects = Projects.Where(p => p.IsFavorite).ToList(),
+            };
+
+            NavigationRequest?.Invoke(this, nea);
             WriteJsonFile();
         });
 
