@@ -69,6 +69,11 @@ namespace YoutrackHelper2.Models
             DummyIssues[1].SetField("numberInProject", 2);
             DummyIssues[1].Tags = new List<SubValue<string>>() { new() { Value = "Star", }, };
 
+            for (var i = 0; i < 15; i++)
+            {
+                DummyIssues[1].Comments.Add(new YouTrackSharp.Issues.Comment { Text = $"{i} : コメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメントコメント", });
+            }
+
             DummyIssues[2].SetField(nameof(State), new List<string>() { State.Obsolete.ToStateName(), });
             DummyIssues[2].SetField("Type", new List<string>() { WorkType.Test.ToWorkTypeName(), });
             DummyIssues[2].SetField("numberInProject", 3);
@@ -78,6 +83,7 @@ namespace YoutrackHelper2.Models
             DummyIssues[3].SetField("numberInProject", 4);
 
             IssueWrappers = DummyIssues.Select(i => new IssueWrapper() { Issue = i, }).ToList();
+            IssueWrappers[1].Expanded = true;
         }
 
         public List<ProjectWrapper> ProjectWrappers { get; private set; }

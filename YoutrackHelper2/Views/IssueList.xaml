@@ -113,14 +113,14 @@
                 Background="GhostWhite"
                 Header="お気に入りのプロジェクト"
                 ItemsSource="{Binding FavoriteProjects}">
-                <MenuItem.ItemTemplate>
-                    <DataTemplate>
-                        <MenuItem
-                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.ChangeProjectCommand}"
-                            CommandParameter="{Binding}"
-                            Header="{Binding FullName}" />
-                    </DataTemplate>
-                </MenuItem.ItemTemplate>
+
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Header" Value="{Binding FullName}" />
+                        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.ChangeProjectCommand}" />
+                        <Setter Property="CommandParameter" Value="{Binding}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
             </MenuItem>
 
             <MenuItem Header="機能">
@@ -482,27 +482,14 @@
                                             </TextBox.InputBindings>
                                         </TextBox>
 
-                                        <ListBox
+                                        <ItemsControl
+                                            Margin="0,8"
                                             Padding="0"
                                             Background="Transparent"
                                             BorderThickness="0"
                                             ItemsSource="{Binding Comments}">
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                <Border Background="Transparent" BorderThickness="0">
-                                                                    <ContentPresenter />
-                                                                </Border>
 
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-
-                                            <ListBox.ItemTemplate>
+                                            <ItemsControl.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type models:Comment}">
                                                     <DataTemplate.Resources>
                                                         <Style TargetType="TextBlock">
@@ -516,9 +503,9 @@
                                                         <TextBlock Text="{Binding DateTime, StringFormat=({0}), Converter={StaticResource DateTimeConverter}}" />
                                                     </StackPanel>
                                                 </DataTemplate>
-                                            </ListBox.ItemTemplate>
+                                            </ItemsControl.ItemTemplate>
 
-                                        </ListBox>
+                                        </ItemsControl>
                                     </StackPanel>
                                 </Grid>
 
