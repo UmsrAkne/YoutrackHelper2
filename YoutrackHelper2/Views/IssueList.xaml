@@ -482,27 +482,14 @@
                                             </TextBox.InputBindings>
                                         </TextBox>
 
-                                        <ListBox
+                                        <ItemsControl
+                                            Margin="0,8"
                                             Padding="0"
                                             Background="Transparent"
                                             BorderThickness="0"
                                             ItemsSource="{Binding Comments}">
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                <Border Background="Transparent" BorderThickness="0">
-                                                                    <ContentPresenter />
-                                                                </Border>
 
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-
-                                            <ListBox.ItemTemplate>
+                                            <ItemsControl.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type models:Comment}">
                                                     <DataTemplate.Resources>
                                                         <Style TargetType="TextBlock">
@@ -516,9 +503,9 @@
                                                         <TextBlock Text="{Binding DateTime, StringFormat=({0}), Converter={StaticResource DateTimeConverter}}" />
                                                     </StackPanel>
                                                 </DataTemplate>
-                                            </ListBox.ItemTemplate>
+                                            </ItemsControl.ItemTemplate>
 
-                                        </ListBox>
+                                        </ItemsControl>
                                     </StackPanel>
                                 </Grid>
 
