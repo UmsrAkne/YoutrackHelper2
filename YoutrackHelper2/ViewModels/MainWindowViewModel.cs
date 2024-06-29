@@ -77,7 +77,7 @@ namespace YoutrackHelper2.ViewModels
             {
                 vm.TitleBarText = TitleBarText;
                 TitleBarText.Text = projectWrapper.FullName;
-                vm.FavoriteProjects = favorites;
+                vm.FavoriteProjects = favorites.Where(p => p.FullName != projectWrapper.FullName).ToList();
 
                 if (vm.Initialized)
                 {
