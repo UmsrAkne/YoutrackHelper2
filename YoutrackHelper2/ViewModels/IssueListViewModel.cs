@@ -455,6 +455,15 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
+            if (ProjectWrapper.IsFavorite)
+            {
+                FavoriteProjects.Add(ProjectWrapper);
+            }
+
+            FavoriteProjects = FavoriteProjects
+                .Where(p => p.FullName != param.FullName)
+                .OrderBy(p => p.FullName).ToList();
+
             ProjectWrapper = param;
             LoadIssueWrappersAsyncCommand.Execute(null);
             TitleBarText.Text = param.FullName;

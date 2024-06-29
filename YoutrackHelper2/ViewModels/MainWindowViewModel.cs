@@ -77,7 +77,7 @@ namespace YoutrackHelper2.ViewModels
             {
                 vm.TitleBarText = TitleBarText;
                 TitleBarText.Text = projectWrapper.FullName;
-                vm.FavoriteProjects = favorites;
+                vm.FavoriteProjects = favorites.Where(p => p.FullName != projectWrapper.FullName).ToList();
 
                 if (vm.Initialized)
                 {
@@ -140,7 +140,7 @@ namespace YoutrackHelper2.ViewModels
         private void SetVersion()
         {
             // リリースビルドの場合のみ実行するコード
-            TitleBarText.Version = "version : " + "20240628" + "a";
+            TitleBarText.Version = "version : " + "20240629" + "a";
         }
     }
 }
