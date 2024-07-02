@@ -19,5 +19,17 @@ namespace YoutrackHelper2Test.ViewModels
 
             Assert.That(vm.GetNumberedIssueTitle(issue.Title), Is.EqualTo("連番課題[11]"));
         }
+
+        [Test]
+        public void グローバルな連番の課題名を生成するテスト()
+        {
+            var vm = new IssueListViewModel(null, new ConnectorMock());
+            var issue10 = new IssueWrapper() { Title = "連番課題[10]", };
+            var issue11 = new IssueWrapper() { Title = "連番課題[11]", };
+            vm.IssueWrappers.Add(issue10);
+            vm.IssueWrappers.Add(issue11);
+
+            Assert.That(vm.GetNumberedIssueTitle(issue10.Title, true), Is.EqualTo("連番課題[12]"));
+        }
     }
 }
