@@ -14,7 +14,7 @@ namespace YoutrackHelper2.Models
         public static void WriteIssueInfoToFile(IssueWrapper issueWrapper)
         {
             var wt = issueWrapper.WorkType.ToWorkTypeName();
-            var s = $"{issueWrapper.ShortName} {issueWrapper.Title} {wt} {issueWrapper.Description}";
+            var s = $"{issueWrapper.ShortName} / {issueWrapper.Title} / {wt} / {issueWrapper.Description}";
             WriteMessageToFile(s, "log.txt");
         }
 

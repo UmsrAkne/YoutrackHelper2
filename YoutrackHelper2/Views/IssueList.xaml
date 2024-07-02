@@ -145,6 +145,8 @@
                     InputGestureText="Ctrl+I" />
                 <MenuItem Command="{Binding CollapsedAllIssueCommand}" Header="全ての課題を折りたたむ" />
 
+                <MenuItem Command="{Binding OpenLogFileCommand}" Header="ログファイルを表示" />
+
             </MenuItem>
 
             <MenuItem Header="課題">
@@ -156,6 +158,11 @@
                 <MenuItem
                     Command="{Binding CreateNumberedIssueCommand}"
                     Header="課題を連番で複製する"
+                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+
+                <MenuItem
+                    Command="{Binding CreateGlobalNumberedIssueCommand}"
+                    Header="課題を連番で複製する(グローバル)"
                     IsEnabled="{Binding SelectedItemIsNotNull}" />
 
                 <MenuItem

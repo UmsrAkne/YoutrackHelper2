@@ -103,6 +103,11 @@ namespace YoutrackHelper2.ViewModels
             dialogService.ShowDialog(nameof(TagManagementPage), dialogParams, _ => { });
         });
 
+        public DelegateCommand OpenLogFileCommand => new DelegateCommand(() =>
+        {
+            FileService.OpenTextFile("log.txt");
+        });
+
         public TitleBarText TitleBarText { get; set; }
 
         private IConnector Connector { get; set; }
