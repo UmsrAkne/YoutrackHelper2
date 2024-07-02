@@ -161,6 +161,11 @@
                     IsEnabled="{Binding SelectedItemIsNotNull}" />
 
                 <MenuItem
+                    Command="{Binding CreateGlobalNumberedIssueCommand}"
+                    Header="課題を連番で複製する(グローバル)"
+                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+
+                <MenuItem
                     Command="{Binding CompleteIssueCommand}"
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="選択中の課題を完了する"
