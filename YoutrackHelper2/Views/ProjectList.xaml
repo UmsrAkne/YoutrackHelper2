@@ -33,6 +33,7 @@
             <Menu>
                 <MenuItem Header="View">
                     <MenuItem Command="{Binding ShowTagManagementPageCommand}" Header="タグ管理ページ" />
+                    <MenuItem Command="{Binding OpenLogFileCommand}" Header="ログファイルを開く" />
                 </MenuItem>
             </Menu>
             <StatusBar>

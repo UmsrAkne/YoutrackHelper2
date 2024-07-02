@@ -469,6 +469,11 @@ namespace YoutrackHelper2.ViewModels
             TitleBarText.Text = param.FullName;
         });
 
+        public DelegateCommand OpenLogFileCommand => new DelegateCommand(() =>
+        {
+            FileService.OpenTextFile("log.txt");
+        });
+
         public List<ProjectWrapper> FavoriteProjects
         {
             get => favoriteProjects;
