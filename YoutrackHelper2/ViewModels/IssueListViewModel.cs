@@ -194,30 +194,36 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
-            var issueTitle = SelectedIssue.Title;
-            const string pattern = @"^(.+)\[(\d{2})\]$";
-            var match = Regex.Match(issueTitle, pattern);
-
-            // 連番課題のフォーマットに沿ったタイトルであるかを確認し、フォーマット通りであれば連番をインクリメントする。
-            if (match.Success)
-            {
-                var prefix = match.Groups[1].Value;
-                var numberString = match.Groups[2].Value;
-
-                // 二桁の数値を取得して+1
-                var number = int.Parse(numberString);
-                number++;
-
-                CurrentIssueWrapper.Title = $"{prefix}[{number:00}]";
-            }
-            else
-            {
-                CurrentIssueWrapper.Title = SelectedIssue.Title;
-            }
-
+            CurrentIssueWrapper.Title = GetNumberedIssueTitle(SelectedIssue.Title);
             CurrentIssueWrapper.Description = SelectedIssue.Description;
             CurrentIssueWrapper.WorkType = SelectedIssue.WorkType;
         });
+
+        public string GetNumberedIssueTitle(string title)
+        {
+            var numbered = title;
+
+            const string pattern = @"^(.+)\[(\d{2})\]$";
+            var match = Regex.Match(title, pattern);
+
+            // フォーマットに沿っていない場合は、タイトルをそのまま帰す
+            if (!match.Success)
+            {
+                return numbered;
+            }
+
+            // フォーマット通りであれば連番をインクリメントする。
+            var prefix = match.Groups[1].Value;
+            var numberString = match.Groups[2].Value;
+
+            // 二桁の数値を取得して+1
+            var number = int.Parse(numberString);
+            number++;
+
+            numbered = $"{prefix}[{number:00}]";
+
+            return numbered;
+        }
 
         public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
         {
