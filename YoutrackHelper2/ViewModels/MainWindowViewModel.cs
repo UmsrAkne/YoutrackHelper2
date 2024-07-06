@@ -56,6 +56,42 @@ namespace YoutrackHelper2.ViewModels
                 };
             }
         });
+        
+        private DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
+        {
+            var parameters = new NavigationParameters
+            {
+                { nameof(IssueListViewModel.ProjectWrapper), param },
+            };
+
+            regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
+
+            var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
+            if (v?.DataContext as IssueListViewModel is { } vm)
+            {
+                vm.TitleBarText = TitleBarText;
+                TitleBarText.Text = param.FullName;
+
+                if (vm.Initialized)
+                {
+                    return;
+                }
+
+                vm.Initialized = true;
+                vm.NavigationRequest += (_, e) =>
+                {
+                    if (e is not NavigationEventArgs ne)
+                    {
+                        return;
+                    }
+
+                    if (ne.DestViewName == nameof(ProjectList))
+                    {
+                        NavigateToProjectListPageCommand.Execute();
+                    }
+                };
+            }
+        });
 
         private DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
@@ -100,47 +136,11 @@ namespace YoutrackHelper2.ViewModels
             }
         }
 
-        private DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
-        {
-            var parameters = new NavigationParameters
-            {
-                { nameof(IssueListViewModel.ProjectWrapper), param },
-            };
-
-            regionManager.RequestNavigate(RegionName, nameof(IssueList), parameters);
-
-            var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
-            if (v?.DataContext as IssueListViewModel is { } vm)
-            {
-                vm.TitleBarText = TitleBarText;
-                TitleBarText.Text = param.FullName;
-
-                if (vm.Initialized)
-                {
-                    return;
-                }
-
-                vm.Initialized = true;
-                vm.NavigationRequest += (_, e) =>
-                {
-                    if (e is not NavigationEventArgs ne)
-                    {
-                        return;
-                    }
-
-                    if (ne.DestViewName == nameof(ProjectList))
-                    {
-                        NavigateToProjectListPageCommand.Execute();
-                    }
-                };
-            }
-        });
-
         [Conditional("RELEASE")]
         private void SetVersion()
         {
             // リリースビルドの場合のみ実行するコード
-            TitleBarText.Version = "version : " + "20240702" + "a";
+            TitleBarText.Version = "version : " + "20240706" + "a";
         }
     }
 }
