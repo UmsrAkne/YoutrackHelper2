@@ -112,7 +112,7 @@ namespace YoutrackHelper2.Models
 
         private DateTime GetStartedDateTime(string trackingName)
         {
-            return trackingTimeDictionary.TryGetValue(trackingName, out var time) ? time : default;
+            return trackingTimeDictionary.GetValueOrDefault(trackingName);
         }
     }
 }
