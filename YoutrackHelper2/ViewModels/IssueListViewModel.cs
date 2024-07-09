@@ -393,7 +393,14 @@ namespace YoutrackHelper2.ViewModels
                 Connector.IssueWrappers
                     .OrderBy(t => t.Completed)
                     .ThenByDescending(t => t.NumberInProject));
-            await Connector.LoadTimeTracking(IssueWrappers.Where(w => !w.Completed));
+
+            // 作業時間の取得は、対象の数が多いと時間がかかりすぎるため、更新日時順に並べた場合のいくつかに対してのみ行う。
+            const int maxItemsToLoad = 6;
+            await Connector.LoadTimeTracking(IssueWrappers
+                .Where(w => !w.Completed)
+                .OrderByDescending(w => w.Updated)
+                .Take(maxItemsToLoad));
+
             await Connector.LoadChangeHistory(IssueWrappers.Where(w => w.Expanded));
 
             ChangeTimerState();
