@@ -29,6 +29,7 @@ namespace YoutrackHelper2.Models
         private IEnumerable<Tag> tags = new List<Tag>();
         private bool isSelected;
         private DateTime resolved;
+        private DateTime updated;
 
         public Issue Issue
         {
@@ -48,6 +49,9 @@ namespace YoutrackHelper2.Models
 
                     CreationDateTime =
                         ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "created")));
+
+                    Updated =
+                        ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "updated")));
 
                     Resolved =
                         ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(ValueGetter.GetLong(value, "resolved")));
@@ -134,6 +138,8 @@ namespace YoutrackHelper2.Models
             get => creationDateTime;
             private set => SetProperty(ref creationDateTime, value);
         }
+
+        public DateTime Updated { get => updated; set => SetProperty(ref updated, value); }
 
         public bool Progressing
         {
