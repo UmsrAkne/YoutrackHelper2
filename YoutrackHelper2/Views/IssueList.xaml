@@ -209,6 +209,7 @@
                 Margin="3"
                 Padding="3,0"
                 Command="{Binding CreateGlobalNumberedIssueCommand}"
+                IsEnabled="{Binding HasSelectedItem}"
                 Template="{StaticResource ButtonCustomTemplate}">
                 <Button.Content>
                     <TextBlock FontSize="{StaticResource BasicFontsize}" Text="連番課題複製(Global)" />
