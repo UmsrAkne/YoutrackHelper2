@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace YoutrackHelper2.Views
+namespace YoutrackHelper2.Views.Converters
 {
     public class DateTimeConverter : IValueConverter
     {

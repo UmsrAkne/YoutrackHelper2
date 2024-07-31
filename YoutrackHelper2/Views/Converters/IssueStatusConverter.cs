@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using YoutrackHelper2.Models;
 
-namespace YoutrackHelper2.Views
+namespace YoutrackHelper2.Views.Converters
 {
     /// <summary>
     /// IssueWrapper.State の値を変換して、課題の状態欄に表示するためのコンバーターです。
