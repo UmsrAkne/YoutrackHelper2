@@ -153,24 +153,28 @@
                 <MenuItem
                     Command="{Binding InputIssueInfoCommand}"
                     Header="課題の情報を複製"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem
                     Command="{Binding CreateNumberedIssueCommand}"
                     Header="課題を連番で複製する"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem
                     Command="{Binding CreateGlobalNumberedIssueCommand}"
                     Header="課題を連番で複製する(グローバル)"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}">
+                    <MenuItem.CommandParameter>
+                        <system:Boolean>True</system:Boolean>
+                    </MenuItem.CommandParameter>
+                </MenuItem>
 
                 <MenuItem
                     Command="{Binding CompleteIssueCommand}"
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="選択中の課題を完了する"
                     InputGestureText="Ctrl+Shift+F"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem
                     Command="{Binding CompleteIssueListCommand}"
@@ -180,7 +184,7 @@
                 <MenuItem
                     Command="{Binding ToObsoleteCommand}"
                     Header="選択中の課題を廃止にする"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem Command="{Binding RevertToIncompleteAsyncCommand}" Header="選択中の課題を未完了にする" />
 
@@ -192,23 +196,37 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Right">
-            <StackPanel.Style>
-                <Style TargetType="StackPanel">
+        <DockPanel Grid.Row="1">
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding TotalWorkingDuration.Ticks}" Value="0">
-                            <Setter Property="Visibility" Value="Hidden" />
-                        </DataTrigger>
+                        <DataTrigger Binding="{Binding TotalWorkingDuration.Ticks}" Value="0" />
                     </Style.Triggers>
                 </Style>
-            </StackPanel.Style>
+            </DockPanel.Style>
+
+            <Button
+                Margin="3"
+                Padding="3,0"
+                Command="{Binding CreateGlobalNumberedIssueCommand}"
+                IsEnabled="{Binding HasSelectedItem}"
+                Template="{StaticResource ButtonCustomTemplate}">
+                <Button.Content>
+                    <TextBlock FontSize="{StaticResource BasicFontsize}" Text="連番課題複製(Global)" />
+                </Button.Content>
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+            </Button>
 
             <TextBlock
                 Margin="4,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
                 FontSize="{StaticResource BasicFontsize}"
                 Foreground="{StaticResource BasicFontColor}"
                 Text="{Binding TotalWorkingDuration, Converter={StaticResource TimeSpanConverter}, StringFormat=　総作業時間 {0}}" />
-        </StackPanel>
+        </DockPanel>
 
         <!--  課題リストを表示する部分  -->
         <ScrollViewer Grid.Row="2">
