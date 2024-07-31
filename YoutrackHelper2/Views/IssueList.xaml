@@ -163,7 +163,11 @@
                 <MenuItem
                     Command="{Binding CreateGlobalNumberedIssueCommand}"
                     Header="課題を連番で複製する(グローバル)"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding SelectedItemIsNotNull}">
+                    <MenuItem.CommandParameter>
+                        <system:Boolean>True</system:Boolean>
+                    </MenuItem.CommandParameter>
+                </MenuItem>
 
                 <MenuItem
                     Command="{Binding CompleteIssueCommand}"

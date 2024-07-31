@@ -199,7 +199,7 @@ namespace YoutrackHelper2.ViewModels
             CurrentIssueWrapper.WorkType = SelectedIssue.WorkType;
         });
 
-        public DelegateCommand CreateGlobalNumberedIssueCommand => new DelegateCommand(() =>
+        public DelegateCommand<bool?> CreateGlobalNumberedIssueCommand => new DelegateCommand<bool?>((copyDescription) =>
         {
             if (SelectedIssue == null)
             {
@@ -207,7 +207,11 @@ namespace YoutrackHelper2.ViewModels
             }
 
             CurrentIssueWrapper.Title = GetNumberedIssueTitle(SelectedIssue.Title, true);
-            CurrentIssueWrapper.Description = SelectedIssue.Description;
+
+            CurrentIssueWrapper.Description = copyDescription.HasValue && copyDescription.Value
+                ? SelectedIssue.Description
+                : string.Empty;
+
             CurrentIssueWrapper.WorkType = SelectedIssue.WorkType;
         });
 
