@@ -2,6 +2,7 @@
     x:Class="YoutrackHelper2.Views.IssueList"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:YoutrackHelper2.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -42,7 +43,7 @@
             <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
         </Style>
 
-        <views:WorkTypeToStringConverter x:Key="WorkTypeToStringConverter" />
+        <converters:WorkTypeToStringConverter x:Key="WorkTypeToStringConverter" />
 
         <ObjectDataProvider
             x:Key="EnumValues"
@@ -83,11 +84,11 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <views:DateTimeConverter x:Key="DateTimeConverter" />
-        <views:BoolNegativeConverter x:Key="BoolNegativeConverter" />
-        <views:ShortNameConverter x:Key="ShortNameConverter" />
-        <views:TimeSpanConverter x:Key="TimeSpanConverter" />
-        <views:IssueStatusConverter x:Key="IssueStatusConverter" />
+        <converters:DateTimeConverter x:Key="DateTimeConverter" />
+        <converters:BoolNegativeConverter x:Key="BoolNegativeConverter" />
+        <converters:ShortNameConverter x:Key="ShortNameConverter" />
+        <converters:TimeSpanConverter x:Key="TimeSpanConverter" />
+        <converters:IssueStatusConverter x:Key="IssueStatusConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

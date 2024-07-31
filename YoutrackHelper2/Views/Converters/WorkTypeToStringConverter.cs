@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using YoutrackHelper2.Models;
 
-namespace YoutrackHelper2.Views
+namespace YoutrackHelper2.Views.Converters
 {
     public class WorkTypeToStringConverter : IValueConverter
     {
