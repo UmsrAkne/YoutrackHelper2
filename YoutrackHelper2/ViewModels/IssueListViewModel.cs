@@ -117,12 +117,12 @@ namespace YoutrackHelper2.ViewModels
             {
                 if (SetProperty(ref selectedIssue, value))
                 {
-                    RaisePropertyChanged(nameof(SelectedItemIsNotNull));
+                    RaisePropertyChanged(nameof(HasSelectedItem));
                 }
             }
         }
 
-        public bool SelectedItemIsNotNull => SelectedIssue != null;
+        public bool HasSelectedItem => SelectedIssue != null;
 
         public TimeSpan TotalWorkingDuration
         {

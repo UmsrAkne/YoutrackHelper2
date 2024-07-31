@@ -153,17 +153,17 @@
                 <MenuItem
                     Command="{Binding InputIssueInfoCommand}"
                     Header="課題の情報を複製"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem
                     Command="{Binding CreateNumberedIssueCommand}"
                     Header="課題を連番で複製する"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem
                     Command="{Binding CreateGlobalNumberedIssueCommand}"
                     Header="課題を連番で複製する(グローバル)"
-                    IsEnabled="{Binding SelectedItemIsNotNull}">
+                    IsEnabled="{Binding HasSelectedItem}">
                     <MenuItem.CommandParameter>
                         <system:Boolean>True</system:Boolean>
                     </MenuItem.CommandParameter>
@@ -174,7 +174,7 @@
                     CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                     Header="選択中の課題を完了する"
                     InputGestureText="Ctrl+Shift+F"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem
                     Command="{Binding CompleteIssueListCommand}"
@@ -184,7 +184,7 @@
                 <MenuItem
                     Command="{Binding ToObsoleteCommand}"
                     Header="選択中の課題を廃止にする"
-                    IsEnabled="{Binding SelectedItemIsNotNull}" />
+                    IsEnabled="{Binding HasSelectedItem}" />
 
                 <MenuItem Command="{Binding RevertToIncompleteAsyncCommand}" Header="選択中の課題を未完了にする" />
 
