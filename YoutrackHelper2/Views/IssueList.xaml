@@ -150,6 +150,23 @@
 
             </MenuItem>
 
+            <MenuItem Header="ソート">
+                <MenuItem
+                    Command="{Binding ChangeSortCriteriaCommand}"
+                    CommandParameter="{x:Static models:SortCriteria.Id}"
+                    Header="ID" />
+
+                <MenuItem
+                    Command="{Binding ChangeSortCriteriaCommand}"
+                    CommandParameter="{x:Static models:SortCriteria.Date}"
+                    Header="日付" />
+
+                <MenuItem
+                    Command="{Binding ChangeSortCriteriaCommand}"
+                    CommandParameter="{x:Static models:SortCriteria.Alphabetical}"
+                    Header="アルファベット" />
+            </MenuItem>
+
             <MenuItem Header="課題">
                 <MenuItem
                     Command="{Binding InputIssueInfoCommand}"
