@@ -321,6 +321,22 @@ namespace YoutrackHelper2.ViewModels
             param.Focus();
         });
 
+        public DelegateCommand<SortCriteria?> ChangeSortCriteriaCommand => new DelegateCommand<SortCriteria?>((param) =>
+        {
+            if (param is not { } value)
+            {
+                return;
+            }
+
+            var old = SortCriteria;
+            SortCriteria = value;
+
+            if (old != SortCriteria)
+            {
+                LoadIssueWrappersAsyncCommand.Execute(null);
+            }
+        });
+
         public TitleBarText TitleBarText { get; set; } = new TitleBarText();
 
         public DelegateCommand<IssueWrapper> CopyIssueTitleCommand => new ((param) =>
@@ -393,10 +409,7 @@ namespace YoutrackHelper2.ViewModels
         {
             UiEnabled = false;
             await Connector.LoadIssues(ProjectWrapper.ShortName);
-            IssueWrappers = new ObservableCollection<IssueWrapper>(
-                Connector.IssueWrappers
-                    .OrderBy(t => t.Completed)
-                    .ThenByDescending(t => t.NumberInProject));
+            IssueWrappers = new ObservableCollection<IssueWrapper>(Sort(Connector.IssueWrappers));
 
             // 作業時間の取得は、対象の数が多いと時間がかかりすぎるため、更新日時順に並べた場合のいくつかに対してのみ行う。
             const int maxItemsToLoad = 6;
@@ -451,7 +464,7 @@ namespace YoutrackHelper2.ViewModels
             iw.Issue = await Connector.RemoveTagFromIssue(iw.ShortName, param.Name);
         });
 
-        public DelegateCommand<ProjectWrapper> ChangeProjectCommand => new DelegateCommand<ProjectWrapper>( (param) =>
+        public DelegateCommand<ProjectWrapper> ChangeProjectCommand => new DelegateCommand<ProjectWrapper>(param =>
         {
             if (param == null)
             {
@@ -484,6 +497,8 @@ namespace YoutrackHelper2.ViewModels
         }
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
+
+        private SortCriteria SortCriteria { get; set; }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
@@ -569,6 +584,36 @@ namespace YoutrackHelper2.ViewModels
         {
             IssueWrappers = new ObservableCollection<IssueWrapper>(
                 new ConnectorMock().IssueWrappers);
+        }
+
+        /// <summary>
+        /// 入力された IssueWrapper を SortCriteria プロパティに基づいてソートします。
+        /// </summary>
+        /// <param name="issueWrapper">ソートしたいリストを入力します。</param>
+        /// <returns>ソートされたリストを再生性して出力します。</returns>
+        /// <exception cref="ArgumentOutOfRangeException">指定されたソート基準が無効な場合にスローされます。<br/>
+        /// <see cref="SortCriteria"/> に定義されていない値が指定された場合、この例外が発生します。</exception>
+        private IEnumerable<IssueWrapper> Sort(IEnumerable<IssueWrapper> issueWrapper)
+        {
+            switch (SortCriteria)
+            {
+                case SortCriteria.Id:
+                    return issueWrapper
+                        .OrderBy(w => w.Completed)
+                        .ThenByDescending(w => w.NumberInProject);
+
+                case SortCriteria.Date:
+                    return issueWrapper
+                        .OrderBy(w => w.Completed)
+                        .ThenByDescending(w => w.CreationDateTime);
+
+                case SortCriteria.Alphabetical:
+                    return issueWrapper
+                        .OrderBy(w => w.Completed)
+                        .ThenBy(w => w.Title);
+
+                default: throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }
