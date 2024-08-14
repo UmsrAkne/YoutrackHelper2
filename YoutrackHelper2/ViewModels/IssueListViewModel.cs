@@ -132,7 +132,9 @@ namespace YoutrackHelper2.ViewModels
 
         public string TagText { get => tagText; set => SetProperty(ref tagText, value); }
 
-        public IConnector Connector { get; set; }
+        public TitleBarText TitleBarText { get; set; } = new TitleBarText();
+
+        public bool Initialized { get; set; }
 
         public AsyncDelegateCommand<TextBox> CreateIssueAsyncCommand => new AsyncDelegateCommand<TextBox>(async (textBox) =>
         {
@@ -337,8 +339,6 @@ namespace YoutrackHelper2.ViewModels
             }
         });
 
-        public TitleBarText TitleBarText { get; set; } = new TitleBarText();
-
         public DelegateCommand<IssueWrapper> CopyIssueTitleCommand => new ((param) =>
         {
             if (param == null)
@@ -402,8 +402,6 @@ namespace YoutrackHelper2.ViewModels
             NavigationRequest?.Invoke(this, new NavigationEventArgs(nameof(ProjectList)));
             IssueWrappers.Clear();
         });
-
-        public bool Initialized { get; set; }
 
         public AsyncDelegateCommand LoadIssueWrappersAsyncCommand => new AsyncDelegateCommand(async () =>
         {
@@ -497,6 +495,8 @@ namespace YoutrackHelper2.ViewModels
         }
 
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
+
+        private IConnector Connector { get; set; }
 
         private SortCriteria SortCriteria { get; set; }
 

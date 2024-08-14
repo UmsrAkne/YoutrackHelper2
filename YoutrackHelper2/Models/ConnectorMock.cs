@@ -166,7 +166,7 @@ namespace YoutrackHelper2.Models
 
         public Task<Issue> GetIssueAsync(string issueId)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task LoadTimeTracking(IEnumerable<IssueWrapper> issues)
@@ -193,7 +193,7 @@ namespace YoutrackHelper2.Models
 
         public Task CreateIssue(string projectId, string title, string description, WorkType workType)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task CreateIssue(string projectId, IssueWrapper iw)
@@ -203,7 +203,7 @@ namespace YoutrackHelper2.Models
 
         public Task DeleteIssue(string issueId)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<Issue> ChangeIssueState(string issueId, State state)
