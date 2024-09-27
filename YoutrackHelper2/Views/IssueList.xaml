@@ -663,10 +663,11 @@
                 Orientation="Horizontal">
 
                 <Button
-                    Width="250"
                     Margin="5,0"
+                    Padding="20,0"
                     Command="{Binding CreateIssueAsyncCommand}"
                     Content="Create new Issue (Ctrl + Shift + Enter)"
+                    FontSize="{StaticResource BasicFontsize}"
                     Template="{StaticResource ButtonCustomTemplate}" />
 
             </StackPanel>
