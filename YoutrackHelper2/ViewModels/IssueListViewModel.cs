@@ -523,14 +523,15 @@ namespace YoutrackHelper2.ViewModels
         /// <summary>
         /// 入力されたタイトルの連番をインクリメントしたタイトルを生成します。
         /// </summary>
-        /// <param name="title">連番をインクリメントしたいタイトル。 xxx[00] のようなフォーマットの文字列のみ対応しています。</param>
+        /// <param name="title">連番をインクリメントしたいタイトル。 xxx[00], xxx[000] のようなフォーマットの文字列のみ対応しています。</param>
         /// <param name="isGlobalNumber">この値を true に指定すると、現在表示されている全ての連番課題を加味して、連番を最大値 +1 に設定します。</param>
         /// <returns>連番の数値が加算された文字列。引数のフォーマットが不正な場合は、 title をそのまま返却します。</returns>
         public string GetNumberedIssueTitle(string title, bool isGlobalNumber = false)
         {
             var numbered = title;
 
-            const string pattern = @"^(.+)\[(\d{2})\]$";
+            const string pattern = @"^(.+)\[(\d+)\]$";
+
             var match = Regex.Match(title, pattern);
 
             // フォーマットに沿っていない場合は、タイトルをそのまま帰す
@@ -546,13 +547,13 @@ namespace YoutrackHelper2.ViewModels
             // 二桁の数値を取得して+1
             var number = int.Parse(numberString);
             number++;
-            numbered = $"{prefix}[{number:00}]";
+            numbered = $"{prefix}[{number.ToString(new string('0', numberString.Length))}]";
 
             if (isGlobalNumber)
             {
                 while (IssueWrappers.FirstOrDefault(w => w.Title == numbered) != null)
                 {
-                    numbered = $"{prefix}[{number++:00}]";
+                    numbered = $"{prefix}[{number++.ToString(new string('0', numberString.Length))}]";
                 }
             }
 
