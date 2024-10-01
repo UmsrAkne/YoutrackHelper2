@@ -9,7 +9,6 @@
     xmlns:models="clr-namespace:YoutrackHelper2.Models"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
-    xmlns:views="clr-namespace:YoutrackHelper2.Views"
     d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
     d:DesignWidth="800"
     Background="{StaticResource ListViewBackgroundColor}"
