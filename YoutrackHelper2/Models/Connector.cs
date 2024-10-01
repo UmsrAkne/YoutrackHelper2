@@ -80,21 +80,20 @@ namespace YoutrackHelper2.Models
             try
             {
                 var issueService = Connection.CreateIssuesService();
-                var dtFrom = DateTime.Now.AddMonths(-1).ToString("yyyy-MM");
-                var dtTo = DateTime.Now.ToString("yyyy-MM");
-                var unresolvedSearchQuery = $"#Unresolved Sort by: Created asc Project:{projectId} and (State:UnResolved or Created:{dtFrom} .. {dtTo})";
-                var searchQuery = $"#Resolved Sort by: State Sort by:Created asc Project:{projectId} and Created:{dtFrom} .. {dtTo}";
+                var unresolvedSearchQuery = $"#Unresolved Sort by: Created desc Project:{projectId}";
+                var resolvedSearchQuery = $"#Resolved Sort by: State Sort by:Created desc Project:{projectId}";
 
-                // 取得される数を先に確認し、規定数よりも多ければ、取得数が規定数になるように skip の値を設定する
-                int? skipCount = 0;
-                var c = await issueService.GetIssueCount(searchQuery);
+                // 取得される数を先に確認し、規定数よりも多ければ、取得数が規定数になるように takeCount の値を設定する
+                int? takeCount = 40;
+
+                var c = await issueService.GetIssueCount(unresolvedSearchQuery);
                 if (c >= MaxResultCount)
                 {
-                    skipCount = (int)c - MaxResultCount;
+                    takeCount = MaxResultCount - (int)c;
                 }
 
-                var unresolved = await issueService.GetIssuesInProject(projectId, unresolvedSearchQuery);
-                var resolved = await issueService.GetIssuesInProject(projectId, searchQuery, skipCount);
+                var unresolved = await issueService.GetIssuesInProject(projectId, unresolvedSearchQuery, null, MaxResultCount);
+                var resolved = await issueService.GetIssuesInProject(projectId, resolvedSearchQuery, null, takeCount);
                 IssueWrappers = unresolved.Concat(resolved).Select(s => new IssueWrapper() { Issue = s, }).ToList();
             }
             catch (Exception e)

@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using YoutrackHelper2.Models;
-using YoutrackHelper2.Views;
 using YoutrackHelper2.Views.Converters;
 
 namespace YoutrackHelper2Test.Views

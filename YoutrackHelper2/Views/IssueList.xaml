@@ -9,7 +9,6 @@
     xmlns:models="clr-namespace:YoutrackHelper2.Models"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
-    xmlns:views="clr-namespace:YoutrackHelper2.Views"
     d:DataContext="{d:DesignInstance viewModels:IssueListViewModel}"
     d:DesignWidth="800"
     Background="{StaticResource ListViewBackgroundColor}"
@@ -320,6 +319,27 @@
                                         Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Orientation="Horizontal">
+
+                                        <TextBlock Text="{Binding LineNumber, StringFormat=D4}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Completed}" Value="True">
+                                                            <Setter Property="Foreground" Value="Gray" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Completed}" Value="False">
+                                                            <Setter Property="Foreground" Value="WhiteSmoke" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <Border
+                                            Width="1"
+                                            Margin="5,0,4,0"
+                                            Background="Gray" />
 
                                         <CheckBox
                                             Margin="3,0"
