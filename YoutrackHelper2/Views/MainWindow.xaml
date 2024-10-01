@@ -8,7 +8,7 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     Title="{Binding TitleBarText.Text}"
-    Width="920"
+    Width="1024"
     Height="600"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
