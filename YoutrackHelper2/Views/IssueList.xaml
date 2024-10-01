@@ -320,6 +320,27 @@
                                         VerticalAlignment="Center"
                                         Orientation="Horizontal">
 
+                                        <TextBlock Text="{Binding LineNumber, StringFormat=D4}">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Completed}" Value="True">
+                                                            <Setter Property="Foreground" Value="Gray" />
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding Completed}" Value="False">
+                                                            <Setter Property="Foreground" Value="WhiteSmoke" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <Border
+                                            Width="1"
+                                            Margin="5,0,4,0"
+                                            Background="Gray" />
+
                                         <CheckBox
                                             Margin="3,0"
                                             VerticalAlignment="Center"

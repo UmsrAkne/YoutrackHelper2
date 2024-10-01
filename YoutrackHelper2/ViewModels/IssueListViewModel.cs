@@ -408,6 +408,10 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = false;
             await Connector.LoadIssues(ProjectWrapper.ShortName);
             IssueWrappers = new ObservableCollection<IssueWrapper>(Sort(Connector.IssueWrappers));
+            for (var index = 1; index < IssueWrappers.Count; index++)
+            {
+                IssueWrappers[index].LineNumber = index;
+            }
 
             // 作業時間の取得は、対象の数が多いと時間がかかりすぎるため、更新日時順に並べた場合のいくつかに対してのみ行う。
             const int maxItemsToLoad = 6;

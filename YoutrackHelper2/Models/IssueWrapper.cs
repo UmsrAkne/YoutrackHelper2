@@ -30,6 +30,7 @@ namespace YoutrackHelper2.Models
         private bool isSelected;
         private DateTime resolved;
         private DateTime updated;
+        private int lineNumber;
 
         public Issue Issue
         {
@@ -152,6 +153,8 @@ namespace YoutrackHelper2.Models
                 }
             }
         }
+
+        public int LineNumber { get => lineNumber; set => SetProperty(ref lineNumber, value); }
 
         public DelegateCommand ToggleExpandedCommand => new DelegateCommand(() =>
         {
