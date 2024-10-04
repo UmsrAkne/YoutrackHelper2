@@ -7,7 +7,6 @@
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
     Title="ConfirmationPage"
     Width="500"
-    Height="300"
     d:DataContext="{d:DesignInstance viewModels:ConfirmationPageViewModel}"
     Background="{StaticResource ListViewBackgroundColor}"
     mc:Ignorable="d">
@@ -18,7 +17,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding Message}" />
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,15"
+            VerticalAlignment="Center"
+            FontSize="{StaticResource BasicFontsize}"
+            Foreground="{StaticResource BasicFontColor}"
+            Text="{Binding Message}"
+            TextAlignment="Center" />
 
         <Grid Grid.Row="1">
 
