@@ -1,0 +1,28 @@
+name: StyleCop Check
+
+on:
+  pull_request:
+    branches:
+      - main  # 対象ブランチ
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # プロジェクトに合わせたバージョンを指定
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the project
+      run: dotnet build --no-restore
+
+    - name: Run StyleCop
+      run: dotnet build --no-restore -p:GenerateDocumentationFile=true

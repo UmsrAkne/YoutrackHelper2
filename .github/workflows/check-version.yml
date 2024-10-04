@@ -1,0 +1,25 @@
+﻿name: Check PR for specific file changes
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Fetch all branches
+        run: git fetch --all
+      - name: Check for file changes
+        run: |
+          if git diff origin/main | grep -qE "\"[0-9]{8}\" \+ \"[a-zA-Z]\";"; then
+          echo "Change includes a date followed by 'a'. Proceeding with PR."
+          # 現在のブランチとリモートの main ブランチとの差分を確認。指定の文字列が変更に含まれるか調べる。
+
+          else
+          echo "No relevant changes detected. Rejecting PR."
+          exit 1  # 指定したファイル名が含まれない場合、エラーのコード (1) を返す
+          fi
