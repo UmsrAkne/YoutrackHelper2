@@ -33,6 +33,7 @@
                 Grid.Column="1"
                 Padding="20,2"
                 HorizontalAlignment="Center"
+                Command="{Binding YesButtonCommand}"
                 Content="Yes"
                 Template="{StaticResource ButtonCustomTemplate}" />
 
@@ -40,6 +41,7 @@
                 Grid.Column="2"
                 Padding="20,2"
                 HorizontalAlignment="Center"
+                Command="{Binding NoButtonCommand}"
                 Content="No"
                 Template="{StaticResource ButtonCustomTemplate}" />
         </Grid>

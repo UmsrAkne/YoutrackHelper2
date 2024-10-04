@@ -16,9 +16,14 @@ namespace YoutrackHelper2.ViewModels
 
         public string Message { get => message; set => SetProperty(ref message, value); }
 
-        public DelegateCommand CloseCommand => new DelegateCommand(() =>
+        public DelegateCommand YesButtonCommand => new DelegateCommand(() =>
         {
-            RequestClose?.Invoke(new DialogResult());
+            RequestClose?.Invoke(new DialogResult(ButtonResult.Yes));
+        });
+
+        public DelegateCommand NoButtonCommand => new DelegateCommand(() =>
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.No));
         });
 
         public bool CanCloseDialog() => true;

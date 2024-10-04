@@ -224,6 +224,26 @@ namespace YoutrackHelper2.ViewModels
                 return;
             }
 
+            var responseIsYes = true;
+            if (param.State == State.Incomplete)
+            {
+                var dialogParams = new DialogParameters
+                {
+                    { nameof(ConfirmationPageViewModel.Message), "タスクが作業中ではありません。完了状態にしますか？" },
+                };
+
+                dialogService.ShowDialog(nameof(ConfirmationPage), dialogParams, result =>
+                {
+                    responseIsYes = result.Result == ButtonResult.Yes;
+                });
+            }
+
+            if (!responseIsYes)
+            {
+                param.Completed = false;
+                return;
+            }
+
             UiEnabled = false;
             await param.Complete(Connector, timeCounter);
             param.Issue = await Connector.RemoveTagFromIssue(param.ShortName, "スター");
