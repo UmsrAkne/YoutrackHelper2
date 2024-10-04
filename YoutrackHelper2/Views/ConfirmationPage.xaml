@@ -1,0 +1,56 @@
+<Page
+    x:Class="YoutrackHelper2.Views.ConfirmationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
+    Title="ConfirmationPage"
+    Width="500"
+    d:DataContext="{d:DesignInstance viewModels:ConfirmationPageViewModel}"
+    Background="{StaticResource ListViewBackgroundColor}"
+    mc:Ignorable="d">
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,15"
+            VerticalAlignment="Center"
+            FontSize="{StaticResource BasicFontsize}"
+            Foreground="{StaticResource BasicFontColor}"
+            Text="{Binding Message}"
+            TextAlignment="Center" />
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="1"
+                Padding="20,2"
+                HorizontalAlignment="Center"
+                Command="{Binding YesButtonCommand}"
+                Content="Yes"
+                Template="{StaticResource ButtonCustomTemplate}" />
+
+            <Button
+                Grid.Column="2"
+                Padding="20,2"
+                HorizontalAlignment="Center"
+                Command="{Binding NoButtonCommand}"
+                Content="No"
+                Template="{StaticResource ButtonCustomTemplate}" />
+        </Grid>
+
+    </Grid>
+</Page>
