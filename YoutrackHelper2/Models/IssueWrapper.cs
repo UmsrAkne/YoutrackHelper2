@@ -260,6 +260,7 @@ namespace YoutrackHelper2.Models
             switch (State)
             {
                 case State.Incomplete:
+                    _ = await connector.ApplyCommand(ShortName, "comment", "作業開始");
                     Issue = await connector.ApplyCommand(ShortName, "state 作業中", comment);
                     StartedAt = DateTime.Now;
                     return;
