@@ -33,6 +33,7 @@ namespace YoutrackHelper2.ViewModels
         private string commandText;
         private ProjectWrapper projectWrapper;
         private List<ProjectWrapper> favoriteProjects;
+        private SortCriteria sortCriteria;
 
         public IssueListViewModel(IDialogService dialogService, IConnector connector)
         {
@@ -518,11 +519,21 @@ namespace YoutrackHelper2.ViewModels
             set => SetProperty(ref favoriteProjects, value);
         }
 
+        public SortCriteria SortCriteria
+        {
+            get => sortCriteria;
+            set
+            {
+                if (SetProperty(ref sortCriteria, value))
+                {
+                    RaisePropertyChanged(nameof(ChangeSortCriteriaCommand));
+                }
+            }
+        }
+
         private List<IssueWrapper> ProgressingIssues { get; set; } = new ();
 
         private IConnector Connector { get; set; }
-
-        private SortCriteria SortCriteria { get; set; }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
