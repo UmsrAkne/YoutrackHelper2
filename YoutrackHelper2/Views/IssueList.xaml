@@ -422,6 +422,7 @@
                                             HorizontalAlignment="Right"
                                             Text="{Binding ShortName, Converter={StaticResource ShortNameConverter}}" />
 
+                                        <!--  課題の状態・作業時間を表示するトグルボタン  -->
                                         <ToggleButton
                                             Width="70"
                                             Margin="5,0"
