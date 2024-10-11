@@ -429,9 +429,9 @@ namespace YoutrackHelper2.ViewModels
             UiEnabled = false;
             await Connector.LoadIssues(ProjectWrapper.ShortName);
             IssueWrappers = new ObservableCollection<IssueWrapper>(Sort(Connector.IssueWrappers));
-            for (var index = 1; index < IssueWrappers.Count; index++)
+            for (var i = 0; i < IssueWrappers.Count; i++)
             {
-                IssueWrappers[index].LineNumber = index;
+                IssueWrappers[i].LineNumber = i + 1;
             }
 
             // 作業時間の取得は、対象の数が多いと時間がかかりすぎるため、更新日時順に並べた場合のいくつかに対してのみ行う。
