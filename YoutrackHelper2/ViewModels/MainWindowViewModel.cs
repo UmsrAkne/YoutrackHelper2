@@ -140,7 +140,7 @@ namespace YoutrackHelper2.ViewModels
         private void SetVersion()
         {
             // リリースビルドの場合のみ実行するコード
-            TitleBarText.Version = "version : " + "20241011" + "a";
+            TitleBarText.Version = "version : " + "20241029" + "a";
         }
     }
 }
