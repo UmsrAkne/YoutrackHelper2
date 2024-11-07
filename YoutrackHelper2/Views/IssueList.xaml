@@ -236,6 +236,19 @@
                 </Button.CommandParameter>
             </Button>
 
+            <Button
+                Margin="3"
+                Padding="3,0"
+                Command="{Binding CreateAndStartGlobalNumberedIssueCommand}"
+                CommandParameter="{Binding ElementName=NewIssueTitleTextBox}"
+                IsEnabled="{Binding HasSelectedItem}"
+                Template="{StaticResource ButtonCustomTemplate}">
+                <Button.Content>
+                    <TextBlock FontSize="{StaticResource BasicFontsize}" Text="連番課題生成・開始(Global)" />
+                </Button.Content>
+            </Button>
+
+
             <TextBlock
                 Margin="4,0"
                 HorizontalAlignment="Right"

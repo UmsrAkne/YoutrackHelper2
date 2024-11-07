@@ -32,7 +32,7 @@ namespace YoutrackHelper2.Models.Generics
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private async Task ExecuteAsync(T parameter)
+        public async Task ExecuteAsync(T parameter)
         {
             await execute(parameter);
         }

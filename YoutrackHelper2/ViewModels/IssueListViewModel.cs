@@ -218,6 +218,33 @@ namespace YoutrackHelper2.ViewModels
             CurrentIssueWrapper.WorkType = SelectedIssue.WorkType;
         });
 
+        public AsyncDelegateCommand<TextBox> CreateAndStartGlobalNumberedIssueCommand => new (async (param) =>
+        {
+            CreateGlobalNumberedIssueCommand.Execute(false);
+            await CreateIssueAsyncCommand.ExecuteAsync(param);
+
+            if (IssueWrappers == null)
+            {
+                return;
+            }
+
+            IssueWrapper latest;
+            try
+            {
+                latest = IssueWrappers.MaxBy(w => w.NumberInProject);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            if (latest != null)
+            {
+                ToggleIssueStateCommand.Execute(latest);
+            }
+        });
+
         public AsyncDelegateCommand<IssueWrapper> CompleteIssueCommand => new AsyncDelegateCommand<IssueWrapper>(async (param) =>
         {
             if (param == null)
