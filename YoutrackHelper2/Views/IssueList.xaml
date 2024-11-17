@@ -286,6 +286,12 @@
                         Modifiers="Control" />
 
                     <KeyBinding
+                        Key="C"
+                        Command="{Binding CopyIssueTitleAndIdCommand}"
+                        CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                        Modifiers="Control+Shift" />
+
+                    <KeyBinding
                         Key="F"
                         Command="{Binding CompleteIssueCommand}"
                         CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
