@@ -397,6 +397,23 @@ namespace YoutrackHelper2.ViewModels
             Clipboard.SetText(param.Title);
         });
 
+        /// <summary>
+        /// Issue の ID とタイトルを特定のフォーマットでクリップボードに転送します。<br/>
+        /// </summary>
+        /// <remarks>
+        /// 次のような形式にフォーマットされて転送されます。 "PrjId-0001: IssueTitle"
+        /// </remarks>
+        public DelegateCommand<IssueWrapper> CopyIssueTitleAndIdCommand => new ((param) =>
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            var shortName = Regex.Replace(param.ShortName, "-\\d*", string.Empty);
+            Clipboard.SetText($"{shortName}-{param.NumberInProject:d4}: {param.Title}");
+        });
+
         public DelegateCommand ShowIssuesPostPageCommand => new DelegateCommand(() =>
         {
             var dialogParams = new DialogParameters
