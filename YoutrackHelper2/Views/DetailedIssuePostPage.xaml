@@ -35,7 +35,7 @@
             </Style>
 
             <Style TargetType="TextBox">
-                <Setter Property="Foreground" Value="{StaticResource BasicFontsize}" />
+                <Setter Property="Foreground" Value="{StaticResource BasicFontColor}" />
                 <Setter Property="Background" Value="{StaticResource ListViewLightBackgroundColor}" />
                 <Setter Property="FontSize" Value="{StaticResource BasicFontsize}" />
             </Style>
@@ -51,7 +51,7 @@
             <DockPanel>
                 <TextBlock Text="Title :" />
                 <Border Width="0" Margin="3,0" />
-                <TextBox />
+                <TextBox Text="{Binding IssueWrapper.Title}" />
             </DockPanel>
 
             <Border
@@ -60,22 +60,24 @@
                 Background="Black" />
 
             <TextBlock Margin="0,4" Text="Description :" />
-            <TextBox Height="80" />
+            <TextBox Height="80" Text="{Binding IssueWrapper.Description}" />
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <TextBlock
                     Margin="10,0"
                     VerticalAlignment="Center"
                     Text="Type :" />
+
                 <ComboBox
                     Width="200"
                     Margin="0,8"
-                    ItemsSource="{Binding Source={StaticResource WorkTypeValues}}" />
+                    ItemsSource="{Binding Source={StaticResource WorkTypeValues}}"
+                    SelectedItem="{Binding IssueWrapper.WorkType}" />
 
             </StackPanel>
 
             <TextBlock Margin="0,4" Text="Tags :" />
-            <TextBox />
+            <TextBox Text="{Binding TagsText, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
         <StackPanel
