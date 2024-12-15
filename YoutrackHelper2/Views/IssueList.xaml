@@ -248,6 +248,18 @@
                 </Button.Content>
             </Button>
 
+            <Button
+                Margin="10,3"
+                Padding="3,0"
+                Command="{Binding ShowDetailedIssuePostPageCommand}"
+                CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
+                Template="{StaticResource ButtonCustomTemplate}">
+
+                <Button.Content>
+                    <TextBlock FontSize="{StaticResource BasicFontsize}" Text="詳細設定をして課題を投稿する" />
+                </Button.Content>
+            </Button>
+
 
             <TextBlock
                 Margin="4,0"
