@@ -25,6 +25,11 @@ namespace YoutrackHelper2.ViewModels
             RequestClose?.Invoke(new DialogResult());
         });
 
+        public DelegateCommand ConfirmCommand => new DelegateCommand(() =>
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.Yes));
+        });
+
         public bool CanCloseDialog() => true;
 
         public void OnDialogClosed()

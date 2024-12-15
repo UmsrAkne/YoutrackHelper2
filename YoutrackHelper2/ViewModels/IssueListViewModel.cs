@@ -452,15 +452,18 @@ namespace YoutrackHelper2.ViewModels
 
         public DelegateCommand<IssueWrapper> ShowDetailedIssuePostPageCommand => new DelegateCommand<IssueWrapper>((param) =>
         {
-            if (param == null)
-            {
-                param = new IssueWrapper();
-            }
+            param ??= new IssueWrapper();
 
             var dialogParams = new DialogParameters() { { nameof(IssueWrapper), param }, };
 
-            dialogService.ShowDialog(nameof(DetailedIssuePostPage), dialogParams, _ =>
+            dialogService.ShowDialog(nameof(DetailedIssuePostPage), dialogParams, result =>
             {
+                if (result.Result == ButtonResult.Yes)
+                {
+                    CurrentIssueWrapper = param;
+                    CreateIssueAsyncCommand.Execute(null);
+                }
+
                 LoadIssueWrappersAsyncCommand.Execute(null);
             });
         });
