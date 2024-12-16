@@ -96,6 +96,17 @@
                     Text="Post Issue" />
             </Button>
 
+            <Button
+                Margin="10,0"
+                Padding="10,2"
+                Command="{Binding ResetIssueCommand}">
+                <TextBlock
+                    FontSize="{StaticResource BasicFontsize}"
+                    Foreground="Black"
+                    Text="Reset" />
+            </Button>
+
+
             <Button Padding="10,2" Command="{Binding CloseCommand}">
                 <TextBlock
                     FontSize="{StaticResource BasicFontsize}"
