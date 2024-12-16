@@ -20,6 +20,18 @@ namespace YoutrackHelper2.ViewModels
 
         public string TagsText { get => tagsText; set => SetProperty(ref tagsText, value); }
 
+        public DelegateCommand ResetIssueCommand => new DelegateCommand(() =>
+        {
+            IssueWrapper = new IssueWrapper
+            {
+                Title = string.Empty,
+                Description = string.Empty,
+                WorkType = WorkType.Feature,
+            };
+
+            TagsText = string.Empty;
+        });
+
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
             RequestClose?.Invoke(new DialogResult());
