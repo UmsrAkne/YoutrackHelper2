@@ -3,7 +3,32 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
+        <VersionFile>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\version.txt</VersionFile>
     </PropertyGroup>
+
+    <Target Name="GenerateVersionFile" AfterTargets="AfterBuild">
+        <Exec Command="git describe --tags --abbrev=0" ConsoleToMsBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="GitTag" />
+        </Exec>
+
+        <Exec Command='git log --oneline -1' ConsoleToMsBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitInfo" />
+        </Exec>
+
+        <Exec Command="date /t" ConsoleToMsBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="BuildDate" />
+        </Exec>
+
+        <Exec Command="time /t" ConsoleToMsBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="BuildTime" />
+        </Exec>
+
+        <WriteLinesToFile
+                File="$(VersionFile)"
+                Overwrite="true"
+                Lines="Tag: $(GitTag)&#10;$(GitCommitInfo)&#10;Build Date: $(BuildDate) $(BuildTime)" />
+    </Target>
+
     <ItemGroup>
         <PackageReference Include="Prism.DryIoc" Version="8.1.97"/>
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
