@@ -84,6 +84,7 @@ namespace YoutrackHelper2.Models
 
             IssueWrappers = DummyIssues.Select(i => new IssueWrapper() { Issue = i, }).ToList();
             IssueWrappers[1].Expanded = true;
+            IssueWrappers[1].EstimatedWorkTime = 10;
         }
 
         public List<ProjectWrapper> ProjectWrappers { get; private set; }

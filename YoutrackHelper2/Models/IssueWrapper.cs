@@ -31,6 +31,7 @@ namespace YoutrackHelper2.Models
         private DateTime resolved;
         private DateTime updated;
         private int lineNumber;
+        private int estimatedWorkTime;
 
         public Issue Issue
         {
@@ -167,6 +168,12 @@ namespace YoutrackHelper2.Models
         {
             get => temporaryComment;
             set => SetProperty(ref temporaryComment, value);
+        }
+
+        public int EstimatedWorkTime
+        {
+            get => estimatedWorkTime;
+            set => SetProperty(ref estimatedWorkTime, value);
         }
 
         public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }

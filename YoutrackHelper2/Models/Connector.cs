@@ -94,7 +94,22 @@ namespace YoutrackHelper2.Models
 
                 var unresolved = await issueService.GetIssuesInProject(projectId, unresolvedSearchQuery, null, MaxResultCount);
                 var resolved = await issueService.GetIssuesInProject(projectId, resolvedSearchQuery, null, takeCount);
-                IssueWrappers = unresolved.Concat(resolved).Select(s => new IssueWrapper() { Issue = s, }).ToList();
+                IssueWrappers = unresolved.Concat(resolved)
+                    .Select(s =>
+                    {
+                        var issue = new IssueWrapper() { Issue = s, };
+                        var etcNum = s.GetField("予測");
+                        if (etcNum is { Value: not null, })
+                        {
+                            var val = etcNum.Value;
+                            issue.EstimatedWorkTime = int.Parse(((List<string>)val).First());
+                        }
+
+                        issue.Issue = s;
+
+                        return issue;
+                    }).
+                    ToList();
             }
             catch (Exception e)
             {
@@ -255,6 +270,11 @@ namespace YoutrackHelper2.Models
                 if (!string.IsNullOrEmpty(w))
                 {
                     issue.SetField("Type", w);
+                }
+
+                if (iw.EstimatedWorkTime != 0)
+                {
+                    issue.SetField("予測", $"{iw.EstimatedWorkTime}m");
                 }
 
                 await issuesService.CreateIssue(projectId, issue);
