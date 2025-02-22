@@ -723,7 +723,7 @@
                 <TextBox
                     Width="40"
                     Padding="2,0"
-                    Text="0" />
+                    Text="{Binding CurrentIssueWrapper.EstimatedWorkTime, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBlock
                     Padding="3,0"

@@ -257,6 +257,11 @@ namespace YoutrackHelper2.Models
                     issue.SetField("Type", w);
                 }
 
+                if (iw.EstimatedWorkTime != 0)
+                {
+                    issue.SetField("予測", $"{iw.EstimatedWorkTime}m");
+                }
+
                 await issuesService.CreateIssue(projectId, issue);
             }
             catch (Exception e)
