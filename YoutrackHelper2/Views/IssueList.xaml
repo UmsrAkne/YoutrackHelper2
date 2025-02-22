@@ -571,6 +571,22 @@
                                                 </TextBlock.Style>
                                             </TextBlock>
 
+                                            <TextBlock
+                                                Margin="10,0,5,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Text="{Binding EstimatedWorkTime, StringFormat=ETC : {0}m}">
+                                                <TextBlock.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding EstimatedWorkTime}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+
                                         </StackPanel>
 
                                         <!--  コメントを入力するためのテキストボックス  -->
