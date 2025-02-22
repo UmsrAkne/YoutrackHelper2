@@ -715,6 +715,23 @@
 
                 <Border Margin="10,0" />
 
+                <TextBlock
+                    Padding="3,0"
+                    VerticalAlignment="Center"
+                    Text="ETC :" />
+
+                <TextBox
+                    Width="40"
+                    Padding="2,0"
+                    Text="0" />
+
+                <TextBlock
+                    Padding="3,0"
+                    VerticalAlignment="Center"
+                    Text="min" />
+
+                <Border Margin="5,0" />
+
                 <TextBlock Padding="3,0" Text="Tag : " />
                 <TextBox DockPanel.Dock="Right" Text="{Binding TagText, UpdateSourceTrigger=PropertyChanged}" />
 

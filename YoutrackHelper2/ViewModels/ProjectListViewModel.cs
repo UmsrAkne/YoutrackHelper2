@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,12 @@ namespace YoutrackHelper2.ViewModels
             _ = GetProjectsAsync(uri, perm);
 
             this.dialogService = dialogService;
+        }
+
+        [Obsolete("このコンストラクタは xaml のプレビューの際にだけ使用します。")]
+        public ProjectListViewModel()
+        {
+            SetDummies();
         }
 
         public event EventHandler NavigationRequest;
@@ -159,6 +166,15 @@ namespace YoutrackHelper2.ViewModels
                     p.Archived = pw.Archived;
                     p.DefaultWorkType = pw.DefaultWorkType;
                 }
+            }
+        }
+
+        [Conditional("DEBUG")]
+        private void SetDummies()
+        {
+            for (var i = 0; i < 10; i++)
+            {
+                Projects.Add(new ProjectWrapper { FullName = $"Project {i}", });
             }
         }
     }
