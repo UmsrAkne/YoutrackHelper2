@@ -13,13 +13,14 @@ namespace YoutrackHelper2.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private const string RegionName = "ContentRegion";
+        private const string RegionTitle = "YoutrackHelper2 Projects";
         private static bool initialized;
         private readonly IRegionManager regionManager;
 
         public MainWindowViewModel(IRegionManager regionManager)
         {
             this.regionManager = regionManager;
-            TitleBarText.Text = "Projects";
+            TitleBarText.Text = RegionTitle;
 
             SetVersion();
         }
@@ -96,7 +97,7 @@ namespace YoutrackHelper2.ViewModels
         private DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
             regionManager.RequestNavigate(RegionName, nameof(ProjectList));
-            TitleBarText.Text = "Projects";
+            TitleBarText.Text = RegionTitle;
         });
 
         private void NavigateToIssueListPage(ProjectWrapper projectWrapper, List<ProjectWrapper> favorites)
