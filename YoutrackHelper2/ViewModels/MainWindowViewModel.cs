@@ -140,8 +140,13 @@ namespace YoutrackHelper2.ViewModels
         [Conditional("RELEASE")]
         private void SetVersion()
         {
-            // リリースビルドの場合のみ実行するコード
-            TitleBarText.Version = "version : " + "20241217" + "a";
+            const int major = 1;
+            const int minor = 0;
+            const int patch = 1;
+            const string date = "20250226";
+            const string suffixId = "a";
+
+            TitleBarText.Version = $"ver {major}.{minor}.{patch} ({date}{suffixId})";
         }
     }
 }
