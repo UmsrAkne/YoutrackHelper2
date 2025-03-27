@@ -16,7 +16,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding AppInitializeCommand}" />
+            <i:InvokeCommandAction Command="{Binding AppInitializeCommandAsync}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

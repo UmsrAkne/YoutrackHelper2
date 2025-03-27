@@ -27,7 +27,7 @@ namespace YoutrackHelper2.ViewModels
 
         public TitleBarText TitleBarText { get; private set; } = new ();
 
-        public DelegateCommand AppInitializeCommand => new (() =>
+        public AsyncDelegateCommand AppInitializeCommandAsync => new (async () =>
         {
             if (initialized)
             {
@@ -41,6 +41,7 @@ namespace YoutrackHelper2.ViewModels
 
             if (projectsView?.DataContext is ProjectListViewModel vm)
             {
+                await vm.LoadProjectsAsync();
                 vm.TitleBarText = TitleBarText;
                 vm.NavigationRequest += (_, e) =>
                 {
@@ -57,7 +58,7 @@ namespace YoutrackHelper2.ViewModels
                 };
             }
         });
-        
+
         private DelegateCommand<ProjectWrapper> NavigateToIssueListPageCommand => new ((param) =>
         {
             var parameters = new NavigationParameters
