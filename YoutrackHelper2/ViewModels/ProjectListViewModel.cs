@@ -10,7 +10,9 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using YoutrackHelper2.Models;
+using YoutrackHelper2.Projects;
 using YoutrackHelper2.Views;
+using YouTrackSharp;
 
 namespace YoutrackHelper2.ViewModels
 {
@@ -24,17 +26,6 @@ namespace YoutrackHelper2.ViewModels
         public ProjectListViewModel(IConnector connector, IDialogService dialogService)
         {
             Connector = connector;
-
-            var uri = File.ReadAllText(
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\uri.txt")
-            .Replace("\n", string.Empty);
-
-            var perm = File.ReadAllText(
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\perm.txt")
-            .Replace("\n", string.Empty);
-
-            _ = GetProjectsAsync(uri, perm);
-
             this.dialogService = dialogService;
         }
 
@@ -117,13 +108,23 @@ namespace YoutrackHelper2.ViewModels
 
         public TitleBarText TitleBarText { get; set; }
 
+        private IProjectFetcher ProjectFetcher { get; set; }
+
         private IConnector Connector { get; set; }
 
-        private async Task GetProjectsAsync(string uri, string perm)
+        public async Task LoadProjectsAsync()
         {
-            Connector.SetConnection(uri, perm);
-            await Connector.LoadProjects();
-            var pws = Connector.ProjectWrappers;
+            var uri = (await File.ReadAllTextAsync(
+                    $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\uri.txt"))
+            .Replace("\n", string.Empty);
+
+            var perm = (await File.ReadAllTextAsync(
+                    $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\perm.txt"))
+            .Replace("\n", string.Empty);
+
+            ProjectFetcher ??= new ProjectFetcher(new BearerTokenConnection(uri, perm));
+
+            var pws = await ProjectFetcher.LoadProjects();
             ReadJsonFile(pws);
 
             var favorites = pws.Where(p => p.IsFavorite).
