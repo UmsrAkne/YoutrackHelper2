@@ -20,8 +20,6 @@ namespace YoutrackHelper2.Models
 
         Task<Issue> ApplyCommand(string shortName, string command, string comment);
 
-        Task LoadProjects();
-
         Task LoadIssues(string projectId);
 
         /// <summary>

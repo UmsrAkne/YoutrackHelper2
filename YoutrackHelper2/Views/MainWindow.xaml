@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:YoutrackHelper2.ViewModels"
-    Title="{Binding TitleBarText.Text}"
+    Title="{Binding AppVersionInfo.Title}"
     Width="1024"
     Height="600"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
@@ -16,7 +16,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding AppInitializeCommand}" />
+            <i:InvokeCommandAction Command="{Binding AppInitializeCommandAsync}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

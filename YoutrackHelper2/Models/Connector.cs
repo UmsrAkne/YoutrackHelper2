@@ -58,23 +58,6 @@ namespace YoutrackHelper2.Models
             return await issueService.GetIssue(shortName);
         }
 
-        public async Task LoadProjects()
-        {
-            try
-            {
-                var projectsService = Connection.CreateProjectsService();
-                var projects = await projectsService.GetAccessibleProjects();
-                ProjectWrappers = projects.Select(p => new ProjectWrapper() { Project = p, }).ToList();
-            }
-            catch (Exception e)
-            {
-                Logger.WriteMessageToFile("プロジェクトのロードに失敗しました");
-                Logger.WriteMessageToFile(e.ToString());
-                Debug.WriteLine($"{e}(Connector : 46)");
-                ErrorMessage = "接続に失敗しました";
-            }
-        }
-
         public async Task LoadIssues(string projectId)
         {
             try
