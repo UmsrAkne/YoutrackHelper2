@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using YoutrackHelper2.Models;
+using YoutrackHelper2.Utils;
 using YoutrackHelper2.Views;
 
 namespace YoutrackHelper2.ViewModels
@@ -20,12 +20,9 @@ namespace YoutrackHelper2.ViewModels
         public MainWindowViewModel(IRegionManager regionManager)
         {
             this.regionManager = regionManager;
-            TitleBarText.Text = RegionTitle;
-
-            SetVersion();
         }
 
-        public TitleBarText TitleBarText { get; private set; } = new ();
+        public AppVersionInfo AppVersionInfo { get; set; } = new ();
 
         public AsyncDelegateCommand AppInitializeCommandAsync => new (async () =>
         {
@@ -42,7 +39,7 @@ namespace YoutrackHelper2.ViewModels
             if (projectsView?.DataContext is ProjectListViewModel vm)
             {
                 await vm.LoadProjectsAsync();
-                vm.TitleBarText = TitleBarText;
+                vm.TitleBarText = new TitleBarText();
                 vm.NavigationRequest += (_, e) =>
                 {
                     if (e is not NavigationEventArgs ne)
@@ -71,8 +68,10 @@ namespace YoutrackHelper2.ViewModels
             var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
             if (v?.DataContext as IssueListViewModel is { } vm)
             {
-                vm.TitleBarText = TitleBarText;
-                TitleBarText.Text = param.FullName;
+                vm.TitleBarText = new TitleBarText
+                {
+                    Text = param.FullName,
+                };
 
                 if (vm.Initialized)
                 {
@@ -98,7 +97,7 @@ namespace YoutrackHelper2.ViewModels
         private DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
             regionManager.RequestNavigate(RegionName, nameof(ProjectList));
-            TitleBarText.Text = RegionTitle;
+            AppVersionInfo.Title = RegionTitle;
         });
 
         private void NavigateToIssueListPage(ProjectWrapper projectWrapper, List<ProjectWrapper> favorites)
@@ -113,8 +112,11 @@ namespace YoutrackHelper2.ViewModels
             var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
             if (v?.DataContext as IssueListViewModel is { } vm)
             {
-                vm.TitleBarText = TitleBarText;
-                TitleBarText.Text = projectWrapper.FullName;
+                vm.TitleBarText = new TitleBarText
+                {
+                    Text = projectWrapper.FullName,
+                };
+
                 vm.FavoriteProjects = favorites.Where(p => p.FullName != projectWrapper.FullName).ToList();
 
                 if (vm.Initialized)
@@ -136,18 +138,6 @@ namespace YoutrackHelper2.ViewModels
                     }
                 };
             }
-        }
-
-        [Conditional("RELEASE")]
-        private void SetVersion()
-        {
-            const int major = 1;
-            const int minor = 0;
-            const int patch = 1;
-            const string date = "20250226";
-            const string suffixId = "a";
-
-            TitleBarText.Version = $"ver {major}.{minor}.{patch} ({date}{suffixId})";
         }
     }
 }
