@@ -50,7 +50,7 @@ namespace YoutrackHelper2.ViewModels
             private set => SetProperty(ref projects, value);
         }
 
-        public DelegateCommand NavigationRequestCommand => new DelegateCommand(() =>
+        public DelegateCommand NavigationRequestCommand => new (() =>
         {
             var nea = new NavigationEventArgs(nameof(IssueList))
             {
@@ -61,7 +61,7 @@ namespace YoutrackHelper2.ViewModels
             WriteJsonFile();
         });
 
-        public DelegateCommand<ProjectWrapper> ToggleFavoriteCommand => new DelegateCommand<ProjectWrapper>((param) =>
+        public DelegateCommand<ProjectWrapper> ToggleFavoriteCommand => new ((param) =>
         {
             if (param == null)
             {
@@ -72,7 +72,7 @@ namespace YoutrackHelper2.ViewModels
             WriteJsonFile();
         });
 
-        public DelegateCommand<ProjectWrapper> ToggleArchiveCommand => new DelegateCommand<ProjectWrapper>((param) =>
+        public DelegateCommand<ProjectWrapper> ToggleArchiveCommand => new ((param) =>
         {
             if (param == null)
             {
@@ -82,7 +82,7 @@ namespace YoutrackHelper2.ViewModels
             WriteJsonFile();
         });
 
-        public DelegateCommand<ProjectWrapper> ChangeDefaultWorkTypeCommand => new DelegateCommand<ProjectWrapper>((param) =>
+        public DelegateCommand<ProjectWrapper> ChangeDefaultWorkTypeCommand => new ((param) =>
         {
             if (param == null)
             {
@@ -92,7 +92,7 @@ namespace YoutrackHelper2.ViewModels
             WriteJsonFile();
         });
 
-        public DelegateCommand ShowTagManagementPageCommand => new DelegateCommand(() =>
+        public DelegateCommand ShowTagManagementPageCommand => new (() =>
         {
             var dialogParams = new DialogParameters
             {
@@ -102,7 +102,7 @@ namespace YoutrackHelper2.ViewModels
             dialogService.ShowDialog(nameof(TagManagementPage), dialogParams, _ => { });
         });
 
-        public DelegateCommand OpenLogFileCommand => new DelegateCommand(() =>
+        public DelegateCommand OpenLogFileCommand => new (() =>
         {
             FileService.OpenTextFile("log.txt");
         });
