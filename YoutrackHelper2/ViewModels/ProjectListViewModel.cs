@@ -11,6 +11,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using YoutrackHelper2.Models;
 using YoutrackHelper2.Projects;
+using YoutrackHelper2.Utils;
 using YoutrackHelper2.Views;
 using YouTrackSharp;
 
@@ -114,15 +115,8 @@ namespace YoutrackHelper2.ViewModels
 
         public async Task LoadProjectsAsync()
         {
-            var uri = (await File.ReadAllTextAsync(
-                    $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\uri.txt"))
-            .Replace("\n", string.Empty);
-
-            var perm = (await File.ReadAllTextAsync(
-                    $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\youtrackInfo\perm.txt"))
-            .Replace("\n", string.Empty);
-
-            ProjectFetcher ??= new ProjectFetcher(new BearerTokenConnection(uri, perm));
+            var authInfo = await AuthInfoLoader.GetAuthInfoAsync();
+            ProjectFetcher ??= new ProjectFetcher(new BearerTokenConnection(authInfo.Uri, authInfo.Perm));
 
             var pws = await ProjectFetcher.LoadProjects();
             ReadJsonFile(pws);
