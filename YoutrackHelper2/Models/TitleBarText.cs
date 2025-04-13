@@ -6,17 +6,14 @@ namespace YoutrackHelper2.Models
     public class TitleBarText : BindableBase
     {
         private string text;
-        private string version;
         private bool progressing;
         private TimeSpan currentWorkingDuration;
 
         public string Text
         {
-            get => Progressing ? $"[{(int)CurrentWorkingDuration.TotalMinutes}m] {text} {Version}" : $"{text} {Version}";
+            get => Progressing ? $"[{(int)CurrentWorkingDuration.TotalMinutes}m] {text}" : $"{text}";
             set => SetProperty(ref text, value);
         }
-
-        public string Version { get => version; set => SetProperty(ref version, value); }
 
         public bool Progressing
         {
