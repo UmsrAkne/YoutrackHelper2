@@ -20,9 +20,10 @@ namespace YoutrackHelper2.ViewModels
         public MainWindowViewModel(IRegionManager regionManager)
         {
             this.regionManager = regionManager;
+            TitleBarText.Text = AppVersionInfo.Title;
         }
 
-        public AppVersionInfo AppVersionInfo { get; set; } = new ();
+        public TitleBarText TitleBarText { get; set; } = new ();
 
         public AsyncDelegateCommand AppInitializeCommandAsync => new (async () =>
         {
@@ -68,10 +69,9 @@ namespace YoutrackHelper2.ViewModels
             var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
             if (v?.DataContext as IssueListViewModel is { } vm)
             {
-                vm.TitleBarText = new TitleBarText
-                {
-                    Text = param.FullName,
-                };
+                TitleBarText.Text = param.FullName;
+                TitleBarText.ProjectName = param.FullName;
+                vm.TitleBarText = TitleBarText;
 
                 if (vm.Initialized)
                 {
@@ -94,6 +94,8 @@ namespace YoutrackHelper2.ViewModels
             }
         });
 
+        private AppVersionInfo AppVersionInfo { get; set; } = new ();
+
         private DelegateCommand NavigateToProjectListPageCommand => new (() =>
         {
             regionManager.RequestNavigate(RegionName, nameof(ProjectList));
@@ -112,10 +114,9 @@ namespace YoutrackHelper2.ViewModels
             var v = regionManager.Regions[RegionName].ActiveViews.FirstOrDefault(v => v is IssueList) as IssueList;
             if (v?.DataContext as IssueListViewModel is { } vm)
             {
-                vm.TitleBarText = new TitleBarText
-                {
-                    Text = projectWrapper.FullName,
-                };
+                TitleBarText.Text = projectWrapper.FullName;
+                TitleBarText.ProjectName = projectWrapper.FullName;
+                vm.TitleBarText = TitleBarText;
 
                 vm.FavoriteProjects = favorites.Where(p => p.FullName != projectWrapper.FullName).ToList();
 
