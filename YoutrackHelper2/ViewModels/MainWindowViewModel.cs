@@ -70,6 +70,7 @@ namespace YoutrackHelper2.ViewModels
             if (v?.DataContext as IssueListViewModel is { } vm)
             {
                 TitleBarText.Text = param.FullName;
+                TitleBarText.ProjectName = param.FullName;
                 vm.TitleBarText = TitleBarText;
 
                 if (vm.Initialized)
@@ -114,6 +115,7 @@ namespace YoutrackHelper2.ViewModels
             if (v?.DataContext as IssueListViewModel is { } vm)
             {
                 TitleBarText.Text = projectWrapper.FullName;
+                TitleBarText.ProjectName = projectWrapper.FullName;
                 vm.TitleBarText = TitleBarText;
 
                 vm.FavoriteProjects = favorites.Where(p => p.FullName != projectWrapper.FullName).ToList();

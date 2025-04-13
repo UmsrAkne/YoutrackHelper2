@@ -580,6 +580,7 @@ namespace YoutrackHelper2.ViewModels
             ProjectWrapper = param;
             LoadIssueWrappersAsyncCommand.Execute(null);
             TitleBarText.Text = param.FullName;
+            TitleBarText.ProjectName = param.FullName;
         });
 
         public DelegateCommand OpenLogFileCommand => new DelegateCommand(() =>
@@ -681,11 +682,13 @@ namespace YoutrackHelper2.ViewModels
             {
                 timer.Start();
                 TitleBarText.Progressing = true;
+                TitleBarText.IssueTitle = ProgressingIssues.First().Title;
             }
             else
             {
                 timer.Stop();
                 TitleBarText.Progressing = false;
+                TitleBarText.IssueTitle = string.Empty;
             }
         }
 
