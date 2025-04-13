@@ -32,14 +32,14 @@ namespace YoutrackHelper2.Utils
 
         public int MinorVersion { get; init; } = 0;
 
-        public int PatchVersion { get; init; } = 2;
+        public int PatchVersion { get; init; } = 3;
 
         // ReSharper disable once CommentTypo
 
         /// <summary>
         /// 最終アップデートの日付を `YYYYmmdd` のフォーマットで入力します。
         /// </summary>
-        public string Updated { get; init; } = "20250327";
+        public string Updated { get; init; } = "20250413";
 
         public string SuffixId { get; init; } = "a";
 
